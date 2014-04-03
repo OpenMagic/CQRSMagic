@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Library.CQRS.Specifications.Support.Fakes
+namespace CQRSMagic.Specifications.Support.Fakes
 {
     public class SimpleFakeEvent : Event
     {

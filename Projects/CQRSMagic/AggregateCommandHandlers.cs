@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Library.CQRS
+namespace CQRSMagic
 {
     public class AggregateCommandHandlers<TAggregate> : IAggregateCommandHandlers where TAggregate : IAggregate, new()
     {

@@ -1,8 +1,8 @@
 ﻿using BoDi;
-using Library.CQRS.Specifications.Support.Fakes;
+using CQRSMagic.Specifications.Support.Fakes;
 using TechTalk.SpecFlow;
 
-namespace Library.CQRS.Specifications.Support.Bindings
+namespace CQRSMagic.Specifications.Support.Bindings
 {
     [Binding]
     public class EventStoreBinding

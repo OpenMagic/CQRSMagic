@@ -5,11 +5,11 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Anotar.CommonLogging;
-using Library.CQRS.Support;
+using CQRSMagic.Support;
 using Microsoft.Practices.ServiceLocation;
 using OpenMagic.Extensions.Collections.Generic;
 
-namespace Library.CQRS
+namespace CQRSMagic
 {
     public class SubscribeToHandlers : ISubscribeToHandlers
     {
@@ -36,7 +36,6 @@ namespace Library.CQRS
             // todo: is this the right way to do Task?
             return Task.Factory.StartNew(() =>
             {
-
                 List<Action<Guid, IEvent>> handlers;
 
                 if (!Cache.Value.TryGetValue(e.GetType(), out handlers))
@@ -64,7 +63,7 @@ namespace Library.CQRS
             var subscribeToObjects = (
                 from type in types
                 where type.Implements(typeof(ISubscribeTo<>))
-                select new { Type = type, Obj = container.GetInstance(type) }).ToArray();
+                select new {Type = type, Obj = container.GetInstance(type)}).ToArray();
 
             // Get the methods that implement ISubscribeTo<>.Handle(IEvent e)
             // todo: magic string for event parameter name.
@@ -73,10 +72,10 @@ namespace Library.CQRS
                 from @interface in subscribeToObject.Type.GetInterfaces()
                 where @interface.Name == typeof(ISubscribeTo<>).Name
                 let m = @interface.GetMethods().Single()
-                let e = new { EventType = m.GetParameters().Single(p => p.Name == "e").ParameterType, Action = CreateAction(subscribeToObject.Obj, m) }
+                let e = new {EventType = m.GetParameters().Single(p => p.Name == "e").ParameterType, Action = CreateAction(subscribeToObject.Obj, m)}
                 group e by e.EventType
-                    into g
-                    select new { EventType = g.Key, Actions = g.Select(x => x.Action).ToList() };
+                into g
+                select new {EventType = g.Key, Actions = g.Select(x => x.Action).ToList()};
 
             var dictionary = eventTypes.ToDictionary(e => e.EventType, e => e.Actions);
 
@@ -87,7 +86,7 @@ namespace Library.CQRS
 
         private static Action<Guid, IEvent> CreateAction(object obj, MethodInfo method)
         {
-            return (aggregateId, e) => method.Invoke(obj, new object[] { aggregateId, e });
+            return (aggregateId, e) => method.Invoke(obj, new object[] {aggregateId, e});
         }
 
         private static void LogPerformance(Stopwatch sw)

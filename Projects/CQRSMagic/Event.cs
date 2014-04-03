@@ -1,4 +1,4 @@
-namespace Library.CQRS
+namespace CQRSMagic
 {
     public class Event : IEvent
     {

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Library.CQRS.Support;
 
-namespace Library.CQRS
+namespace CQRSMagic
 {
     public class CommandHandlers : ICommandHandlers
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Library.CQRS
+namespace CQRSMagic
 {
     public class CommandHandler : ICommandHandler
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Library.CQRS.Exceptions
+namespace CQRSMagic.Exceptions
 {
     public class AggregateNotFoundException : Exception
     {

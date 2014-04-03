@@ -1,17 +1,17 @@
 ﻿using System;
-using Library.CQRS.Exceptions;
-using Library.CQRS.Specifications.Support;
+using CQRSMagic.Exceptions;
+using CQRSMagic.Specifications.Support;
 using TechTalk.SpecFlow;
 
-namespace Library.CQRS.Specifications.Features.Exceptions.Steps
+namespace CQRSMagic.Specifications.Features.Exceptions.Steps
 {
     [Binding]
     public class AggregateNotFoundExceptionSteps
     {
         private readonly ExceptionScenario ExceptionScenario;
 
-        private Type AggregateType;
         private Guid AggregateId;
+        private Type AggregateType;
 
         public AggregateNotFoundExceptionSteps(ExceptionScenario exceptionScenario)
         {

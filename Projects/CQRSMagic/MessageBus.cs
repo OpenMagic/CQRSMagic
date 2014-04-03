@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace Library.CQRS
+namespace CQRSMagic
 {
     public class MessageBus : IMessageBus
     {
@@ -27,10 +25,9 @@ namespace Library.CQRS
         /// </param>
         /// <returns>
         ///     <see cref="SendCommand" /> fires three tasks:
-        /// 
-        ///     - SendCommand: This task sends <paramref name="command"/> to its registered handler for processing. This task is the most likely you will wait for a result on.
-        ///     - 
-        /// 
+        ///     - SendCommand: This task sends <paramref name="command" /> to its registered handler for processing. This task is
+        ///     the most likely you will wait for a result on.
+        ///     -
         ///     Each of these tasks are returned via <see cref="ISendCommandTasks" />.
         /// </returns>
         public ISendCommandTasks SendCommand(ICommand command)

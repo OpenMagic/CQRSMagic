@@ -1,8 +1,7 @@
 ﻿using FluentAssertions;
-using Library.CQRS.Specifications.Support;
 using TechTalk.SpecFlow;
 
-namespace Library.CQRS.Specifications.Features.Exceptions.Steps
+namespace CQRSMagic.Specifications.Features.Exceptions.Steps
 {
     [Binding]
     public class ExceptionSteps

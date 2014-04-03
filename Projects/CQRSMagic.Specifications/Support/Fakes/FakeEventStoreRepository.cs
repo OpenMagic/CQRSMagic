@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using OpenMagic.Extensions.Collections.Generic;
 
-namespace Library.CQRS.Specifications.Support.Fakes
+namespace CQRSMagic.Specifications.Support.Fakes
 {
     public class FakeEventStoreRepository : IEventStoreRepository
     {
@@ -59,6 +59,5 @@ namespace Library.CQRS.Specifications.Support.Fakes
                 events.ForEach(e => Events.Add(e));
             }
         }
-
     }
 }

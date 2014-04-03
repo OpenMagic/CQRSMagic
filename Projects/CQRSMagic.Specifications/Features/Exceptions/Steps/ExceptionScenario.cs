@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Library.CQRS.Specifications.Features.Exceptions.Steps
+namespace CQRSMagic.Specifications.Features.Exceptions.Steps
 {
     public class ExceptionScenario
     {

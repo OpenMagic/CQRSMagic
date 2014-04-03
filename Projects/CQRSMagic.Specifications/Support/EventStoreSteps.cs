@@ -1,6 +1,6 @@
 ﻿using TechTalk.SpecFlow;
 
-namespace Library.CQRS.Specifications.Support
+namespace CQRSMagic.Specifications.Support
 {
     [Binding]
     public class ToDoSteps

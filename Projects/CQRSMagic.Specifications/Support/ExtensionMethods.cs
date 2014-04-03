@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Library.CQRS.Specifications.Support
+namespace CQRSMagic.Specifications.Support
 {
     internal static class ExtensionMethods
     {

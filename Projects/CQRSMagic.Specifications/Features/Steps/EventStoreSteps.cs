@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using Library.CQRS.Exceptions;
-using Library.CQRS.Specifications.Support.Fakes;
+using CQRSMagic.Exceptions;
+using CQRSMagic.Specifications.Support.Fakes;
 using TechTalk.SpecFlow;
 
-namespace Library.CQRS.Specifications.Features.Steps
+namespace CQRSMagic.Specifications.Features.Steps
 {
     [Binding]
     public class EventStoreSteps
@@ -16,11 +16,11 @@ namespace Library.CQRS.Specifications.Features.Steps
 
         private Guid AggregateId;
         private AggregateNotFoundException AggregateNotFoundException;
+        private EventsNotFoundException EventsNotFoundException;
         private IList<SimpleFakeEvent> ExistingEvents;
         private IList<SimpleFakeEvent> NewEvents;
-        private SimpleFakeAggregate SimpleFakeAggregate;
-        private EventsNotFoundException EventsNotFoundException;
         private IEvent[] RetrievedEvents;
+        private SimpleFakeAggregate SimpleFakeAggregate;
 
         public EventStoreSteps(IEventStore eventStore, FakeEventStoreRepository repository)
         {

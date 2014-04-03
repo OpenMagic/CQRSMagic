@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Library.CQRS.Support
+namespace CQRSMagic.Support
 {
     public static class ExtensionMethods
     {

@@ -1,6 +1,4 @@
-﻿using Library.CQRS.Support;
-
-namespace Library.CQRS
+﻿namespace CQRSMagic
 {
     public interface ICommandHandlers
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Library.CQRS.Exceptions;
+using CQRSMagic.Exceptions;
 
-namespace Library.CQRS
+namespace CQRSMagic
 {
     public class EventStore : IEventStore
     {

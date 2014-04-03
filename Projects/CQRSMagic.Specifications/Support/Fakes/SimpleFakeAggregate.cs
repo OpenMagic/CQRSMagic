@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Library.CQRS.Specifications.Support.Fakes
+namespace CQRSMagic.Specifications.Support.Fakes
 {
     internal class SimpleFakeAggregate : Aggregate, IHandleEvent<SimpleFakeEvent>
     {

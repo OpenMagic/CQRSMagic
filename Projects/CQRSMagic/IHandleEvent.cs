@@ -1,4 +1,4 @@
-namespace Library.CQRS
+namespace CQRSMagic
 {
     public interface IHandleEvent<in TEvent>
     {
