@@ -1,12 +1,26 @@
 ﻿using System;
+using CQRSMagic.Specifications.Support.Fakes;
 
 namespace CQRSMagic.Specifications.Support
 {
     internal static class ExtensionMethods
     {
-        internal static Type GetTypeFromName(this string aggregateType)
+        internal static Type GetTypeFromName(this string typeName)
         {
-            return Type.GetType("Library.CQRS.Specifications.Support.Fakes." + aggregateType);
+            var type = Type.GetType(string.Format("{0}.{1}", GetFakesNamespace(), typeName));
+
+            if (type == null)
+            {
+               throw new Exception(string.Format("Could not find {0} type.", typeName));
+            }
+
+            return type;
+        }
+
+        private static string GetFakesNamespace()
+        {
+            var anyFakeType = typeof(FakeEventStoreRepository);
+            return anyFakeType.Namespace;
         }
     }
 }
