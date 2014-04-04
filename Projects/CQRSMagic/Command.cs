@@ -2,9 +2,9 @@
 
 namespace CQRSMagic
 {
-    public class Command : ICommand
+    public abstract class Command : ICommand
     {
-        public Command(Guid aggregateId)
+        protected Command(Guid aggregateId)
         {
             AggregateId = aggregateId;
         }

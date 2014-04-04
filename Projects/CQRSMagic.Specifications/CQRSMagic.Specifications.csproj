@@ -73,6 +73,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AggregateCommandHandlers.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\Command.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Command.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\EventStore.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -92,7 +97,9 @@
     <Compile Include="Features\Exceptions\Steps\AggregateNotFoundExceptionSteps.cs" />
     <Compile Include="Features\Exceptions\Steps\ExceptionScenario.cs" />
     <Compile Include="Features\Steps\AggregateCommandHandlersSteps.cs" />
+    <Compile Include="Features\Steps\CommandSteps.cs" />
     <Compile Include="Features\Steps\EventStoreSteps.cs" />
+    <Compile Include="Support\Fakes\FakeCommand.cs" />
     <Compile Include="Support\Fakes\FakeAggregate.cs" />
     <Compile Include="Support\Fakes\FakeAggregateCommandHandlers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -112,6 +119,10 @@
     <None Include="Features\AggregateCommandHandlers.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AggregateCommandHandlers.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Command.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Command.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\EventStore.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
