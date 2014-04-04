@@ -2,9 +2,9 @@
 
 namespace CQRSMagic
 {
-    public class AggregateCommandHandlers<TAggregate> : IAggregateCommandHandlers where TAggregate : IAggregate, new()
+    public abstract class AggregateCommandHandlers<TAggregate> : IAggregateCommandHandlers where TAggregate : IAggregate, new()
     {
-        public AggregateCommandHandlers()
+        protected AggregateCommandHandlers()
         {
             AggregateType = typeof(TAggregate);
         }
