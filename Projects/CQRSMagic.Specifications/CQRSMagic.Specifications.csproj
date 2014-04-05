@@ -46,6 +46,9 @@
     <Reference Include="Common.Logging.Core">
       <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
+    <Reference Include="FakeItEasy">
+      <HintPath>..\..\packages\FakeItEasy.1.18.0\lib\net40\FakeItEasy.dll</HintPath>
+    </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\..\packages\FluentAssertions.2.2.0.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
@@ -54,6 +57,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml.Serialization" />
@@ -99,6 +103,19 @@
     <Compile Include="Features\Steps\AggregateCommandHandlersSteps.cs" />
     <Compile Include="Features\Steps\CommandSteps.cs" />
     <Compile Include="Features\Steps\EventStoreSteps.cs" />
+    <Compile Include="Features\Support\CommandHandler.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommandHandler.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Support\StaticReflection.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StaticReflection.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Support\Steps\CommandHandlerSteps.cs" />
+    <Compile Include="Support\Fakes\FakeEventStore.cs" />
+    <Compile Include="Features\Support\Steps\StaticReflectionSteps.cs" />
     <Compile Include="Support\Fakes\FakeCommand.cs" />
     <Compile Include="Support\Fakes\FakeAggregate.cs" />
     <Compile Include="Support\Fakes\FakeAggregateCommandHandlers.cs" />
@@ -135,6 +152,14 @@
     <None Include="Features\Exceptions\AggregateNotFoundException.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AggregateNotFoundException.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Support\CommandHandler.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CommandHandler.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Support\StaticReflection.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StaticReflection.feature.cs</LastGenOutput>
     </None>
     <None Include="Packages.config" />
   </ItemGroup>

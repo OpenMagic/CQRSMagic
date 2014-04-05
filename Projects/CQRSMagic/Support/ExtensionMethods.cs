@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace CQRSMagic.Support
 {
@@ -7,6 +8,8 @@ namespace CQRSMagic.Support
     {
         public static bool Implements(this Type type, Type implementType)
         {
+            // todo: move to OpenMagic?
+
             if (type.IsGenericType || type.IsAbstract)
             {
                 return false;
@@ -14,8 +17,10 @@ namespace CQRSMagic.Support
             return type.GetInterfaces().Any(@interface => @interface.Is(implementType));
         }
 
-        public static bool Is(this Type type, Type isType)
+        private static bool Is(this Type type, Type isType)
         {
+            // todo: move to OpenMagic?
+
             return type.IsGenericType && type.GetGenericTypeDefinition() == isType;
         }
     }

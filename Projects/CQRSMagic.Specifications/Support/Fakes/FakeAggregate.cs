@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace CQRSMagic.Specifications.Support.Fakes
 {
-    internal class FakeAggregate : IAggregate
+    public class FakeAggregate : IAggregate
     {
         public Task SendEvents(IEnumerable<IEvent> events)
         {
