@@ -29,28 +29,43 @@ namespace CQRS.Example.CQRS
 
         public void RegisterHandler<TCommandHandler, TCommand>() where TCommand : class, ICommand
         {
-            Handlers.Add(typeof(TCommand), Handler<TCommandHandler, TCommand>());
+            RegisterHandler(typeof(TCommandHandler), typeof(ICommandHandler<TCommand>), typeof(TCommand));
         }
 
-        private Func<ICommand, Task<IEnumerable<IEvent>>> Handler<TCommandHandler, TCommand>() where TCommand : class, ICommand
+        public Task RegisterHandlers(IEnumerable<Type> types)
         {
-            var handleMethod = GetHandleMethod<TCommand>();
+            return Task.Factory.StartNew(() => RegisterHandlersSync(types));
+        }
+
+        private void RegisterHandlersSync(IEnumerable<Type> types)
+        {
+            var commandHandlers =
+                from type in types
+                where type.IsClass && !type.IsAbstract
+                from @interface in type.GetInterfaces()
+                where @interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(ICommandHandler<>)
+                select new { CommandHandlerClass = type, CommandHandlerInterface = @interface, CommandType = @interface.GetGenericArguments().Single() };
+
+            Parallel.ForEach(commandHandlers, x => RegisterHandler(x.CommandHandlerClass, x.CommandHandlerInterface, x.CommandType));
+        }
+
+        private void RegisterHandler(Type commandHandlerClass, Type commandHandlerInterface, Type commandType)
+        {
+            Handlers.Add(commandType, CreateHandlerFunc(commandHandlerClass, commandHandlerInterface, commandType));
+        }
+
+        private Func<ICommand, Task<IEnumerable<IEvent>>> CreateHandlerFunc(Type commandHandlerClass, Type commandHandlerInterface, Type commandType)
+        {
+            // assuming that IHandle<TCommand> has only 1 method.
+            var handleMethod = commandHandlerInterface.GetMethods().Single();
 
             return command =>
             {
-                var obj = Container.GetInstance<TCommandHandler>();
+                var obj = Container.GetInstance(commandHandlerClass);
                 var events = handleMethod.Invoke(obj, new object[] {command});
 
                 return (Task<IEnumerable<IEvent>>) events;
             };
         }
-
-        private static MethodInfo GetHandleMethod<TCommand>() where TCommand : class, ICommand
-        {
-            var handler = typeof(Commands.ICommandHandler<TCommand>);
-
-            // assuming that IHandle<TCommand> has only 1 method.
-            return handler.GetMethods().Single();
-        }
-    }
+   }
 }

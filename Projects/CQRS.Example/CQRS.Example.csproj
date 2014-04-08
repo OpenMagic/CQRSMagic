@@ -49,7 +49,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configure\CommandHandlerConfiguration.cs" />
     <Compile Include="Configure\ContainerConfiguration.cs" />
     <Compile Include="Configure\EventPublisherConfiguration.cs" />
     <Compile Include="Support\TinyIoCServiceLocator.cs" />

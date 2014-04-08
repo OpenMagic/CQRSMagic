@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CQRS.Example.Configure;
 using CQRS.Example.CQRS;
 using CQRS.Example.Customers.Commands;
@@ -13,9 +14,14 @@ namespace CQRS.Example
         {
             try
             {
+                var types = typeof(Program).Assembly.GetTypes();
                 var container = ContainerConfiguration.Configure();
 
-                CommandHandlerConfiguration.RegisterCommandHandlers(container.GetInstance<ICommandSender>());
+                Task.WaitAll(new[]
+                {
+                    container.GetInstance<ICommandSender>().RegisterHandlers(types)
+                });
+
                 EventPublisherConfiguration.RegisterEventHandlers(container.GetInstance<IEventPublisher>());
 
                 var messageBus = container.GetInstance<IMessageBus>();
