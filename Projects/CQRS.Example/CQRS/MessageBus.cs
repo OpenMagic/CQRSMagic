@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Example.CQRS.Commands;
 using CQRS.Example.CQRS.Events;
-using CQRS.Example.Customers.Commands;
-using CQRS.Example.Customers.Domain;
+using CQRS.Example.CQRS.EventStore;
 
 namespace CQRS.Example.CQRS
 {
     public class MessageBus : IMessageBus
     {
-        private readonly IEventStore EventStore;
         private readonly ICommandSender CommandSender;
+        private readonly IEventStore EventStore;
         private readonly IEventPublisher EventPublisher;
 
-        public MessageBus(IEventStore eventStore, ICommandSender commandSender, IEventPublisher eventPublisher)
+        public MessageBus(ICommandSender commandSender, IEventStore eventStore, IEventPublisher eventPublisher)
         {
-            EventStore = eventStore;
             CommandSender = commandSender;
+            EventStore = eventStore;
             EventPublisher = eventPublisher;
         }
 

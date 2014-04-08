@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using CQRS.Example.CQRS.Events;
 using Microsoft.Practices.ServiceLocation;
 
-namespace CQRS.Example.CQRS
+namespace CQRS.Example.CQRS.Events
 {
     public class EventPublisher : IEventPublisher
     {

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using CQRS.Example.CQRS;
+using CQRS.Example.CQRS.Events;
 using CQRS.Example.Customers.Commands;
 using CQRS.Example.Customers.Domain;
 using CQRS.Example.Customers.Events;

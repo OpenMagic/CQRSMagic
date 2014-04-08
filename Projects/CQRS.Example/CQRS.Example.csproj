@@ -58,20 +58,20 @@
     <Compile Include="CQRS\Commands\ICommand.cs" />
     <Compile Include="CQRS\Commands\ICommandSender.cs" />
     <Compile Include="CQRS\Events\IEvent.cs" />
-    <Compile Include="CQRS\IEventPublisher.cs" />
-    <Compile Include="CQRS\IEventStore.cs" />
+    <Compile Include="CQRS\Events\IEventPublisher.cs" />
+    <Compile Include="CQRS\EventStore\IEventStore.cs" />
     <Compile Include="CQRS\Events\IEventHandler.cs" />
     <Compile Include="CQRS\Persistence\EventRepository.cs" />
-    <Compile Include="CQRS\SendCommandTasks.cs" />
+    <Compile Include="CQRS\Commands\SendCommandTasks.cs" />
     <Compile Include="Customers\Domain\CustomerEventHandler.cs" />
     <Compile Include="Customers\Domain\CustomerCommandHandler.cs" />
-    <Compile Include="CQRS\ISendCommandTasks.cs" />
+    <Compile Include="CQRS\Commands\ISendCommandTasks.cs" />
     <Compile Include="Customers\Domain\Customer.cs" />
-    <Compile Include="CQRS\EventStore.cs" />
-    <Compile Include="CQRS\IEventRepository.cs" />
+    <Compile Include="CQRS\EventStore\EventStore.cs" />
+    <Compile Include="CQRS\EventStore\IEventRepository.cs" />
     <Compile Include="Customers\Events\RenamedCustomer.cs" />
     <Compile Include="Customers\Events\CreatedCustomer.cs" />
-    <Compile Include="CQRS\EventPublisher.cs" />
+    <Compile Include="CQRS\Events\EventPublisher.cs" />
     <Compile Include="Customers\Persistence\CustomerRepository.cs" />
     <Compile Include="Customers\Commands\RenameCustomer.cs" />
     <Compile Include="CQRS\IMessageBus.cs" />
@@ -91,9 +91,7 @@
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CQRS\Support\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

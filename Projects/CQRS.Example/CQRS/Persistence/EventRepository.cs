@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CQRS.Example.CQRS.Events;
+using CQRS.Example.CQRS.EventStore;
 
 namespace CQRS.Example.CQRS.Persistence
 {
