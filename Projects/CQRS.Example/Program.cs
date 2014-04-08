@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CQRS.Example.Configure;
 using CQRS.Example.CQRS;
+using CQRS.Example.CQRS.Commands;
 using CQRS.Example.Customers.Commands;
 using CQRS.Example.Customers.Domain;
 using CQRS.Example.Support;
@@ -19,8 +20,9 @@ namespace CQRS.Example
 
                 Task.WaitAll(new[]
                 {
-                    container.GetInstance<ICommandSender>().RegisterHandlers(types)
+                    container.GetInstance<ICommandHandlers>().RegisterHandlers(types)
                 });
+
 
                 EventPublisherConfiguration.RegisterEventHandlers(container.GetInstance<IEventPublisher>());
 

@@ -1,16 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CQRS.Example.CQRS.Commands;
 using CQRS.Example.CQRS.Events;
 
-namespace CQRS.Example.CQRS
+namespace CQRS.Example.CQRS.Commands
 {
     /// <summary>
-    /// todo: document after splitting ICommandSender and ICommandHandlers.
+    ///     Represents a collection of registered <see cref="ICommandHandler{TCommand}">command handlers</see>.
     /// </summary>
-    public interface ICommandSender
+    public interface ICommandHandlers
     {
+        /// <summary>
+        ///     Gets the registered <see cref="ICommandHandler{TCommand}">command handler</see> for
+        ///     <paramref name="commandType" />.
+        /// </summary>
+        /// <param name="commandType">
+        ///     Type of the command to get registered <see cref="ICommandHandler{TCommand}">command handler</see> for.
+        /// </param>
+        Func<ICommand, Task<IEnumerable<IEvent>>> GetHandler(Type commandType);
+
         /// <summary>
         ///     Registers a command handler.
         /// </summary>
@@ -32,16 +40,5 @@ namespace CQRS.Example.CQRS
         ///     A task.
         /// </returns>
         Task RegisterHandlers(IEnumerable<Type> types);
-
-        /// <summary>
-        ///     Sends the command to the registered handler.
-        /// </summary>
-        /// <param name="command">
-        ///     The command to send.
-        /// </param>
-        /// <returns>
-        ///     List of events raised by the command.
-        /// </returns>
-        Task<IEnumerable<IEvent>> SendCommand(ICommand command);
     }
 }
