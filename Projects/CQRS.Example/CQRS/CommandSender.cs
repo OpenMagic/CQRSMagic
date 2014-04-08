@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using CQRS.Example.CQRS.Commands;
 using CQRS.Example.CQRS.Events;
@@ -44,17 +43,17 @@ namespace CQRS.Example.CQRS
                 where type.IsClass && !type.IsAbstract
                 from @interface in type.GetInterfaces()
                 where @interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(ICommandHandler<>)
-                select new { CommandHandlerClass = type, CommandHandlerInterface = @interface, CommandType = @interface.GetGenericArguments().Single() };
+                select new {CommandHandlerClass = type, CommandHandlerInterface = @interface, CommandType = @interface.GetGenericArguments().Single()};
 
             Parallel.ForEach(commandHandlers, x => RegisterHandler(x.CommandHandlerClass, x.CommandHandlerInterface, x.CommandType));
         }
 
         private void RegisterHandler(Type commandHandlerClass, Type commandHandlerInterface, Type commandType)
         {
-            Handlers.Add(commandType, CreateHandlerFunc(commandHandlerClass, commandHandlerInterface, commandType));
+            Handlers.Add(commandType, CreateHandlerFunc(commandHandlerClass, commandHandlerInterface));
         }
 
-        private Func<ICommand, Task<IEnumerable<IEvent>>> CreateHandlerFunc(Type commandHandlerClass, Type commandHandlerInterface, Type commandType)
+        private Func<ICommand, Task<IEnumerable<IEvent>>> CreateHandlerFunc(Type commandHandlerClass, Type commandHandlerInterface)
         {
             // assuming that IHandle<TCommand> has only 1 method.
             var handleMethod = commandHandlerInterface.GetMethods().Single();
@@ -67,5 +66,5 @@ namespace CQRS.Example.CQRS
                 return (Task<IEnumerable<IEvent>>) events;
             };
         }
-   }
+    }
 }
