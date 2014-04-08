@@ -1,55 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.Practices.ServiceLocation;
 
 namespace CQRS.Example.CQRS.Events
 {
     public class EventPublisher : IEventPublisher
     {
-        private readonly IServiceLocator Container;
-        private readonly List<KeyValuePair<Type, Func<IEvent, Task>>> Handlers = new List<KeyValuePair<Type, Func<IEvent, Task>>>();
+        private readonly IEventHandlers EventHandlers;
 
-        public EventPublisher(IServiceLocator container)
+        public EventPublisher(IEventHandlers eventHandlers)
         {
-            Container = container;
+            EventHandlers = eventHandlers;
         }
 
         public IEnumerable<Task> PublishEvents(IEnumerable<IEvent> events)
         {
             return
                 from e in events
-                from handler in Handlers
-                where handler.Key == e.GetType()
-                select handler.Value(e);
-        }
-
-        public void RegisterHandler<TEventHandler, TEvent>() where TEvent : class, IEvent
-        {
-            Handlers.Add(new KeyValuePair<Type,Func<IEvent,Task>>(typeof(TEvent), Handler<TEventHandler, TEvent>()));
-        }
-
-        private Func<IEvent, Task> Handler<TEventHandler, TEvent>() where TEvent : class, IEvent
-        {
-            var handleMethod = GetHandleMethod<TEvent>();
-
-            return command =>
-            {
-                var obj = Container.GetInstance<TEventHandler>();
-                var task = handleMethod.Invoke(obj, new object[] { command });
-
-                return (Task)task;
-            };
-        }
-
-        private static MethodInfo GetHandleMethod<TEvent>() where TEvent : class, IEvent
-        {
-            var handler = typeof(IEventHandler<TEvent>);
-
-            // assuming that IHandle<TEvent> has only 1 method.
-            return handler.GetMethods().Single();
+                from handler in EventHandlers.GetHandlers(e.GetType())
+                select handler(e);
         }
     }
 }

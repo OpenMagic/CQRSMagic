@@ -6,6 +6,7 @@ using CQRS.Example.CQRS.Commands;
 using CQRS.Example.CQRS.Events;
 using CQRS.Example.Customers.Commands;
 using CQRS.Example.Customers.Domain;
+using CQRS.Example.Customers.Events;
 using CQRS.Example.Support;
 
 namespace CQRS.Example
@@ -24,8 +25,8 @@ namespace CQRS.Example
                     container.GetInstance<ICommandHandlers>().RegisterHandlers(types)
                 });
 
-
-                EventPublisherConfiguration.RegisterEventHandlers(container.GetInstance<IEventPublisher>());
+                container.GetInstance<IEventHandlers>().RegisterHandler<CustomerEventHandler, CreatedCustomer>();
+                container.GetInstance<IEventHandlers>().RegisterHandler<CustomerEventHandler, RenamedCustomer>();
 
                 var messageBus = container.GetInstance<IMessageBus>();
                 var customerRepository = container.GetInstance<ICustomerRepository>();

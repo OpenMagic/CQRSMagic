@@ -50,9 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configure\ContainerConfiguration.cs" />
-    <Compile Include="Configure\EventPublisherConfiguration.cs" />
     <Compile Include="CQRS\Commands\CommandHandlers.cs" />
     <Compile Include="CQRS\Commands\ICommandHandlers.cs" />
+    <Compile Include="CQRS\Events\EventHandlers.cs" />
+    <Compile Include="CQRS\Events\IEventHandlers.cs" />
     <Compile Include="Support\TinyIoCServiceLocator.cs" />
     <Compile Include="CQRS\Commands\CommandSender.cs" />
     <Compile Include="CQRS\Commands\ICommand.cs" />
