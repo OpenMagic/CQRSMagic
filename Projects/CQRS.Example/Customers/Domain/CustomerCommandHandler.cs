@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Example.CQRS.Commands;
+using CQRS.Example.CQRS.Common;
 using CQRS.Example.CQRS.Events;
 using CQRS.Example.Customers.Commands;
 using CQRS.Example.Customers.Events;

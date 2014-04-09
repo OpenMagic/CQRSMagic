@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define AddAllHandlers
+
+using System;
 using System.Threading.Tasks;
 using CQRS.Example.Configure;
 using CQRS.Example.CQRS;
@@ -7,6 +9,10 @@ using CQRS.Example.CQRS.Events;
 using CQRS.Example.Customers.Commands;
 using CQRS.Example.Customers.Domain;
 using CQRS.Example.Support;
+
+#if !AddAllHandlers
+    using CQRS.Example.Customers.Events;
+#endif
 
 namespace CQRS.Example
 {
@@ -19,15 +25,25 @@ namespace CQRS.Example
                 var types = typeof(Program).Assembly.GetTypes();
                 var container = ContainerConfiguration.Configure();
 
+#if AddAllHandlers
+                // Let CQRS register all handlers.
                 Task.WaitAll(new[]
-                {
-                    container.GetInstance<ICommandHandlers>().RegisterHandlers(types),
-                    container.GetInstance<IEventHandlers>().RegisterHandlers(types)
-                });
+                    {
+                        container.GetInstance<ICommandHandlers>().RegisterHandlers(types),
+                        container.GetInstance<IEventHandlers>().RegisterHandlers(types)
+                    });
+#else
+                // or register individual handlers.
+                container.GetInstance<ICommandHandlers>().RegisterHandler<CustomerCommandHandler, CreateCustomer>();
+                container.GetInstance<ICommandHandlers>().RegisterHandler<CustomerCommandHandler, RenameCustomer>();
+
+                container.GetInstance<IEventHandlers>().RegisterHandler<CustomerEventHandler, CreatedCustomer>();
+                container.GetInstance<IEventHandlers>().RegisterHandler<CustomerEventHandler, RenamedCustomer>();
+#endif
 
                 var messageBus = container.GetInstance<IMessageBus>();
                 var customerRepository = container.GetInstance<ICustomerRepository>();
-                
+
                 Console.WriteLine("Adding two customers...");
 
                 messageBus.SendCommand(new CreateCustomer(Guid.NewGuid(), "Tim Murphy")).WaitAll();

@@ -7,7 +7,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace CQRS.Example.CQRS.Commands
 {
-    public class CommandHandlers : MessageHandlersBase<ICommand, Task<IEnumerable<IEvent>>>, ICommandHandlers
+    public class CommandHandlers : MessageHandlersBase<ICommandHandler<ICommand>, ICommand, Task<IEnumerable<IEvent>>>, ICommandHandlers
     {
         public CommandHandlers(IServiceLocator container)
             : base(container)
@@ -24,16 +24,6 @@ namespace CQRS.Example.CQRS.Commands
             }
 
             return commandHandlerFunc;
-        }
-
-        protected override Type GetMessageHandlerType()
-        {
-            return typeof(ICommandHandler<>);
-        }
-
-        protected override Type GetMessageHandlerType<TMessage>()
-        {
-            return typeof(ICommandHandler<TMessage>);
         }
     }
 }

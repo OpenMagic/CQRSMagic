@@ -7,7 +7,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace CQRS.Example.CQRS.Events
 {
-    public class EventHandlers : MessageHandlersBase<IEvent, Task>, IEventHandlers
+    public class EventHandlers : MessageHandlersBase<IEventHandler<IEvent>, IEvent, Task>, IEventHandlers
     {
         public EventHandlers(IServiceLocator container)
             : base(container)
@@ -20,16 +20,6 @@ namespace CQRS.Example.CQRS.Events
                 from keyValuePair in Handlers
                 where keyValuePair.Key == eventType
                 select keyValuePair.Value;
-        }
-
-        protected override Type GetMessageHandlerType()
-        {
-            return typeof(IEventHandler<>);
-        }
-
-        protected override Type GetMessageHandlerType<TMessage>()
-        {
-            return typeof(IEventHandler<TMessage>);
         }
     }
 }
