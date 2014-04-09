@@ -9,13 +9,13 @@ namespace CQRS.Example.CQRS.Common
         /// <summary>
         ///     Registers a message handler.
         /// </summary>
-        /// <typeparam name="TMessageHandler">
+        /// <typeparam name="TMessageHandlerClass">
         ///     The type the that implements message handler.
         /// </typeparam>
         /// <typeparam name="TMessage">
         ///     The type of message that is handled.
         /// </typeparam>
-        void RegisterHandler<TMessageHandler, TMessage>() where TMessage : class, TMessageBase;
+        void RegisterHandler<TMessageHandlerClass, TMessage>() where TMessage : class, TMessageBase;
 
         /// <summary>
         ///     Searches for, and registers, all message handlers in <paramref name="types" />.
