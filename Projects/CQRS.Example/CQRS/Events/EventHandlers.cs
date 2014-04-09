@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Practices.ServiceLocation;
 
@@ -28,28 +27,29 @@ namespace CQRS.Example.CQRS.Events
 
         public void RegisterHandler<TEventHandler, TEvent>() where TEvent : class, IEvent
         {
-            Handlers.Add(new KeyValuePair<Type, Func<IEvent, Task>>(typeof(TEvent), Handler<TEventHandler, TEvent>()));
+            RegisterHandler(typeof(TEventHandler), typeof(IEventHandler<TEvent>), typeof(TEvent));
         }
 
-        private Func<IEvent, Task> Handler<TEventHandler, TEvent>() where TEvent : class, IEvent
+        private void RegisterHandler(Type eventHandlerClass, Type eventHandlerInterface, Type eventType)
         {
-            var handleMethod = GetHandleMethod<TEvent>();
+            var eventHandlerFunc = CreateEventHandlerFunc(eventHandlerClass, eventHandlerInterface);
 
-            return command =>
+            Handlers.Add(new KeyValuePair<Type, Func<IEvent, Task>>(eventType, eventHandlerFunc));
+        }
+
+        private Func<IEvent, Task> CreateEventHandlerFunc(Type eventHandlerClass, Type eventHandlerInterface)
+        {
+            // todo: assuming that IEventHandler<TEvent> has only 1 method.
+            var handleMethod = eventHandlerInterface.GetMethods().Single();
+
+            return @event =>
             {
-                var obj = Container.GetInstance<TEventHandler>();
-                var task = handleMethod.Invoke(obj, new object[] { command });
+                var obj = Container.GetInstance(eventHandlerClass);
+                var result = handleMethod.Invoke(obj, new object[] {@event});
+                var task = (Task) result;
 
-                return (Task)task;
+                return task;
             };
-        }
-
-        private static MethodInfo GetHandleMethod<TEvent>() where TEvent : class, IEvent
-        {
-            var handler = typeof(IEventHandler<TEvent>);
-
-            // assuming that IHandle<TEvent> has only 1 method.
-            return handler.GetMethods().Single();
         }
     }
 }

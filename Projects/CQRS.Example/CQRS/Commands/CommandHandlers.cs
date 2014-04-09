@@ -65,7 +65,7 @@ namespace CQRS.Example.CQRS.Commands
 
         private Func<ICommand, Task<IEnumerable<IEvent>>> CreateCommandHandlerFunc(Type commandHandlerClass, Type commandHandlerInterface)
         {
-            // assuming that ICommandHandler<TCommand> has only 1 method.
+            // todo: assuming that ICommandHandler<TCommand> has only 1 method.
             var handleMethod = commandHandlerInterface.GetMethods().Single();
 
             return command =>
