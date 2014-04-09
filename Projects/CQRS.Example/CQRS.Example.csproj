@@ -52,6 +52,7 @@
     <Compile Include="Configure\ContainerConfiguration.cs" />
     <Compile Include="CQRS\Commands\CommandHandlers.cs" />
     <Compile Include="CQRS\Commands\ICommandHandlers.cs" />
+    <Compile Include="CQRS\Common\IMessageHandlers.cs" />
     <Compile Include="CQRS\Events\EventHandlers.cs" />
     <Compile Include="CQRS\Events\IEventHandlers.cs" />
     <Compile Include="Support\TinyIoCServiceLocator.cs" />
