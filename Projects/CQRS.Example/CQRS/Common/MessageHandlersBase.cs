@@ -6,13 +6,15 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace CQRS.Example.CQRS.Common
 {
-    public abstract class MessageHandlersBase<TMessageBase, TReturn> : IMessageHandlers<TMessageBase>
+    public abstract class MessageHandlersBase<TMessageBase, TMessageReturn> : IMessageHandlers<TMessageBase>
     {
         private readonly IServiceLocator Container;
+        protected readonly Dictionary<Type, Func<TMessageBase, TMessageReturn>> Handlers;
 
         protected MessageHandlersBase(IServiceLocator container)
         {
             Container = container;
+            Handlers = new Dictionary<Type, Func<TMessageBase, TMessageReturn>>();
         }
 
         public void RegisterHandler<TMessageHandlerClass, TMessage>() where TMessage : class, TMessageBase
@@ -25,8 +27,6 @@ namespace CQRS.Example.CQRS.Common
             return Task.Factory.StartNew(() => RegisterHandlersSync(types));
         }
 
-        protected abstract void AddHandler(Type messageType, Func<TMessageBase, TReturn> messageHandlerFunc);
-
         protected abstract Type GetMessageHandlerType();
 
         protected abstract Type GetMessageHandlerType<TMessage>() where TMessage : TMessageBase;
@@ -35,7 +35,7 @@ namespace CQRS.Example.CQRS.Common
         {
             var messageHandlerFunc = CreateMessageHandlerFunc(messageHandlerClass, messageHandlerInterface);
 
-            AddHandler(messageType, messageHandlerFunc);
+            Handlers.Add(messageType, messageHandlerFunc);
         }
 
         private void RegisterHandlersSync(IEnumerable<Type> types)
@@ -54,7 +54,7 @@ namespace CQRS.Example.CQRS.Common
             }
         }
 
-        private Func<TMessageBase, TReturn> CreateMessageHandlerFunc(Type messageHandlerClass, Type messageHandlerInterface)
+        private Func<TMessageBase, TMessageReturn> CreateMessageHandlerFunc(Type messageHandlerClass, Type messageHandlerInterface)
         {
             // todo: assuming that IMessageHandler<TMessage> has only 1 method.
             var handleMethod = messageHandlerInterface.GetMethods().Single();
@@ -63,7 +63,7 @@ namespace CQRS.Example.CQRS.Common
             {
                 var obj = Container.GetInstance(messageHandlerClass);
                 var result = handleMethod.Invoke(obj, new object[] {@message});
-                var cast = (TReturn) result;
+                var cast = (TMessageReturn) result;
 
                 return cast;
             };

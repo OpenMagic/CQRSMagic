@@ -9,12 +9,9 @@ namespace CQRS.Example.CQRS.Commands
 {
     public class CommandHandlers : MessageHandlersBase<ICommand, Task<IEnumerable<IEvent>>>, ICommandHandlers
     {
-        private readonly Dictionary<Type, Func<ICommand, Task<IEnumerable<IEvent>>>> Handlers;
-
         public CommandHandlers(IServiceLocator container)
             : base(container)
         {
-            Handlers = new Dictionary<Type, Func<ICommand, Task<IEnumerable<IEvent>>>>();
         }
 
         public Func<ICommand, Task<IEnumerable<IEvent>>> GetHandler(Type commandType)
@@ -27,11 +24,6 @@ namespace CQRS.Example.CQRS.Commands
             }
 
             return commandHandlerFunc;
-        }
-
-        protected override void AddHandler(Type messageType, Func<ICommand, Task<IEnumerable<IEvent>>> messageHandlerFunc)
-        {
-            Handlers.Add(messageType, messageHandlerFunc);
         }
 
         protected override Type GetMessageHandlerType()
