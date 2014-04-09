@@ -31,14 +31,11 @@ namespace CQRS.Example.CQRS.Commands
         void RegisterHandler<TCommandHandler, TCommand>() where TCommand : class, ICommand;
 
         /// <summary>
-        ///     Searches for, and registers, all command handles in <paramref name="types" />.
+        ///     Searches for, and registers, all command handlers in <paramref name="types" />.
         /// </summary>
         /// <param name="types">
         ///     The types to search for command handlers.
         /// </param>
-        /// <returns>
-        ///     A task.
-        /// </returns>
         Task RegisterHandlers(IEnumerable<Type> types);
     }
 }

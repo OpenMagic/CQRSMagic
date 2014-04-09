@@ -30,6 +30,27 @@ namespace CQRS.Example.CQRS.Events
             RegisterHandler(typeof(TEventHandler), typeof(IEventHandler<TEvent>), typeof(TEvent));
         }
 
+        public Task RegisterHandlers(IEnumerable<Type> types)
+        {
+            return Task.Factory.StartNew(() => RegisterHandlersSync(types));
+        }
+
+        private void RegisterHandlersSync(IEnumerable<Type> types)
+        {
+            var eventHandlers =
+                from type in types
+                where type.IsClass && !type.IsAbstract
+                from @interface in type.GetInterfaces()
+                where @interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(IEventHandler<>)
+                select new { EventHandlerClass = type, EventHandlerInterface = @interface, EventType = @interface.GetGenericArguments().Single() };
+
+            // 9 Apr 2014, Visual Studio 2013. Tempting to use Parallel.ForEach but it seemed to be the cause of NullReferenceException being thrown by RegisterHandler.
+            foreach (var eventHandler in eventHandlers)
+            {
+                RegisterHandler(eventHandler.EventHandlerClass, eventHandler.EventHandlerInterface, eventHandler.EventType);
+            }
+        }
+
         private void RegisterHandler(Type eventHandlerClass, Type eventHandlerInterface, Type eventType)
         {
             var eventHandlerFunc = CreateEventHandlerFunc(eventHandlerClass, eventHandlerInterface);

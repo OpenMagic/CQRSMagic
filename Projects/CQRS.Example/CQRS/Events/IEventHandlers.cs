@@ -28,5 +28,13 @@ namespace CQRS.Example.CQRS.Events
         ///     The type of event that is handled.
         /// </typeparam>
         void RegisterHandler<TEventHandler, TEvent>() where TEvent : class, IEvent;
+
+        /// <summary>
+        ///     Searches for, and registers, all event handlers in <paramref name="types" />.
+        /// </summary>
+        /// <param name="types">
+        ///     The types to search for event handlers.
+        /// </param>
+        Task RegisterHandlers(IEnumerable<Type> types);
     }
 }
