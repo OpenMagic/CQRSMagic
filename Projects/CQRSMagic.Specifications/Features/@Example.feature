@@ -7,5 +7,6 @@ Scenario: Add contact
 	Given contact's name is Tim
 	And their email address is tim@example.org
 	When I send AddContact command
-	Then ContactAdded event is added to the event store
-	And contact is added to Contacts table
+	Then ContactAdded event is added to event store
+	And ContactAggregate can be retrieved from event store
+	And ContactQueryModel is added to Contacts table
