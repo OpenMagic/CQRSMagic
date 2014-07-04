@@ -1,9 +1,17 @@
 ﻿using System.Linq;
+using CommonServiceLocator.NinjectAdapter.Unofficial;
+using CQRSMagic.Commands;
+using CQRSMagic.Events;
+using CQRSMagic.Events.Publishing;
+using CQRSMagic.Specifications.Steps.Support;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
 using ExampleDomain.Contacts.Queries;
+using ExampleDomain.Contacts.Queries.Repositories;
 using FluentAssertions;
+using Microsoft.Practices.ServiceLocation;
+using Ninject;
 using TechTalk.SpecFlow;
 
 namespace CQRSMagic.Specifications.Steps
@@ -14,16 +22,36 @@ namespace CQRSMagic.Specifications.Steps
         private AddContact AddContactCommand;
         private string ContactEmailAddress;
         private string ContactName;
-        private IMessageBus MessageBus;
-        private IEventStore EventStore;
-        private ContactQuery ContactQuery;
+        private readonly IMessageBus MessageBus;
+        private readonly IEventStore EventStore;
+        private readonly ContactQuery ContactQuery;
         private IEvent[] Events;
+        private readonly IEventStoreRepository EventStoreRepository;
 
         public ExampleSteps()
         {
-            EventStore = new EventStore();
-            MessageBus = new MessageBus(EventStore);
-            ContactQuery = new ContactQuery();
+            var kernel = new StandardKernel();
+
+            kernel.Bind<IContactRepository>().ToConstant(new InMemoryContactRepository());
+
+            ServiceLocator.SetLocatorProvider(() => new NinjectServiceLocator(kernel));
+
+            var domainAssemblies = new[] {typeof(AddContact).Assembly};
+            var contactRepository = kernel.Get<IContactRepository>();
+
+            EventStoreRepository = new InMemoryEventStoreRepository();
+            EventStore = new EventStore(EventStoreRepository);
+
+            var commandHandlers = new CommandHandlers(domainAssemblies);
+            var commandBus = new CommandBus(commandHandlers);
+
+            var eventBus = new EventBus(EventStore);
+
+            var subscriptionHandlers = new SubscriptionHandlers(domainAssemblies);
+            var eventPublisher = new EventPublisher(subscriptionHandlers);
+
+            MessageBus = new MessageBus(commandBus, eventBus, eventPublisher);
+            ContactQuery = new ContactQuery(contactRepository);
         }
 
         [Given(@"contact\'s name is (.*)")]
@@ -47,7 +75,7 @@ namespace CQRSMagic.Specifications.Steps
                 EmailAddress = ContactEmailAddress
             };
 
-            Events = MessageBus.Send(AddContactCommand).ToArray();
+            Events = MessageBus.SendCommand(AddContactCommand).ToArray();
         }
 
         [Then(@"ContactAdded event is added to event store")]
@@ -55,6 +83,10 @@ namespace CQRSMagic.Specifications.Steps
         {
             Events.Length.Should().Be(1);
             Events[0].GetType().Should().Be(typeof(ContactAdded));
+
+            var storedEvents = EventStoreRepository.GetEvents<ContactAggregate>(AddContactCommand.AggregateId);
+
+            storedEvents.ShouldBeEquivalentTo(Events);
         }
 
         [Then(@"ContactAggregate can be retrieved from event store")]

@@ -1,21 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using OpenMagic.Exceptions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using CQRSMagic.Commands;
+using CQRSMagic.Events;
+using CQRSMagic.Events.Publishing;
 
 namespace CQRSMagic
 {
     public class MessageBus : IMessageBus
     {
-        private readonly IEventStore EventStore;
+        private readonly ICommandBus CommandBus;
+        private readonly IEventBus EventBus;
+        private readonly IEventPublisher EventPublisher;
 
-        public MessageBus(IEventStore eventStore)
+        public MessageBus(ICommandBus commandBus, IEventBus eventBus, IEventPublisher eventPublisher)
         {
-            EventStore = eventStore;
+            // todo: unit tests
+            CommandBus = commandBus;
+            EventBus = eventBus;
+            EventPublisher = eventPublisher;
         }
 
-        public IEnumerable<IEvent> Send(ICommand command)
+        public IEnumerable<IEvent> SendCommand(ICommand command)
         {
-            throw new ToDoException();
+            // todo: unit tests
+            var events = CommandBus.SendCommand(command).ToArray();
+
+            EventBus.SendEvents(events);
+            EventPublisher.PublishEventsAsync(events);
+
+            return events;
         }
     }
 }

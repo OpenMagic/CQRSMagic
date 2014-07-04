@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using CQRSMagic.Events;
 
-namespace CQRSMagic
+namespace CQRSMagic.Commands
 {
-    public interface IMessageBus
+    public interface ICommandBus
     {
         IEnumerable<IEvent> SendCommand(ICommand command);
     }
