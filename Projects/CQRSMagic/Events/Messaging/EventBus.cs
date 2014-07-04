@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using CQRSMagic.Events.Sourcing;
 
-namespace CQRSMagic.Events
+namespace CQRSMagic.Events.Messaging
 {
     public class EventBus : IEventBus
     {

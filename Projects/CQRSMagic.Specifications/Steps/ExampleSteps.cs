@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using CommonServiceLocator.NinjectAdapter.Unofficial;
 using CQRSMagic.Commands;
-using CQRSMagic.Events;
+using CQRSMagic.Events.Messaging;
 using CQRSMagic.Events.Publishing;
+using CQRSMagic.Events.Sourcing;
+using CQRSMagic.Events.Sourcing.Repositories;
 using CQRSMagic.Specifications.Steps.Support;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;

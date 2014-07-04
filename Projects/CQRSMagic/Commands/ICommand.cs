@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CQRSMagic
+namespace CQRSMagic.Commands
 {
     public interface ICommand
     {

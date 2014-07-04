@@ -2,7 +2,7 @@
 using AutoMapper;
 using CQRSMagic.Commands;
 using CQRSMagic.Domain;
-using CQRSMagic.Events;
+using CQRSMagic.Events.Messaging;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
 

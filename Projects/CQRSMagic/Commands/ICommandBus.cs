@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CQRSMagic.Events;
+using CQRSMagic.Events.Messaging;
 
 namespace CQRSMagic.Commands
 {

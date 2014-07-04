@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using CQRSMagic.Domain;
+using CQRSMagic.Events.Messaging;
 using CQRSMagic.Exceptions;
 
-namespace CQRSMagic.Events
+namespace CQRSMagic.Events.Sourcing.Repositories
 {
     public class InMemoryEventStoreRepository : IEventStoreRepository
     {

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using CQRSMagic.Domain;
+using CQRSMagic.Events.Messaging;
+using CQRSMagic.Events.Sourcing.Repositories;
 
-namespace CQRSMagic.Events
+namespace CQRSMagic.Events.Sourcing
 {
     public class EventStore : IEventStore
     {

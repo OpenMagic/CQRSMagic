@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CQRSMagic.Domain.Support;
-using CQRSMagic.Events;
+using CQRSMagic.Events.Messaging;
 
 namespace CQRSMagic.Domain
 {

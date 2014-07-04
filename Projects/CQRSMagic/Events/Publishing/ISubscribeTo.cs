@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CQRSMagic.Events.Messaging;
 
 namespace CQRSMagic.Events.Publishing
 {

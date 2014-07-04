@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CQRSMagic.Events
+namespace CQRSMagic.Events.Messaging
 {
     public interface IEvent
     {

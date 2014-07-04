@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Anotar.CommonLogging;
+using CQRSMagic.Events.Messaging;
 using Microsoft.Practices.ServiceLocation;
 
 namespace CQRSMagic.Events.Publishing.Support

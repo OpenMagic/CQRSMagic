@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CQRSMagic.Commands.Support;
-using CQRSMagic.Events;
+using CQRSMagic.Events.Messaging;
 
 namespace CQRSMagic.Commands
 {

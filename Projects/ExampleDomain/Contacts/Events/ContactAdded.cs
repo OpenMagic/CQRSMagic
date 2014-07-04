@@ -1,5 +1,5 @@
 using System;
-using CQRSMagic.Events;
+using CQRSMagic.Events.Messaging;
 
 namespace ExampleDomain.Contacts.Events
 {

@@ -1,4 +1,4 @@
-﻿namespace CQRSMagic.Events
+﻿namespace CQRSMagic.Events.Messaging
 {
     public interface IApplyEvent<in TEvent> where TEvent : IEvent
     {

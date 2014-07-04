@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using CQRSMagic.Events.Messaging;
 using CQRSMagic.Events.Publishing.Support;
 
 namespace CQRSMagic.Events.Publishing
