@@ -8,10 +8,10 @@ namespace CQRSMagic.Commands.Support
 {
     internal class CommandHandler
     {
-        private readonly Type ConcreteType;
         public readonly Type CommandType;
-        public readonly Func<ICommand, IEnumerable<IEvent>> SendCommand;
+        private readonly Type ConcreteType;
         private readonly MethodInfo HandleMethod;
+        public readonly Func<ICommand, IEnumerable<IEvent>> SendCommand;
 
         public CommandHandler(Type concreteType, Type commandHandlerType, Type commandType)
         {

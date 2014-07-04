@@ -19,7 +19,7 @@ namespace CQRSMagic.Domain.Support
         internal Dictionary<Type, MethodInfo> FindEventHandlers(Type type)
         {
             // todo: unit tests
-            
+
             // todo: what if IApplyEvent adds new methods
             var handlers =
                 from @interface in type.GetInterfaces()

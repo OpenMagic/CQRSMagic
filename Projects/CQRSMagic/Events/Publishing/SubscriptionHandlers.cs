@@ -17,11 +17,21 @@ namespace CQRSMagic.Events.Publishing
             Handlers = new Lazy<Dictionary<Type, IEnumerable<Func<IEvent, Task>>>>(() => FindHandlers(eventSubscriberAssemblies));
         }
 
+        public IEnumerable<Func<IEvent, Task>> FindSubscriptionsFor(IEvent @event)
+        {
+            // todo: unit tests
+            IEnumerable<Func<IEvent, Task>> handler;
+
+            var handlers = Handlers.Value;
+
+            return handlers.TryGetValue(@event.GetType(), out handler) ? handler : new List<Func<IEvent, Task>>();
+        }
+
         internal static Dictionary<Type, IEnumerable<Func<IEvent, Task>>> FindHandlers(IEnumerable<Assembly> eventSubscriberAssemblies)
         {
             // todo: unit tests
 
-            var allTypes = 
+            var allTypes =
                 from assembly in eventSubscriberAssemblies
                 from type in assembly.GetTypes()
                 select type;
@@ -37,20 +47,10 @@ namespace CQRSMagic.Events.Publishing
                 from e in eventSubscribers
                 group e by e.EventType
                 into g
-                select new { EventType = g.Key, EventHandlers = g.Select( x => x.HandleEventAsync) };
+                select new {EventType = g.Key, EventHandlers = g.Select(x => x.HandleEventAsync)};
 
 
             return groupedEventSubscribers.ToDictionary(x => x.EventType, x => x.EventHandlers);
-        }
-
-        public IEnumerable<Func<IEvent, Task>> FindSubscriptionsFor(IEvent @event)
-        {
-            // todo: unit tests
-            IEnumerable<Func<IEvent, Task>> handler;
-
-            var handlers = Handlers.Value;
-
-            return handlers.TryGetValue(@event.GetType(), out handler) ? handler : new List<Func<IEvent, Task>>();
         }
     }
 }

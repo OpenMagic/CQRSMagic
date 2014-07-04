@@ -20,7 +20,7 @@ namespace CQRSMagic.Specifications.UnitTests.Events.Publishing
                 var commandHandlers = SubscriptionHandlers.FindHandlers(subscriptionHandlerAssemblies);
 
                 // Then
-                commandHandlers.Keys.ShouldBeEquivalentTo(new []
+                commandHandlers.Keys.ShouldBeEquivalentTo(new[]
                 {
                     typeof(ContactAdded)
                 });

@@ -11,8 +11,8 @@ namespace ExampleDomain.Contacts.Commands
             AggregateId = Guid.NewGuid();
         }
 
-        public Guid AggregateId { get; set; }
         public string Name { get; set; }
         public string EmailAddress { get; set; }
+        public Guid AggregateId { get; set; }
     }
 }

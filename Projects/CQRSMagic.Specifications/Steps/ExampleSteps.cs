@@ -19,14 +19,14 @@ namespace CQRSMagic.Specifications.Steps
     [Binding]
     public class ExampleSteps
     {
+        private readonly ContactQuery ContactQuery;
+        private readonly IEventStore EventStore;
+        private readonly IEventStoreRepository EventStoreRepository;
+        private readonly IMessageBus MessageBus;
         private AddContact AddContactCommand;
         private string ContactEmailAddress;
         private string ContactName;
-        private readonly IMessageBus MessageBus;
-        private readonly IEventStore EventStore;
-        private readonly ContactQuery ContactQuery;
         private IEvent[] Events;
-        private readonly IEventStoreRepository EventStoreRepository;
 
         public ExampleSteps()
         {

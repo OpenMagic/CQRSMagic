@@ -27,16 +27,16 @@ namespace ExampleDomain.Contacts
         public string Name { get; private set; }
         public string EmailAddress { get; private set; }
 
+        public void ApplyEvent(ContactAdded @event)
+        {
+            Mapper.Map(@event, this);
+        }
+
         public IEnumerable<IEvent> HandleCommand(AddContact command)
         {
             var contactAdded = Mapper.Map<ContactAdded>(command);
 
             yield return contactAdded;
-        }
-
-        public void ApplyEvent(ContactAdded @event)
-        {
-            Mapper.Map(@event, this);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using CQRSMagic.Commands;
 using ExampleDomain.Contacts.Commands;
 using FluentAssertions;
-using OpenMagic.Exceptions;
 using Xunit;
 
 namespace CQRSMagic.Specifications.UnitTests.Commands
@@ -20,7 +19,7 @@ namespace CQRSMagic.Specifications.UnitTests.Commands
                 var commandHandlers = CommandHandlers.FindHandlers(commandHandlerAssemblies);
 
                 // Then
-                commandHandlers.Keys.ShouldBeEquivalentTo(new []
+                commandHandlers.Keys.ShouldBeEquivalentTo(new[]
                 {
                     typeof(AddContact)
                 });

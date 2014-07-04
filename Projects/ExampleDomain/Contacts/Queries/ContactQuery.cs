@@ -7,7 +7,7 @@ using ExampleDomain.Contacts.Queries.Repositories;
 
 namespace ExampleDomain.Contacts.Queries
 {
-    public class ContactQuery : 
+    public class ContactQuery :
         ISubscribeTo<ContactAdded>
     {
         private readonly IContactRepository Repository;
@@ -24,16 +24,16 @@ namespace ExampleDomain.Contacts.Queries
             Repository = repository;
         }
 
-        public ContactReadModel GetByEmailAddress(string emailAddress)
-        {
-            return Repository.GetByEmailAddress(emailAddress);
-        }
-
         public Task HandleEventAsync(ContactAdded @event)
         {
             var readModel = Mapper.Map<ContactReadModel>(@event);
 
             return Repository.AddAsync(readModel);
+        }
+
+        public ContactReadModel GetByEmailAddress(string emailAddress)
+        {
+            return Repository.GetByEmailAddress(emailAddress);
         }
     }
 }
