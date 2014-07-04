@@ -1,12 +1,14 @@
 ﻿using System;
+using CQRSMagic.Domain;
+using OpenMagic.Exceptions;
 
 namespace CQRSMagic.Exceptions
 {
-    public class AggregateNotFoundException : Exception
+    public class AggregateNotFoundException<TAggregate> : Exception where TAggregate : IAggregate
     {
-        public AggregateNotFoundException(Type type, Guid aggregateId)
-            : base(string.Format("Cannot find {0} aggregate with {1} id.", type.Name, aggregateId))
+        public AggregateNotFoundException(Guid aggregateId)
         {
+            throw new ToDoException();
         }
     }
 }
