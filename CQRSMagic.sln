@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic", "Projects\CQRSM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleDomain", "Projects\ExampleDomain\ExampleDomain.csproj", "{22B51F57-6454-4624-8350-02C1373AEAC3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic.Azure", "Projects\CQRSMagic.Azure\CQRSMagic.Azure.csproj", "{8621EA99-BA91-4692-BB23-35DF06FECB2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{22B51F57-6454-4624-8350-02C1373AEAC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22B51F57-6454-4624-8350-02C1373AEAC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22B51F57-6454-4624-8350-02C1373AEAC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8621EA99-BA91-4692-BB23-35DF06FECB2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8621EA99-BA91-4692-BB23-35DF06FECB2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8621EA99-BA91-4692-BB23-35DF06FECB2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8621EA99-BA91-4692-BB23-35DF06FECB2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
