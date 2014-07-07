@@ -1,5 +1,10 @@
-﻿using System.Linq;
+﻿#define AzureEventStoreRepository
+
+using System;
+using System.Linq;
 using CommonServiceLocator.NinjectAdapter.Unofficial;
+using CQRSMagic.Azure;
+using CQRSMagic.Azure.Support;
 using CQRSMagic.Commands;
 using CQRSMagic.Events.Messaging;
 using CQRSMagic.Events.Publishing;
@@ -21,10 +26,15 @@ namespace CQRSMagic.Specifications.Steps
     [Binding]
     public class ExampleSteps
     {
+        private static readonly string AzureContactsTableName = string.Format("TestContacts{0}", Guid.NewGuid().ToString().Replace("-", ""));
+        private static readonly string AzureEventsTableName = string.Format("TestEvents{0}", Guid.NewGuid().ToString().Replace("-", ""));
+        private const string AzureEventStoreConnectionString = AzureStorage.DevelopmentConnectionString;
+
         private readonly ContactQuery ContactQuery;
         private readonly IEventStore EventStore;
         private readonly IEventStoreRepository EventStoreRepository;
         private readonly IMessageBus MessageBus;
+
         private AddContact AddContactCommand;
         private string ContactEmailAddress;
         private string ContactName;
@@ -34,15 +44,26 @@ namespace CQRSMagic.Specifications.Steps
         {
             var kernel = new StandardKernel();
 
-            kernel.Bind<IContactRepository>().ToConstant(new InMemoryContactRepository());
-
             ServiceLocator.SetLocatorProvider(() => new NinjectServiceLocator(kernel));
+
+#if AzureEventStoreRepository
+
+            kernel.Bind<IContactRepository>().ToConstructor(cas => new AzureContactRepository(AzureEventStoreConnectionString, AzureContactsTableName));
+            kernel.Bind<IEventStoreRepository>().ToConstructor(cas => new AzureEventStoreRepository(AzureEventStoreConnectionString, AzureEventsTableName));
+            kernel.Bind<IAzureEventSerializer>().To<AzureEventSerializer>();
+
+#else
+
+            kernel.Bind<IContactRepository>().ToConstant(new InMemoryContactRepository());
+            kernel.Bind<IEventStoreRepository>().ToConstant(new InMemoryEventStoreRepository());
+
+#endif
+
+            EventStoreRepository = kernel.Get<IEventStoreRepository>();
+            EventStore = new EventStore(EventStoreRepository);
 
             var domainAssemblies = new[] {typeof(AddContact).Assembly};
             var contactRepository = kernel.Get<IContactRepository>();
-
-            EventStoreRepository = new InMemoryEventStoreRepository();
-            EventStore = new EventStore(EventStoreRepository);
 
             var commandHandlers = new CommandHandlers(domainAssemblies);
             var commandBus = new CommandBus(commandHandlers);
@@ -104,11 +125,18 @@ namespace CQRSMagic.Specifications.Steps
         [Then(@"ContactQueryModel is added to Contacts table")]
         public void ThenContactQueryModelIsAddedToContactsTable()
         {
-            var contactViewModel = ContactQuery.GetByEmailAddress(ContactEmailAddress);
+            var contactViewModel = ContactQuery.GetByEmailAddressAsync(ContactEmailAddress).Result;
 
             contactViewModel.Id.Should().Be(AddContactCommand.AggregateId);
             contactViewModel.Name.Should().Be(ContactName);
             contactViewModel.EmailAddress.Should().Be(ContactEmailAddress);
+        }
+
+        [AfterScenario]
+        public static void AfterScenario()
+        {
+            AzureStorage.DeleteTableIfExists(AzureEventStoreConnectionString, AzureContactsTableName);
+            AzureStorage.DeleteTableIfExists(AzureEventStoreConnectionString, AzureEventsTableName);
         }
     }
 }

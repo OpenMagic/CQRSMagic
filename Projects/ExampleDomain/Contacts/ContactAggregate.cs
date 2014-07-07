@@ -15,7 +15,10 @@ namespace ExampleDomain.Contacts
         static ContactAggregate()
         {
             // Create ICommand to IEvent maps.
-            Mapper.CreateMap<AddContact, ContactAdded>();
+            
+            // todo: configure AutoMapper to handle AggregateType from ContactAggregate.
+            Mapper.CreateMap<AddContact, ContactAdded>()
+                .ForMember(@event => @event.AggregateType, memberOptions => memberOptions.UseValue(typeof(ContactAggregate)));
 
             // Create IEvent to ContactAggregate maps.
 

@@ -6,5 +6,6 @@ namespace CQRSMagic.Events.Messaging
     {
         Type AggregateType { get; }
         Guid AggregateId { get; }
+        DateTimeOffset EventCreated { get; }
     }
 }

@@ -5,7 +5,7 @@ namespace ExampleDomain.Contacts.Queries.Repositories
 {
     public interface IContactRepository
     {
-        ContactReadModel GetByEmailAddress(string emailAddress);
+        Task<ContactReadModel> GetByEmailAddressAsync(string emailAddress);
         Task AddAsync(ContactReadModel contact);
     }
 }
