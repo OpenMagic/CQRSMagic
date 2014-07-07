@@ -69,7 +69,7 @@ if "%GallioEcho%" == "" (
 
   echo.
   echo. todo: Add unit tests for MyGet build server.
-  echo goto PostTests
+  goto PostTests
 )
 
 "%GallioEcho%" Projects\CQRSMagic.Specifications\bin\Release\CQRSMagic.Specifications.dll
