@@ -11,7 +11,12 @@ namespace CQRSMagic.Specifications.Steps.Support
     {
         private readonly List<ContactReadModel> Contacts = new List<ContactReadModel>();
 
-        public ContactReadModel GetByEmailAddress(string emailAddress)
+        public Task<ContactReadModel> GetByEmailAddressAsync(string emailAddress)
+        {
+            return Task.Run(() => GetByEmailAddress(emailAddress));
+        }
+
+        private ContactReadModel GetByEmailAddress(string emailAddress)
         {
             var contact = Contacts.SingleOrDefault(c => c.EmailAddress == emailAddress);
 

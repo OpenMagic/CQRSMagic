@@ -31,9 +31,9 @@ namespace ExampleDomain.Contacts.Queries
             return Repository.AddAsync(readModel);
         }
 
-        public ContactReadModel GetByEmailAddress(string emailAddress)
+        public Task<ContactReadModel> GetByEmailAddressAsync(string emailAddress)
         {
-            return Repository.GetByEmailAddress(emailAddress);
+            return Repository.GetByEmailAddressAsync(emailAddress);
         }
     }
 }
