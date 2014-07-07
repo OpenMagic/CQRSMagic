@@ -1,34 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B5468919-D20E-42C7-A392-D4786BF28B06}"
-	ProjectSection(SolutionItems) = preProject
-		.gitattributes = .gitattributes
-		.gitignore = .gitignore
-		LICENSE = LICENSE
-		README.md = README.md
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic.Specifications", "Projects\CQRSMagic.Specifications\CQRSMagic.Specifications.csproj", "{AA857B71-A6DE-4567-B9C0-CC0A1455EC17}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9C991CB4-105B-4515-809C-18B25CE924A7}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\CQRSMagic.nuspec = .nuget\CQRSMagic.nuspec
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-		.nuget\Packages.config = .nuget\Packages.config
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic", "Projects\CQRSMagic\CQRSMagic.csproj", "{B507050C-F8DD-44BF-81D7-3BABDCA8E8A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic", "Projects\CQRSMagic\CQRSMagic.csproj", "{80151014-84D6-4579-A5EE-1C0455B5BD95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleDomain", "Projects\ExampleDomain\ExampleDomain.csproj", "{22B51F57-6454-4624-8350-02C1373AEAC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic.Specifications", "Projects\CQRSMagic.Specifications\CQRSMagic.Specifications.csproj", "{244487C0-2DEF-4D9C-83E9-D7D056EB7DE7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{4BD9198C-3C29-4D39-ACA6-B19896CBDA7D}"
-	ProjectSection(SolutionItems) = preProject
-		Scripts\MyGet.bat = Scripts\MyGet.bat
-		Scripts\Publish.bat = Scripts\Publish.bat
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic.Azure", "Projects\CQRSMagic.Azure\CQRSMagic.Azure.csproj", "{8621EA99-BA91-4692-BB23-35DF06FECB2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,20 +17,24 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{80151014-84D6-4579-A5EE-1C0455B5BD95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80151014-84D6-4579-A5EE-1C0455B5BD95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80151014-84D6-4579-A5EE-1C0455B5BD95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80151014-84D6-4579-A5EE-1C0455B5BD95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{244487C0-2DEF-4D9C-83E9-D7D056EB7DE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{244487C0-2DEF-4D9C-83E9-D7D056EB7DE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{244487C0-2DEF-4D9C-83E9-D7D056EB7DE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{244487C0-2DEF-4D9C-83E9-D7D056EB7DE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA857B71-A6DE-4567-B9C0-CC0A1455EC17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA857B71-A6DE-4567-B9C0-CC0A1455EC17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA857B71-A6DE-4567-B9C0-CC0A1455EC17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA857B71-A6DE-4567-B9C0-CC0A1455EC17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B507050C-F8DD-44BF-81D7-3BABDCA8E8A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B507050C-F8DD-44BF-81D7-3BABDCA8E8A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B507050C-F8DD-44BF-81D7-3BABDCA8E8A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B507050C-F8DD-44BF-81D7-3BABDCA8E8A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22B51F57-6454-4624-8350-02C1373AEAC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22B51F57-6454-4624-8350-02C1373AEAC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22B51F57-6454-4624-8350-02C1373AEAC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22B51F57-6454-4624-8350-02C1373AEAC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8621EA99-BA91-4692-BB23-35DF06FECB2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8621EA99-BA91-4692-BB23-35DF06FECB2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8621EA99-BA91-4692-BB23-35DF06FECB2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8621EA99-BA91-4692-BB23-35DF06FECB2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{9C991CB4-105B-4515-809C-18B25CE924A7} = {B5468919-D20E-42C7-A392-D4786BF28B06}
-		{4BD9198C-3C29-4D39-ACA6-B19896CBDA7D} = {B5468919-D20E-42C7-A392-D4786BF28B06}
 	EndGlobalSection
 EndGlobal

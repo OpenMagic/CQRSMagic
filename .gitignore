@@ -91,9 +91,7 @@ _TeamCity*
 *.dotCover
 
 # NCrunch
-*.ncrunch*
 _NCrunch_*
-.*crunch*.local.xml
 
 # MightyMoose
 *.mm.*

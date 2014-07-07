@@ -1,2 +1,3 @@
-CQRSMagic
-=========
+# CQRSMagic
+
+todo

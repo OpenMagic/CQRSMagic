@@ -1,7 +1,11 @@
-﻿namespace CQRSMagic
+﻿using System.Collections.Generic;
+using CQRSMagic.Commands;
+using CQRSMagic.Events.Messaging;
+
+namespace CQRSMagic
 {
     public interface IMessageBus
     {
-        ISendCommandTasks SendCommand(ICommand command);
+        IEnumerable<IEvent> SendCommand(ICommand command);
     }
 }
