@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>CQRSMagic.Azure</id>
+        <version>$version$</version>
+        <title>CQRSMagic.Azure</title>
+        <authors>Tim Murphy</authors>
+        <owners>Tim Murphy</owners>
+        <licenseUrl>https://github.com/CQRSMagic/CQRSMagic/blob/master/LICENSE.txt</licenseUrl>
+        <projectUrl>https://github.com/CQRSMagic/CQRSMagic</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Simple CQRS implementation with Azure Table Storage EventStore.</description>
+        <copyright>Copyright (c) 2013-2014 Tim Murphy</copyright>
+    </metadata>
+    <files>
+        <file src="..\Projects\CQRSMagic.Azure\bin\Release\CQRSMagic.Azure.*" target="lib/net45"/>
+    </files>
+</package>
