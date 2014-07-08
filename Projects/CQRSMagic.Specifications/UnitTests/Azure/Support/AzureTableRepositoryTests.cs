@@ -64,7 +64,7 @@ namespace CQRSMagic.Specifications.UnitTests.Azure.Support
                 var repository = new AzureTableRepository<DynamicTableEntity>(ConnectionString, TableName);
 
                 // Then
-                ActionShould.Throw<ArgumentNullException>("partitionKey", () => repository.GetEntitiesByPartitionKeyAsync(null));
+                ActionShould.Throw<ArgumentNullException>("partitionKey", () => repository.FindEntitiesByPartitionKeyAsync(null));
             }
 
             [Fact]
@@ -74,7 +74,7 @@ namespace CQRSMagic.Specifications.UnitTests.Azure.Support
                 var repository = new AzureTableRepository<DynamicTableEntity>(ConnectionString, TableName);
 
                 // Then
-                ActionShould.Throw<ArgumentException>("partitionKey", () => repository.GetEntitiesByPartitionKeyAsync(string.Empty));
+                ActionShould.Throw<ArgumentException>("partitionKey", () => repository.FindEntitiesByPartitionKeyAsync(string.Empty));
             }
 
             [Fact]
@@ -84,7 +84,7 @@ namespace CQRSMagic.Specifications.UnitTests.Azure.Support
                 var repository = new AzureTableRepository<DynamicTableEntity>(ConnectionString, TableName);
 
                 // When
-                var entities = repository.GetEntitiesByPartitionKeyAsync("partitionkey that does not exist").Result;
+                var entities = repository.FindEntitiesByPartitionKeyAsync("partitionkey that does not exist").Result;
 
                 // Then
                 entities.Any().Should().BeFalse();
@@ -117,7 +117,7 @@ namespace CQRSMagic.Specifications.UnitTests.Azure.Support
                 Task.WaitAll(addTasks);
 
                 // When
-                var actualTableEntities = repository.GetEntitiesByPartitionKeyAsync(partitionKey).Result.ToArray();
+                var actualTableEntities = repository.FindEntitiesByPartitionKeyAsync(partitionKey).Result.ToArray();
 
                 // Then
                 var expectedPropertyValues = expectedTableEntities.Select(e=> e.Properties["FakePropertyName"].StringValue);

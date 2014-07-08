@@ -30,7 +30,7 @@ namespace CQRSMagic.Specifications.Steps.Support
         public async Task<ContactReadModel> GetByEmailAddressAsync(string emailAddress)
         {
             var filterCondition = TableQuery.GenerateFilterCondition("EmailAddress", QueryComparisons.Equal, emailAddress);
-            var entities = await Repository.GetEntitiesWhereAsync(filterCondition);
+            var entities = await Repository.FindEntitiesWhereAsync(filterCondition);
             var entity = entities.Single();
             var readModel = Mapper.Map<ContactReadModel>(entity);
 

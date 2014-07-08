@@ -32,7 +32,7 @@ namespace CQRSMagic.Azure
         {
             LogTo.Debug("GetEvents<{0}>({1})", typeof(TAggregate), aggregateId);
 
-            var entities = Repository.GetEntitiesByPartitionKeyAsync(aggregateId.ToPartitionKey()).Result;
+            var entities = Repository.FindEntitiesByPartitionKeyAsync(aggregateId.ToPartitionKey()).Result;
             var events = entities.Select(Serializer.Deserialize);
 
             LogTo.Debug("Exit GetEvents<{0}>({1})", typeof(TAggregate), aggregateId);

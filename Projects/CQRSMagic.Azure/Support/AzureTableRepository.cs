@@ -45,12 +45,12 @@ namespace CQRSMagic.Azure.Support
             };
         }
 
-        public async Task<IEnumerable<TEntity>> GetEntitiesByPartitionKeyAsync(string partitionKey)
+        public async Task<IEnumerable<TEntity>> FindEntitiesByPartitionKeyAsync(string partitionKey)
         {
-            return await GetEntitiesWhereAsync(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
+            return await FindEntitiesWhereAsync(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
         }
 
-        public async Task<IEnumerable<TEntity>> GetEntitiesWhereAsync(string filterCondition)
+        public async Task<IEnumerable<TEntity>> FindEntitiesWhereAsync(string filterCondition)
         {
             try
             {
