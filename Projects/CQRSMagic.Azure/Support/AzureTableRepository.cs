@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Anotar.CommonLogging;
 using Microsoft.WindowsAzure.Storage.Table;
 using NullGuard;
 
@@ -27,23 +28,33 @@ namespace CQRSMagic.Azure.Support
         public async Task AddAsync(TEntity entity)
         {
             // todo: unit tests
-            var insert = TableOperation.Insert(entity);
-            var result = await Table.ExecuteAsync(insert);
-
-            if (result.HttpStatusCode == (int)HttpStatusCode.NoContent)
+            try
             {
-                return;
-            }
+                LogTo.Debug("Adding {0}/{1}/{2}.", typeof(TEntity), entity.PartitionKey, entity.RowKey);
 
-            throw new TableOperationException(string.Format("Cannot add {0}/{1}.", typeof(TEntity), entity.PartitionKey))
-            {
-                Data =
+                var insert = TableOperation.Insert(entity);
+                var result = await Table.ExecuteAsync(insert);
+
+                if (result.HttpStatusCode == (int)HttpStatusCode.NoContent)
                 {
-                    {"TEntity", typeof(TEntity)},
-                    {"result", result},
-                    {"entity", entity}
+                    return;
                 }
-            };
+
+                throw new Exception(string.Format("Cannot add {0}/{1}/{2}.", typeof(TEntity), entity.PartitionKey, entity.RowKey))
+                {
+                    Data =
+                    {
+                        {"TEntity", typeof(TEntity)},
+                        {"result", result},
+                        {"entity", entity}
+                    }
+                };
+            }
+            catch (Exception exception)
+            {
+                LogTo.ErrorException(exception.Message, exception);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<TEntity>> FindEntitiesAsync()
@@ -82,7 +93,9 @@ namespace CQRSMagic.Azure.Support
             }
             catch (Exception exception)
             {
-                throw new TableOperationException(string.Format("Cannot get {0} entities where {1}.", typeof(TEntity), filterCondition), exception);
+                var message = string.Format("Cannot get {0} entities where {1}.", typeof(TEntity), filterCondition);
+                LogTo.ErrorException(message, exception);
+                throw new Exception(message, exception);
             }
         }
     }
