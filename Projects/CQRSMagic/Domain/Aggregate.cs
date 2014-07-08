@@ -17,7 +17,7 @@ namespace CQRSMagic.Domain
             EventHandlers = new EventHandlers(GetType());
         }
 
-        public Guid Id { get; private set; }
+        public Guid Id { get; protected set; }
 
         public void ApplyEvents(IEnumerable<IEvent> events)
         {
