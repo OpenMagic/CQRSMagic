@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Anotar.CommonLogging;
 using CQRSMagic.Azure.Support;
 using CQRSMagic.Domain;
 using CQRSMagic.Events.Messaging;
@@ -29,10 +30,12 @@ namespace CQRSMagic.Azure
 
         public IEnumerable<IEvent> GetEvents<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
         {
-            // todo: unit tests
+            LogTo.Debug("GetEvents<{0}>({1})", typeof(TAggregate), aggregateId);
+
             var entities = Repository.GetEntitiesByPartitionKeyAsync(aggregateId.ToPartitionKey()).Result;
             var events = entities.Select(Serializer.Deserialize);
 
+            LogTo.Debug("Exit GetEvents<{0}>({1})", typeof(TAggregate), aggregateId);
             return events;
         }
 
