@@ -42,7 +42,7 @@ echo Building solution...
 echo -------------------------------
 echo.
 
-%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild /p:Configuration=%config%
+"C:\Program Files (x86)\MSBuild\12.0\bin\msbuild" /p:Configuration=%config%
 if not "%errorlevel%" == "0" goto Error
 echo.
 echo.
