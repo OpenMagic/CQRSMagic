@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
+using NullGuard;
 
 namespace CQRSMagic.Azure.Support
 {
@@ -45,16 +46,27 @@ namespace CQRSMagic.Azure.Support
             };
         }
 
+        public async Task<IEnumerable<TEntity>> FindEntitiesAsync()
+        {
+            return await FindEntitiesWhereAsync(null);
+        }
+
         public async Task<IEnumerable<TEntity>> FindEntitiesByPartitionKeyAsync(string partitionKey)
         {
             return await FindEntitiesWhereAsync(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
         }
 
-        public async Task<IEnumerable<TEntity>> FindEntitiesWhereAsync(string filterCondition)
+        public async Task<IEnumerable<TEntity>> FindEntitiesWhereAsync([AllowNull]string filterCondition)
         {
             try
             {
-                var query = new TableQuery<TEntity>().Where(filterCondition);
+                var query = new TableQuery<TEntity>();
+
+                if (filterCondition != null)
+                {
+                    query = query.Where(filterCondition);
+                }
+
                 var items = new List<TEntity>();
                 TableQuerySegment<TEntity> currentSegment = null;
 
