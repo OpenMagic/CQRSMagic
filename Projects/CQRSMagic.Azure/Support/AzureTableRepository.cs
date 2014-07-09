@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Anotar.CommonLogging;
@@ -30,8 +29,6 @@ namespace CQRSMagic.Azure.Support
             // todo: unit tests
             try
             {
-                LogTo.Debug("Adding {0}/{1}/{2}.", typeof(TEntity), entity.PartitionKey, entity.RowKey);
-
                 var insert = TableOperation.Insert(entity);
                 var result = await Table.ExecuteAsync(insert);
 
@@ -40,20 +37,13 @@ namespace CQRSMagic.Azure.Support
                     return;
                 }
 
-                throw new Exception(string.Format("Cannot add {0}/{1}/{2}.", typeof(TEntity), entity.PartitionKey, entity.RowKey))
-                {
-                    Data =
-                    {
-                        {"TEntity", typeof(TEntity)},
-                        {"result", result},
-                        {"entity", entity}
-                    }
-                };
+                throw new Exception(string.Format("Cannot add {0}/{1}/{2}. HttpStatusCode {3}.", Table.Name, entity.PartitionKey, entity.RowKey, result.HttpStatusCode));
             }
             catch (Exception exception)
             {
-                LogTo.ErrorException(exception.Message, exception);
-                throw;
+                var message = string.Format("Cannot add {0}/{1}/{2}.", Table.Name, entity.PartitionKey, entity.RowKey);
+                LogTo.ErrorException(message, exception);
+                throw new Exception(message, exception);
             }
         }
 
@@ -93,7 +83,7 @@ namespace CQRSMagic.Azure.Support
             }
             catch (Exception exception)
             {
-                var message = string.Format("Cannot get {0} entities where {1}.", typeof(TEntity), filterCondition);
+                var message = string.Format("Cannot get entities from {0} where {1}.", Table.Name, filterCondition);
                 LogTo.ErrorException(message, exception);
                 throw new Exception(message, exception);
             }
