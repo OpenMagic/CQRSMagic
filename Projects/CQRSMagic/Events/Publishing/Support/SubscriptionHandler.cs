@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Anotar.CommonLogging;
 using CQRSMagic.Events.Messaging;
 using Microsoft.Practices.ServiceLocation;
 
@@ -38,8 +37,7 @@ namespace CQRSMagic.Events.Publishing.Support
             }
             catch (Exception exception)
             {
-                LogTo.ErrorException(exception.Message, exception);
-                throw;
+                throw new Exception(string.Format("Error while executing {0} event handler for {1}/{2}.", @event.GetType().FullName, @event.AggregateType, @event.AggregateId), exception);
             }
         }
     }

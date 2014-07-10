@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using Anotar.CommonLogging;
 using Microsoft.WindowsAzure.Storage.Table;
 using NullGuard;
 
@@ -41,9 +40,7 @@ namespace CQRSMagic.Azure.Support
             }
             catch (Exception exception)
             {
-                var message = string.Format("Cannot add {0}/{1}/{2}.", Table.Name, entity.PartitionKey, entity.RowKey);
-                LogTo.ErrorException(message, exception);
-                throw new Exception(message, exception);
+                throw new Exception(string.Format("Cannot add {0}/{1}/{2}.", Table.Name, entity.PartitionKey, entity.RowKey), exception);
             }
         }
 
@@ -83,9 +80,7 @@ namespace CQRSMagic.Azure.Support
             }
             catch (Exception exception)
             {
-                var message = string.Format("Cannot get entities from {0} where {1}.", Table.Name, filterCondition);
-                LogTo.ErrorException(message, exception);
-                throw new Exception(message, exception);
+                throw new Exception(string.Format("Cannot get entities from {0} where {1}.", Table.Name, filterCondition), exception);
             }
         }
     }
