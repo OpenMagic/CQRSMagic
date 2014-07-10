@@ -87,6 +87,9 @@
     <Compile Include="Events\Sourcing\Repositories\InMemoryEventStoreRepository.cs" />
     <Compile Include="Events\Messaging\IEventBus.cs" />
     <Compile Include="Events\Publishing\IEventPublisher.cs" />
+    <Compile Include="Exceptions\SubscriptionException.cs" />
+    <Compile Include="Exceptions\CommandException.cs" />
+    <Compile Include="Exceptions\CQRSMagicException.cs" />
     <Compile Include="IMessageBus.cs" />
     <Compile Include="Events\Sourcing\EventStore.cs" />
     <Compile Include="MessageBus.cs" />

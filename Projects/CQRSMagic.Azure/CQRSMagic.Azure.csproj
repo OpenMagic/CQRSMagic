@@ -95,6 +95,8 @@
     </Compile>
     <Compile Include="AzureEventSerializer.cs" />
     <Compile Include="AzureEventStoreRepository.cs" />
+    <Compile Include="Exceptions\AzureTableRepositoryException.cs" />
+    <Compile Include="Exceptions\CQRSMagicAzureException.cs" />
     <Compile Include="IAzureEventSerializer.cs" />
     <Compile Include="Support\AzureStorage.cs" />
     <Compile Include="Support\AzureTableRepository.cs" />
