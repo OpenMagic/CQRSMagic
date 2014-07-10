@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using CQRSMagic.Commands.Support;
 using CQRSMagic.Events.Messaging;
+using CQRSMagic.Exceptions;
 
 namespace CQRSMagic.Commands
 {
@@ -27,7 +28,7 @@ namespace CQRSMagic.Commands
                 return handler;
             }
 
-            throw new Exception(string.Format("Cannot find handler for {0} command.", command.GetType()));
+            throw new CommandException(string.Format("Cannot find handler for {0} command.", command.GetType()));
         }
 
         internal static Dictionary<Type, Func<ICommand, IEnumerable<IEvent>>> FindHandlers(IEnumerable<Assembly> commandHandlerAssemblies)

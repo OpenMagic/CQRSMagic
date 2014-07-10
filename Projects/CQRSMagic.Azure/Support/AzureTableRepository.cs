@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using Anotar.CommonLogging;
+using CQRSMagic.Azure.Exceptions;
 using Microsoft.WindowsAzure.Storage.Table;
 using NullGuard;
 
@@ -37,13 +37,13 @@ namespace CQRSMagic.Azure.Support
                     return;
                 }
 
-                throw new Exception(string.Format("Cannot add {0}/{1}/{2}. HttpStatusCode {3}.", Table.Name, entity.PartitionKey, entity.RowKey, result.HttpStatusCode));
+                var message = string.Format("Expected result.HttpStatusCode to be {0}, but found {1}.", HttpStatusCode.NoContent, (HttpStatusCode)result.HttpStatusCode);
+                throw new AzureTableRepositoryException(message);
             }
             catch (Exception exception)
             {
                 var message = string.Format("Cannot add {0}/{1}/{2}.", Table.Name, entity.PartitionKey, entity.RowKey);
-                LogTo.ErrorException(message, exception);
-                throw new Exception(message, exception);
+                throw new AzureTableRepositoryException(message, exception);
             }
         }
 
@@ -57,13 +57,15 @@ namespace CQRSMagic.Azure.Support
             return await FindEntitiesWhereAsync(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
         }
 
-        public async Task<IEnumerable<TEntity>> FindEntitiesWhereAsync([AllowNull]string filterCondition)
+        public async Task<IEnumerable<TEntity>> FindEntitiesWhereAsync([AllowNull] string filterCondition)
         {
+            var isFiltered = filterCondition != null;
+
             try
             {
                 var query = new TableQuery<TEntity>();
 
-                if (filterCondition != null)
+                if (isFiltered)
                 {
                     query = query.Where(filterCondition);
                 }
@@ -83,9 +85,11 @@ namespace CQRSMagic.Azure.Support
             }
             catch (Exception exception)
             {
-                var message = string.Format("Cannot get entities from {0} where {1}.", Table.Name, filterCondition);
-                LogTo.ErrorException(message, exception);
-                throw new Exception(message, exception);
+                var message = isFiltered ? 
+                    string.Format("Cannot get entities from {0} where {1}.", Table.Name, filterCondition) : 
+                    string.Format("Cannot get entities from {0}.", Table.Name);
+
+                throw new AzureTableRepositoryException(message, exception);
             }
         }
     }

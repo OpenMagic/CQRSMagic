@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Anotar.CommonLogging;
 using CQRSMagic.Domain;
 using CQRSMagic.Events.Messaging;
 using CQRSMagic.Events.Sourcing.Repositories;
@@ -20,18 +19,9 @@ namespace CQRSMagic.Events.Sourcing
 
         public TAggregate GetAggregate<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
         {
-            LogTo.Debug("GetAggregate<{0}>({1})", typeof(TAggregate), aggregateId);
-
-            LogTo.Debug("Repository.GetEvents<{0}>({1})", typeof(TAggregate), aggregateId);
-            var events = Repository.GetEvents<TAggregate>(aggregateId);
-
-            LogTo.Debug("CreateInstance<{0}>()", typeof(TAggregate));
-            var aggregate = Activator.CreateInstance<TAggregate>();
-
-            LogTo.Debug("{0}.ApplyEvents(events)", typeof(TAggregate));
+            var events = GetEvents<TAggregate>(aggregateId);
+            var aggregate = CreateInstance<TAggregate>();
             aggregate.ApplyEvents(events);
-
-            LogTo.Debug("Exit GetAggregate<{0}>({1})", typeof(TAggregate), aggregateId);
             return aggregate;
         }
 
@@ -40,11 +30,43 @@ namespace CQRSMagic.Events.Sourcing
             SaveEvents(events.ToArray());
         }
 
+        private static TAggregate CreateInstance<TAggregate>() where TAggregate : IAggregate
+        {
+            try
+            {
+                return Activator.CreateInstance<TAggregate>();
+            }
+            catch (Exception exception)
+            {
+                var message = string.Format("Cannot create instance of {0}.", typeof(TAggregate));
+                throw new Exception(message, exception);
+            }
+        }
+
+        private IEnumerable<IEvent> GetEvents<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
+        {
+            try
+            {
+                return Repository.GetEvents<TAggregate>(aggregateId);
+            }
+            catch (Exception exception)
+            {
+                var message = string.Format("Cannot get events for {0}.", typeof(TAggregate));
+                throw new Exception(message, exception);
+            }
+        }
+
         private void SaveEvents(IEvent[] events)
         {
-            LogTo.Debug("SaveEvents(IEvent[{0}] events", events.Length);
-            Repository.SaveEvents(events);
-            LogTo.Debug("Exit - SaveEvents(IEvent[{0}] events", events.Length);
+            try
+            {
+                Repository.SaveEvents(events);
+            }
+            catch (Exception exception)
+            {
+                const string message = "Cannot save events.";
+                throw new Exception(message, exception);
+            }
         }
     }
 }

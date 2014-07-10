@@ -3,7 +3,7 @@ using CQRSMagic.Domain;
 
 namespace CQRSMagic.Exceptions
 {
-    public class AggregateNotFoundException<TAggregate> : Exception where TAggregate : IAggregate
+    public class AggregateNotFoundException<TAggregate> : CQRSMagicException where TAggregate : IAggregate
     {
         public AggregateNotFoundException(Guid aggregateId)
             : base(CreateMessage(aggregateId))

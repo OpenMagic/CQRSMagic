@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Anotar.CommonLogging;
 using CQRSMagic.Domain.Support;
 using CQRSMagic.Events.Messaging;
+using CQRSMagic.Exceptions;
 
 namespace CQRSMagic.Domain
 {
@@ -26,32 +26,39 @@ namespace CQRSMagic.Domain
 
         private void ApplyEvents(IEvent[] events)
         {
-            LogTo.Debug("ApplyEvents(IEvent[{0}] events)", events.Length);
-
             // todo: unit tests
             foreach (var @event in events)
             {
                 ApplyEvent(@event);
             }
-
-            LogTo.Debug("Exit - ApplyEvents(IEvent[{0}] events)", events.Length);
         }
 
         private void ApplyEvent(IEvent @event)
         {
-            LogTo.Debug("ApplyEvent(IEvent)");
-
-            var eventHandler = EventHandlers.FindEventHandler(@event);
-
-            if (eventHandler == null)
+            try
             {
-                LogTo.Debug("No event handler");
-                LogTo.Debug("Exit - ApplyEvent(IEvent)");
-                return;
-            }
+                var eventHandler = EventHandlers.FindEventHandler(@event);
 
-            eventHandler.Invoke(this, new object[] {@event});
-            LogTo.Debug("Exit - ApplyEvent(IEvent)");
+                if (eventHandler == null)
+                {
+                    return;
+                }
+
+                try
+                {
+                    eventHandler.Invoke(this, new object[] {@event});
+                }
+                catch (Exception exception)
+                {
+                    var message = string.Format("Cannot apply {0} event to {1}/{2} with {3}.{4}.", @event.GetType(), GetType(), @event.AggregateId, eventHandler.DeclaringType, eventHandler.Name);
+                    throw new EventException(message, exception);
+                }
+            }
+            catch (Exception exception)
+            {
+                var message = string.Format("Cannot apply {0} event to {1}/{2}.", @event.GetType(), GetType(), @event.AggregateId);
+                throw new EventException(message, exception);
+            }
         }
     }
 }
