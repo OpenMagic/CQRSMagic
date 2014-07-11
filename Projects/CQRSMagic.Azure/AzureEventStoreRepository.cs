@@ -37,11 +37,12 @@ namespace CQRSMagic.Azure
 
         public void SaveEvents(IEnumerable<IEvent> events)
         {
-            // todo: unit tests
-            var entities = events.Select(Serializer.Serialize);
-            var tasks = entities.Select(Repository.AddAsync);
+            foreach (var @event in events)
+            {
+                var entity = Serializer.Serialize(@event);
 
-            Task.WaitAll(tasks.ToArray());
+                Repository.AddAsync(entity).Wait();
+            }
         }
     }
 }
