@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ExampleDomain.Contacts.Queries.Models;
 
 namespace ExampleDomain.Contacts.Queries.Repositories
@@ -7,5 +8,6 @@ namespace ExampleDomain.Contacts.Queries.Repositories
     {
         Task<ContactReadModel> GetByEmailAddressAsync(string emailAddress);
         Task AddAsync(ContactReadModel contact);
+        Task<IEnumerable<ContactReadModel>> FindAllAsync();
     }
 }

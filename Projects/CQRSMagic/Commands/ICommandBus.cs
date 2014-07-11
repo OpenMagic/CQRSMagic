@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using CQRSMagic.Events.Messaging;
 
 namespace CQRSMagic.Commands
 {
     public interface ICommandBus
     {
-        IEnumerable<IEvent> SendCommand(ICommand command);
+        Task<IEnumerable<IEvent>> SendCommandAsync(ICommand command);
     }
 }

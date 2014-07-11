@@ -27,21 +27,21 @@ namespace CQRSMagic.Azure
             Repository = new AzureTableRepository<DynamicTableEntity>(connectionString, tableName);
         }
 
-        public IEnumerable<IEvent> GetEvents<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
+        public async Task<IEnumerable<IEvent>> GetEventsAsync<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
         {
-            var entities = Repository.FindEntitiesByPartitionKeyAsync(aggregateId.ToPartitionKey()).Result;
+            var entities = await Repository.FindEntitiesByPartitionKeyAsync(aggregateId.ToPartitionKey());
             var events = entities.Select(Serializer.Deserialize);
 
             return events;
         }
 
-        public void SaveEvents(IEnumerable<IEvent> events)
+        public async Task SaveEventsAsync(IEnumerable<IEvent> events)
         {
             // todo: unit tests
             var entities = events.Select(Serializer.Serialize);
             var tasks = entities.Select(Repository.AddAsync);
 
-            Task.WaitAll(tasks.ToArray());
+            await Task.WhenAll(tasks.ToArray());
         }
     }
 }

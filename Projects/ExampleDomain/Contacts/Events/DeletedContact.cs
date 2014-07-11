@@ -1,20 +1,19 @@
-using System;
+﻿using System;
 using CQRSMagic.Events.Messaging;
+using ExampleDomain.Contacts.Queries.Models;
+using OpenMagic.Exceptions;
 
 namespace ExampleDomain.Contacts.Events
 {
-    public class ContactAdded : IEvent
+    public class DeletedContact : IEvent
     {
-        public ContactAdded()
+        public DeletedContact(ContactReadModel contact)
         {
-            EventCreated = DateTime.UtcNow;
+            throw new ToDoException();
         }
 
         public Type AggregateType { get; private set; }
         public Guid AggregateId { get; private set; }
         public DateTimeOffset EventCreated { get; private set; }
-
-        public string Name { get; private set; }
-        public string EmailAddress { get; private set; }
     }
 }

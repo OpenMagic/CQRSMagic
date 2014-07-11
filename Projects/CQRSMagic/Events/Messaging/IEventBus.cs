@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CQRSMagic.Events.Messaging
 {
     public interface IEventBus
     {
-        void SendEvents(IEnumerable<IEvent> events);
+        Task SendEventsAsync(IEnumerable<IEvent> events);
     }
 }

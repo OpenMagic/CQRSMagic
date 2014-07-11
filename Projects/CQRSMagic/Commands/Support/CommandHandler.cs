@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using CQRSMagic.Events.Messaging;
 
 namespace CQRSMagic.Commands.Support
@@ -11,7 +12,7 @@ namespace CQRSMagic.Commands.Support
         public readonly Type CommandType;
         private readonly Type ConcreteType;
         private readonly MethodInfo HandleMethod;
-        public readonly Func<ICommand, IEnumerable<IEvent>> SendCommand;
+        public readonly Func<ICommand, Task<IEnumerable<IEvent>>> SendCommand;
 
         public CommandHandler(Type concreteType, Type commandHandlerType, Type commandType)
         {
@@ -23,13 +24,13 @@ namespace CQRSMagic.Commands.Support
             HandleMethod = commandHandlerType.GetMethods().Single();
         }
 
-        private IEnumerable<IEvent> ExecuteSendCommand(ICommand command)
+        private Task<IEnumerable<IEvent>> ExecuteSendCommand(ICommand command)
         {
             // todo: Use a container to create the instance
             var obj = Activator.CreateInstance(ConcreteType);
 
             var result = HandleMethod.Invoke(obj, new object[] {command});
-            var events = (IEnumerable<IEvent>) result;
+            var events = (Task<IEnumerable<IEvent>>) result;
 
             return events;
         }

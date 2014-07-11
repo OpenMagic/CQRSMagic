@@ -1,4 +1,5 @@
 ﻿using CQRSMagic.Commands;
+using ExampleDomain.Configuration.Commands;
 using ExampleDomain.Contacts.Commands;
 using FluentAssertions;
 using Xunit;
@@ -21,7 +22,8 @@ namespace CQRSMagic.Specifications.UnitTests.Commands
                 // Then
                 commandHandlers.Keys.ShouldBeEquivalentTo(new[]
                 {
-                    typeof(AddContact)
+                    typeof(AddContact),
+                    typeof(ClearAll)
                 });
             }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CQRSMagic.Commands;
 using CQRSMagic.Events.Messaging;
 using CQRSMagic.Events.Publishing;
@@ -20,13 +21,17 @@ namespace CQRSMagic
             EventPublisher = eventPublisher;
         }
 
-        public IEnumerable<IEvent> SendCommand(ICommand command)
+        public async Task<IEnumerable<IEvent>> SendCommandAsync(ICommand command)
         {
             // todo: unit tests
-            var events = CommandBus.SendCommand(command).ToArray();
+            var eventCollection = await CommandBus.SendCommandAsync(command);
+            var events = eventCollection.ToArray();
 
-            EventBus.SendEvents(events);
+            await EventBus.SendEventsAsync(events);
+            
+#pragma warning disable 4014
             EventPublisher.PublishEventsAsync(events);
+#pragma warning restore 4014
 
             return events;
         }

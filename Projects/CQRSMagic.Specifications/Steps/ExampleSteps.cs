@@ -14,7 +14,6 @@ using CQRSMagic.Specifications.Steps.Support;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
-using ExampleDomain.Contacts.Queries;
 using ExampleDomain.Contacts.Queries.Repositories;
 using FluentAssertions;
 using Microsoft.Practices.ServiceLocation;
@@ -30,7 +29,7 @@ namespace CQRSMagic.Specifications.Steps
         private static readonly string AzureEventsTableName = string.Format("TestEvents{0}", Guid.NewGuid().ToString().Replace("-", ""));
         private const string AzureEventStoreConnectionString = AzureStorage.DevelopmentConnectionString;
 
-        private readonly ContactQuery ContactQuery;
+        private readonly IContactRepository ContactRepository;
         private readonly IEventStore EventStore;
         private readonly IEventStoreRepository EventStoreRepository;
         private readonly IMessageBus MessageBus;
@@ -74,7 +73,7 @@ namespace CQRSMagic.Specifications.Steps
             var eventPublisher = new EventPublisher(subscriptionHandlers);
 
             MessageBus = new MessageBus(commandBus, eventBus, eventPublisher);
-            ContactQuery = new ContactQuery(contactRepository);
+            ContactRepository = ServiceLocator.Current.GetInstance<IContactRepository>();
         }
 
         [Given(@"contact\'s name is (.*)")]
@@ -98,16 +97,16 @@ namespace CQRSMagic.Specifications.Steps
                 EmailAddress = ContactEmailAddress
             };
 
-            Events = MessageBus.SendCommand(AddContactCommand).ToArray();
+            Events = MessageBus.SendCommandAsync(AddContactCommand).Result.ToArray();
         }
 
         [Then(@"ContactAdded event is added to event store")]
         public void ThenContactAddedEventIsAddedToEventStore()
         {
             Events.Length.Should().Be(1);
-            Events[0].GetType().Should().Be(typeof(ContactAdded));
+            Events[0].GetType().Should().Be(typeof(AddedContact));
 
-            var storedEvents = EventStoreRepository.GetEvents<ContactAggregate>(AddContactCommand.AggregateId);
+            var storedEvents = EventStoreRepository.GetEventsAsync<ContactAggregate>(AddContactCommand.AggregateId).Result;
 
             storedEvents.ShouldBeEquivalentTo(Events);
         }
@@ -115,7 +114,7 @@ namespace CQRSMagic.Specifications.Steps
         [Then(@"ContactAggregate can be retrieved from event store")]
         public void ThenContactAggregateCanBeRetrievedFromEventStore()
         {
-            var contactAggregate = EventStore.GetAggregate<ContactAggregate>(AddContactCommand.AggregateId);
+            var contactAggregate = EventStore.GetAggregateAsync<ContactAggregate>(AddContactCommand.AggregateId).Result;
 
             contactAggregate.Id.Should().Be(AddContactCommand.AggregateId);
             contactAggregate.Name.Should().Be(ContactName);
@@ -125,7 +124,7 @@ namespace CQRSMagic.Specifications.Steps
         [Then(@"ContactQueryModel is added to Contacts table")]
         public void ThenContactQueryModelIsAddedToContactsTable()
         {
-            var contactViewModel = ContactQuery.GetByEmailAddressAsync(ContactEmailAddress).Result;
+            var contactViewModel = ContactRepository.GetByEmailAddressAsync(ContactEmailAddress).Result;
 
             contactViewModel.Id.Should().Be(AddContactCommand.AggregateId);
             contactViewModel.Name.Should().Be(ContactName);

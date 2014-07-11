@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CQRSMagic.Domain;
 using CQRSMagic.Events.Messaging;
 using CQRSMagic.Events.Sourcing.Repositories;
@@ -17,17 +18,19 @@ namespace CQRSMagic.Events.Sourcing
             Repository = repository;
         }
 
-        public TAggregate GetAggregate<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
+        public async Task<TAggregate> GetAggregateAsync<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
         {
-            var events = GetEvents<TAggregate>(aggregateId);
+            var events = await GetEventsAsync<TAggregate>(aggregateId);
             var aggregate = CreateInstance<TAggregate>();
+
             aggregate.ApplyEvents(events);
+
             return aggregate;
         }
 
-        public void SaveEvents(IEnumerable<IEvent> events)
+        public async Task SaveEventsAsync(IEnumerable<IEvent> events)
         {
-            SaveEvents(events.ToArray());
+            await SaveEventsAsync(events.ToArray());
         }
 
         private static TAggregate CreateInstance<TAggregate>() where TAggregate : IAggregate
@@ -43,11 +46,11 @@ namespace CQRSMagic.Events.Sourcing
             }
         }
 
-        private IEnumerable<IEvent> GetEvents<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
+        private async Task<IEnumerable<IEvent>> GetEventsAsync<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
         {
             try
             {
-                return Repository.GetEvents<TAggregate>(aggregateId);
+                return await Repository.GetEventsAsync<TAggregate>(aggregateId);
             }
             catch (Exception exception)
             {
@@ -56,11 +59,11 @@ namespace CQRSMagic.Events.Sourcing
             }
         }
 
-        private void SaveEvents(IEvent[] events)
+        private async Task SaveEventsAsync(IEvent[] events)
         {
             try
             {
-                Repository.SaveEvents(events);
+                await Repository.SaveEventsAsync(events);
             }
             catch (Exception exception)
             {

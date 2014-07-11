@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ExampleDomain.Contacts.Queries.Models;
 using ExampleDomain.Contacts.Queries.Repositories;
 using ExampleDomain.Exceptions;
+using OpenMagic.Exceptions;
 
 namespace CQRSMagic.Specifications.Steps.Support
 {
@@ -33,6 +34,11 @@ namespace CQRSMagic.Specifications.Steps.Support
             Contacts.Add(contact);
 
             return Task.FromResult(0);
+        }
+
+        public Task<IEnumerable<ContactReadModel>> FindAllAsync()
+        {
+            throw new ToDoException();
         }
     }
 }

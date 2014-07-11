@@ -156,9 +156,11 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\NinjectConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="App_Start\DatabaseConfig.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -209,7 +211,16 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CQRSMagic\CQRSMagic.csproj">
+      <Project>{B507050C-F8DD-44BF-81D7-3BABDCA8E8A4}</Project>
+      <Name>CQRSMagic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExampleDomain\ExampleDomain.csproj">
+      <Project>{22B51F57-6454-4624-8350-02C1373AEAC3}</Project>
+      <Name>ExampleDomain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Packages.config" />
   </ItemGroup>

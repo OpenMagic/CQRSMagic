@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -42,6 +43,11 @@ namespace CQRSMagic.Specifications.Steps.Support
             var entity = Mapper.Map<ContactTableEntity>(contact);
 
             await Repository.AddAsync(entity);
+        }
+
+        public Task<IEnumerable<ContactReadModel>> FindAllAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

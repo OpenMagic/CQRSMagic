@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using CQRSMagic.Events.Sourcing;
 
 namespace CQRSMagic.Events.Messaging
@@ -13,10 +14,10 @@ namespace CQRSMagic.Events.Messaging
             EventStore = eventStore;
         }
 
-        public void SendEvents(IEnumerable<IEvent> events)
+        public async Task SendEventsAsync(IEnumerable<IEvent> events)
         {
             // todo: unit tests
-            EventStore.SaveEvents(events);
+            await EventStore.SaveEventsAsync(events);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CQRSMagic.Events.Messaging;
 using CQRSMagic.Exceptions;
 
@@ -14,7 +15,7 @@ namespace CQRSMagic.Commands
             CommandHandlers = commandHandlers;
         }
 
-        public IEnumerable<IEvent> SendCommand(ICommand command)
+        public Task<IEnumerable<IEvent>> SendCommandAsync(ICommand command)
         {
             // todo: unit tests
             var commandHandler = CommandHandlers.GetCommandHandlerFor(command);
