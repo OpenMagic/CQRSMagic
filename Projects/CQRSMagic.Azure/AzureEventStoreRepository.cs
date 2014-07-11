@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using CQRSMagic.Azure.Support;
 using CQRSMagic.Domain;
 using CQRSMagic.Events.Messaging;
@@ -37,11 +36,11 @@ namespace CQRSMagic.Azure
 
         public void SaveEvents(IEnumerable<IEvent> events)
         {
-            foreach (var @event in events)
-            {
-                var entity = Serializer.Serialize(@event);
+            var entities = events.Select(@event => Serializer.Serialize(@event));
 
-                Repository.AddAsync(entity).Wait();
+            foreach (var entity in entities)
+            {
+                Repository.Add(entity);
             }
         }
     }

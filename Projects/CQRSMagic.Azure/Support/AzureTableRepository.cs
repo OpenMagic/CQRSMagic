@@ -24,6 +24,29 @@ namespace CQRSMagic.Azure.Support
             }
         }
 
+        public void Add(ITableEntity entity)
+        {
+            // todo: unit tests
+            try
+            {
+                var insert = TableOperation.Insert(entity);
+                var result = Table.Execute(insert);
+
+                if (result.HttpStatusCode == (int)HttpStatusCode.NoContent)
+                {
+                    return;
+                }
+
+                var message = string.Format("Expected result.HttpStatusCode to be {0}, but found {1}.", HttpStatusCode.NoContent, (HttpStatusCode)result.HttpStatusCode);
+                throw new AzureTableRepositoryException(message);
+            }
+            catch (Exception exception)
+            {
+                var message = string.Format("Cannot add {0}/{1}/{2}.", Table.Name, entity.PartitionKey, entity.RowKey);
+                throw new AzureTableRepositoryException(message, exception);
+            }
+        }
+
         public async Task AddAsync(TEntity entity)
         {
             // todo: unit tests
