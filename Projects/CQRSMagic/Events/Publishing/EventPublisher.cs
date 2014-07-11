@@ -15,18 +15,19 @@ namespace CQRSMagic.Events.Publishing
             Subscriptions = subscriptions;
         }
 
-        public async Task PublishEventsAsync(IEnumerable<IEvent> events)
+        public Task PublishEventsAsync(IEnumerable<IEvent> events)
         {
             // todo: unit tests
 
             foreach (var @event in events)
             {
-                // todo: will this stop the loop?
-                await PublishEventAsync(@event);
+                PublishEvent(@event);
             }
+
+            return Task.FromResult(0);
         }
 
-        private async Task PublishEventAsync(IEvent @event)
+        private void PublishEvent(IEvent @event)
         {
             try
             {
@@ -36,8 +37,7 @@ namespace CQRSMagic.Events.Publishing
                 {
                     try
                     {
-                        // todo: will this stop the loop?
-                        await subscription(@event);
+                        subscription(@event);
                     }
                     catch (Exception exception)
                     {
