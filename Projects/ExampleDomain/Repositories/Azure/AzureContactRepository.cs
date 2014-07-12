@@ -6,9 +6,10 @@ using AutoMapper;
 using CQRSMagic.Azure.Support;
 using ExampleDomain.Contacts.Queries.Models;
 using ExampleDomain.Contacts.Queries.Repositories;
+using ExampleDomain.Repositories.Azure.TableEntities;
 using Microsoft.WindowsAzure.Storage.Table;
 
-namespace CQRSMagic.Specifications.Steps.Support
+namespace ExampleDomain.Repositories.Azure
 {
     public class AzureContactRepository : IContactRepository
     {
@@ -28,7 +29,7 @@ namespace CQRSMagic.Specifications.Steps.Support
             Repository = new AzureTableRepository<ContactTableEntity>(connectionString, tableName);
         }
 
-        public async Task<ContactReadModel> GetByEmailAddressAsync(string emailAddress)
+        public async Task<ContactReadModel> GetContactByEmailAddressAsync(string emailAddress)
         {
             var filterCondition = TableQuery.GenerateFilterCondition("EmailAddress", QueryComparisons.Equal, emailAddress);
             var entities = await Repository.FindEntitiesWhereAsync(filterCondition);
@@ -38,14 +39,19 @@ namespace CQRSMagic.Specifications.Steps.Support
             return readModel;
         }
 
-        public async Task AddAsync(ContactReadModel contact)
+        public async Task AddContactAsync(ContactReadModel contact)
         {
             var entity = Mapper.Map<ContactTableEntity>(contact);
 
             await Repository.AddAsync(entity);
         }
 
-        public Task<IEnumerable<ContactReadModel>> FindAllAsync()
+        public Task DeleteContactByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<ContactReadModel>> FindAllContactsAsync()
         {
             throw new NotImplementedException();
         }

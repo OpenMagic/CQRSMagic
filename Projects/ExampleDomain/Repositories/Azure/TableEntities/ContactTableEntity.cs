@@ -1,6 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage.Table;
 
-namespace CQRSMagic.Specifications.Steps.Support
+namespace ExampleDomain.Repositories.Azure.TableEntities
 {
     public class ContactTableEntity : TableEntity
     {

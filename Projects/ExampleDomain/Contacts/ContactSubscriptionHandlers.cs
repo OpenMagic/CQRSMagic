@@ -4,11 +4,13 @@ using CQRSMagic.Events.Publishing;
 using ExampleDomain.Contacts.Events;
 using ExampleDomain.Contacts.Queries.Models;
 using ExampleDomain.Contacts.Queries.Repositories;
+using OpenMagic.Exceptions;
 
 namespace ExampleDomain.Contacts
 {
     public class ContactSubscriptionHandlers :
-        ISubscribeTo<AddedContact>
+        ISubscribeTo<AddedContact>,
+        ISubscribeTo<DeletedContact>
     {
         private readonly IContactRepository Repository;
 
@@ -24,11 +26,16 @@ namespace ExampleDomain.Contacts
             Repository = repository;
         }
 
-        public Task HandleEventAsync(AddedContact @event)
+        public async Task HandleEventAsync(AddedContact @event)
         {
             var readModel = Mapper.Map<ContactReadModel>(@event);
 
-            return Repository.AddAsync(readModel);
+            await Repository.AddContactAsync(readModel);
+        }
+
+        public async Task HandleEventAsync(DeletedContact @event)
+        {
+            await Repository.DeleteContactByIdAsync(@event.AggregateId);
         }
     }
 }

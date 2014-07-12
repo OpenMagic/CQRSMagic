@@ -1,15 +1,20 @@
 ﻿using System;
 using CQRSMagic.Events.Messaging;
-using ExampleDomain.Contacts.Queries.Models;
-using OpenMagic.Exceptions;
 
 namespace ExampleDomain.Contacts.Events
 {
     public class DeletedContact : IEvent
     {
-        public DeletedContact(ContactReadModel contact)
+        public DeletedContact()
         {
-            throw new ToDoException();
+            EventCreated = DateTime.UtcNow;
+        }
+
+        public DeletedContact(Type aggregateType, Guid aggregateId)
+            : this()
+        {
+            AggregateType = aggregateType;
+            AggregateId = aggregateId;
         }
 
         public Type AggregateType { get; private set; }

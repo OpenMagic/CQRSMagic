@@ -10,11 +10,11 @@ using CQRSMagic.Events.Messaging;
 using CQRSMagic.Events.Publishing;
 using CQRSMagic.Events.Sourcing;
 using CQRSMagic.Events.Sourcing.Repositories;
-using CQRSMagic.Specifications.Steps.Support;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
 using ExampleDomain.Contacts.Queries.Repositories;
+using ExampleDomain.Repositories.Azure;
 using FluentAssertions;
 using Microsoft.Practices.ServiceLocation;
 using Ninject;
@@ -124,7 +124,7 @@ namespace CQRSMagic.Specifications.Steps
         [Then(@"ContactQueryModel is added to Contacts table")]
         public void ThenContactQueryModelIsAddedToContactsTable()
         {
-            var contactViewModel = ContactRepository.GetByEmailAddressAsync(ContactEmailAddress).Result;
+            var contactViewModel = ContactRepository.GetContactByEmailAddressAsync(ContactEmailAddress).Result;
 
             contactViewModel.Id.Should().Be(AddContactCommand.AggregateId);
             contactViewModel.Name.Should().Be(ContactName);

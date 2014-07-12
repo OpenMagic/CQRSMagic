@@ -132,17 +132,25 @@
       <DependentUpon>%40Example.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Steps\Support\AzureContactRepository.cs" />
     <Compile Include="Steps\ExampleSteps.cs" />
-    <Compile Include="Steps\Support\ContactTableEntity.cs" />
-    <Compile Include="Steps\Support\InMemoryContactRepository.cs" />
     <Compile Include="Support\ActionShould.cs" />
+    <Compile Include="Support\ContactRepositoryExtensions.cs" />
+    <Compile Include="Support\FakeCommands.cs" />
+    <Compile Include="Support\MessageBusExtensions.cs" />
     <Compile Include="UnitTests\Azure\AzureEventSerializerTests.cs" />
     <Compile Include="UnitTests\Azure\AzureEventStoreRepositoryTests.cs" />
     <Compile Include="UnitTests\Azure\Support\EventWithAllAzureSupportedTypes.cs" />
     <Compile Include="UnitTests\Azure\Support\AzureTableRepositoryTests.cs" />
     <Compile Include="UnitTests\Events\Publishing\SubscriptionHandlersTests.cs" />
     <Compile Include="UnitTests\Commands\CommandHandlersTests.cs" />
+    <Compile Include="UnitTests\ExampleDomain\Configuration\ConfigurationCommandHandlersTests.cs" />
+    <Compile Include="Support\FakeModels.cs" />
+    <Compile Include="UnitTests\ExampleDomain\Contacts\ContactSubscriptionHandlersTests.cs" />
+    <Compile Include="UnitTests\ExampleDomain\ExampleDomainTestBase.cs" />
+    <Compile Include="Support\TestBase.cs" />
+    <Compile Include="UnitTests\ExampleMVCApplication\ExampleMvcApplicationTestBase.cs" />
+    <Compile Include="UnitTests\UnitTestsTestBase.cs" />
+    <Compile Include="UnitTests\ExampleMVCApplication\App_Start\DatabaseConfigTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -155,9 +163,7 @@
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Support\Domain\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CQRSMagic.Azure\CQRSMagic.Azure.csproj">
       <Project>{8621ea99-ba91-4692-bb23-35df06fecb2f}</Project>
@@ -170,6 +176,10 @@
     <ProjectReference Include="..\ExampleDomain\ExampleDomain.csproj">
       <Project>{22b51f57-6454-4624-8350-02c1373aeac3}</Project>
       <Name>ExampleDomain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExampleMVCApplication\ExampleMVCApplication.csproj">
+      <Project>{3F60DF45-4D7C-4029-8715-77AAEA8839B6}</Project>
+      <Name>ExampleMVCApplication</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

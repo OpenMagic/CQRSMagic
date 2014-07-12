@@ -1,5 +1,6 @@
 using System;
 using System.Web;
+using ExampleDomain.Repositories.InMemory;
 using ExampleMVCApplication;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Ninject;
@@ -60,7 +61,7 @@ namespace ExampleMVCApplication
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            NinjectConfig.RegisterServices(kernel);
+            NinjectConfig.RegisterServices(kernel, new InMemoryRepositories());
         }
     }
 }

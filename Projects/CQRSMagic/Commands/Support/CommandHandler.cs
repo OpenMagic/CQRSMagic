@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CQRSMagic.Events.Messaging;
+using Microsoft.Practices.ServiceLocation;
 
 namespace CQRSMagic.Commands.Support
 {
@@ -27,7 +28,7 @@ namespace CQRSMagic.Commands.Support
         private Task<IEnumerable<IEvent>> ExecuteSendCommand(ICommand command)
         {
             // todo: Use a container to create the instance
-            var obj = Activator.CreateInstance(ConcreteType);
+            var obj = ServiceLocator.Current.GetInstance(ConcreteType);
 
             var result = HandleMethod.Invoke(obj, new object[] {command});
             var events = (Task<IEnumerable<IEvent>>) result;

@@ -22,7 +22,8 @@ namespace CQRSMagic.Specifications.UnitTests.Events.Publishing
                 // Then
                 commandHandlers.Keys.ShouldBeEquivalentTo(new[]
                 {
-                    typeof(AddedContact)
+                    typeof(AddedContact),
+                    typeof(DeletedContact)
                 });
             }
         }
