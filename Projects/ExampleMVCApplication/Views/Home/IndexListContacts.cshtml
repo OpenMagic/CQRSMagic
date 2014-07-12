@@ -1,0 +1,22 @@
+﻿@model IEnumerable<ExampleDomain.Contacts.Queries.Models.ContactReadModel>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var contact in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => contact.Name)</td>
+                <td>@Html.DisplayFor(modelItem => contact.EmailAddress)</td>
+            </tr>
+        }
+    </tbody>
+
+</table>

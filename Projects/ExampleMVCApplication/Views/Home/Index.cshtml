@@ -8,22 +8,8 @@
 
 <h2>Contacts</h2>
 
-<table class="table table-striped table-responsive">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var contact in Model.Contacts)
-        {
-            <tr>
-                <td>@contact.Name</td>
-                <td>@contact.EmailAddress</td>
-            </tr>
-        }
-    </tbody>
-</table>
+@Html.Partial("IndexListContacts", Model.Contacts)
 
 <h2>Add Contact</h2>
+
+
