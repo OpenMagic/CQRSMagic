@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace ExampleDomain.Contacts.Queries.Models
 {
@@ -16,7 +17,10 @@ namespace ExampleDomain.Contacts.Queries.Models
         }
 
         public Guid Id { get; private set; }
+
         public string Name { get; private set; }
+
+        [DisplayName("Email Address")]
         public string EmailAddress { get; private set; }
     }
 }

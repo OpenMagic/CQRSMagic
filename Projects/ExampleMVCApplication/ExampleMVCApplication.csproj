@@ -211,7 +211,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\IndexCreateForm.cshtml" />
+    <Content Include="Views\Home\IndexAddContact.cshtml" />
     <Content Include="Views\Home\IndexListContacts.cshtml" />
   </ItemGroup>
   <ItemGroup>
