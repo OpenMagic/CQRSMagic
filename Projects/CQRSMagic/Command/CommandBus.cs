@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
@@ -9,15 +10,20 @@ namespace CQRSMagic.Command
 {
     public class CommandBus : ICommandBus
     {
+        private readonly ICommandHandlers CommandHandlers;
         private readonly IEventBus EventBus;
         private readonly IEventStore EventStore;
-        private readonly Dictionary<Type, Func<ICommand, Task<IEnumerable<IEvent>>>> Handlers;
 
         public CommandBus(IEventStore eventStore, IEventBus eventBus)
+            : this(eventStore, eventBus, new CommandHandlers())
+        {
+        }
+
+        public CommandBus(IEventStore eventStore, IEventBus eventBus, ICommandHandlers commandHandlers)
         {
             EventStore = eventStore;
             EventBus = eventBus;
-            Handlers = new Dictionary<Type, Func<ICommand, Task<IEnumerable<IEvent>>>>();
+            CommandHandlers = commandHandlers;
         }
 
         public async Task SendCommandAsync(ICommand command)
@@ -31,36 +37,20 @@ namespace CQRSMagic.Command
 
         public void RegisterHandler<TCommand>(Func<TCommand, Task<IEnumerable<IEvent>>> handler) where TCommand : ICommand
         {
-            var key = typeof(TCommand);
+            CommandHandlers.RegisterHandler(handler);
+        }
 
-            if (Handlers.ContainsKey(key))
-            {
-                throw new DuplicateCommandHandlerException(key);
-            }
-
-            Func<ICommand, Task<IEnumerable<IEvent>>> value = command => handler((TCommand) command);
-
-            Handlers.Add(key, value);
+        public void RegisterHandlers(Assembly searchAssembly)
+        {
+            CommandHandlers.RegisterHandlers(searchAssembly);
         }
 
         private Task<IEnumerable<IEvent>> GetEvents(ICommand command)
         {
-            var handler = GetHandler(command);
+            var handler = CommandHandlers.GetHandler(command);
             var events = handler(command);
 
             return events;
-        }
-
-        private Func<ICommand, Task<IEnumerable<IEvent>>> GetHandler(ICommand command)
-        {
-            Func<ICommand, Task<IEnumerable<IEvent>>> handler = null;
-
-            if (Handlers.TryGetValue(command.GetType(), out handler))
-            {
-                return handler;
-            }
-
-            throw new CommandHandlerNotFoundException(command);
         }
     }
 }

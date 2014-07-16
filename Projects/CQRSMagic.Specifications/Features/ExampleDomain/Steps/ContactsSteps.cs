@@ -39,7 +39,9 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
 
             ContactRepository = kernel.Get<IContactRepository>();
 
-            CommandBus.RegisterHandler<AddContact>(command => Task.FromResult((IEnumerable<IEvent>) new IEvent[] {new ContactAdded(command)}));
+            CommandBus.RegisterHandler<AddContact>(command => Task.FromResult((IEnumerable<IEvent>)new IEvent[] { new ContactAdded(command) }));
+            //CommandBus.RegisterHandlers(typeof(AddContact).Assembly);
+
             eventBus.RegisterHandler<ContactAdded>(@event => ContactRepository.HandleEvent(@event));
         }
 
