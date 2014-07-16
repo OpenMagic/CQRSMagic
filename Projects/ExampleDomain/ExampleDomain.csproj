@@ -60,13 +60,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Contacts\Commands\AddContact.cs" />
-    <Compile Include="Contacts\ContactAggregate.cs" />
-    <Compile Include="Contacts\Events\ContactAdded.cs" />
-    <Compile Include="Contacts\Queries\Repositories\IContactRepository.cs" />
-    <Compile Include="Contacts\Queries\Models\ContactReadModel.cs" />
-    <Compile Include="Contacts\Queries\ContactQuery.cs" />
-    <Compile Include="Exceptions\ReadModelNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

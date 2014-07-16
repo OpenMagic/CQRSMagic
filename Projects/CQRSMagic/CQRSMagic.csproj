@@ -63,38 +63,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Commands\Support\CommandHandler.cs" />
-    <Compile Include="Domain\Aggregate.cs" />
-    <Compile Include="Commands\CommandHandlers.cs" />
-    <Compile Include="Domain\Support\EventHandlers.cs" />
-    <Compile Include="Domain\IAggregate.cs" />
-    <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Commands\ICommandBus.cs" />
-    <Compile Include="Commands\ICommandHandlers.cs" />
-    <Compile Include="Commands\CommandBus.cs" />
-    <Compile Include="Events\Messaging\EventBus.cs" />
-    <Compile Include="Events\Publishing\SubscriptionHandlers.cs" />
-    <Compile Include="Events\Publishing\EventPublisher.cs" />
-    <Compile Include="Events\Publishing\ISubscriptionHandlers.cs" />
-    <Compile Include="Events\Publishing\ISubscribeTo.cs" />
-    <Compile Include="Events\Publishing\Support\SubscriptionHandler.cs" />
-    <Compile Include="Exceptions\AggregateNotFoundException.cs" />
-    <Compile Include="Events\Messaging\IApplyEvent.cs" />
-    <Compile Include="Events\Messaging\IEvent.cs" />
-    <Compile Include="Events\Sourcing\IEventStore.cs" />
-    <Compile Include="Commands\IHandleCommand.cs" />
-    <Compile Include="Events\Sourcing\Repositories\IEventStoreRepository.cs" />
-    <Compile Include="Events\Sourcing\Repositories\InMemoryEventStoreRepository.cs" />
-    <Compile Include="Events\Messaging\IEventBus.cs" />
-    <Compile Include="Events\Publishing\IEventPublisher.cs" />
-    <Compile Include="Exceptions\EventStoreException.cs" />
-    <Compile Include="Exceptions\EventException.cs" />
-    <Compile Include="Exceptions\SubscriptionException.cs" />
-    <Compile Include="Exceptions\CommandException.cs" />
-    <Compile Include="Exceptions\CQRSMagicException.cs" />
-    <Compile Include="IMessageBus.cs" />
-    <Compile Include="Events\Sourcing\EventStore.cs" />
-    <Compile Include="MessageBus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
