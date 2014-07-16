@@ -63,6 +63,14 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Command\CommandBase.cs" />
+    <Compile Include="Command\CommandBus.cs" />
+    <Compile Include="Command\ICommand.cs" />
+    <Compile Include="Command\ICommandBus.cs" />
+    <Compile Include="EventStorage\EventStore.cs" />
+    <Compile Include="Event\EventBase.cs" />
+    <Compile Include="Event\IEvent.cs" />
+    <Compile Include="EventStorage\IEventStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

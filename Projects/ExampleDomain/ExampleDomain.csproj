@@ -60,6 +60,12 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Contacts\Commands\AddContact.cs" />
+    <Compile Include="Contacts\ContactAggregate.cs" />
+    <Compile Include="Contacts\ContactReadModel.cs" />
+    <Compile Include="Contacts\ContactRepository.cs" />
+    <Compile Include="Contacts\Events\ContactAdded.cs" />
+    <Compile Include="Contacts\IContactRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
