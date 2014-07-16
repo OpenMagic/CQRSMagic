@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using EmptyStringGuard;
 using EmptyStringGuardValidationFlags = EmptyStringGuard.ValidationFlags;
 using ExampleDomain.Contacts.Queries.Models;
@@ -22,5 +23,16 @@ namespace ExampleMVCApplication.ViewModels.Home
         public string EmailAddress { get; set; }
 
         public IEnumerable<ContactReadModel> Contacts { get; set; }
+
+        public void SetAddContactDefaults()
+        {
+            if (Contacts.Any(c => c.Name == "Freddy"))
+            {
+                return;
+            }
+
+            Name = "Freddy";
+            EmailAddress = "freddy@example.com";
+        }
     }
 }

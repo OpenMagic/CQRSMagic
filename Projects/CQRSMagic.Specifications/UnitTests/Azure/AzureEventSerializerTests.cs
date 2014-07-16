@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
+using AzureMagic;
 using CQRSMagic.Azure;
-using CQRSMagic.Azure.Support;
 using CQRSMagic.Specifications.Support;
 using CQRSMagic.Specifications.UnitTests.Azure.Support;
 using FluentAssertions;

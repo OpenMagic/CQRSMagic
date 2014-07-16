@@ -1,5 +1,7 @@
 using System;
 using System.Web;
+using CQRSMagic.Azure;
+using ExampleDomain.Repositories.Azure;
 using ExampleDomain.Repositories.InMemory;
 using ExampleMVCApplication;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
@@ -61,7 +63,7 @@ namespace ExampleMVCApplication
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            NinjectConfig.RegisterServices(kernel, new InMemoryRepositories());
+            NinjectConfig.RegisterServices(kernel, RepositoryFactories.AzureRepositories);
         }
     }
 }

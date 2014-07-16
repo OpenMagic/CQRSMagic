@@ -1,5 +1,7 @@
+using System;
 using CQRSMagic.Specifications.Support;
 using ExampleDomain.Contacts.Queries.Repositories;
+using ExampleDomain.Repositories;
 using ExampleDomain.Repositories.InMemory;
 using ExampleMVCApplication;
 using Microsoft.Practices.ServiceLocation;
@@ -9,7 +11,18 @@ namespace CQRSMagic.Specifications.UnitTests
 {
     public abstract class UnitTestsTestBase : TestBase
     {
+        private readonly Func<IKernel, IRepositoryFactory> CreateRepositoryFactory;
         private bool RegisteredServices;
+
+        protected UnitTestsTestBase()
+            : this(kernel => new InMemoryRepositories())
+        {
+        }
+
+        protected UnitTestsTestBase(Func<IKernel, IRepositoryFactory> createRepositoryFactory)
+        {
+            CreateRepositoryFactory = createRepositoryFactory;
+        }
 
         protected IContactRepository ContactRepository
         {
@@ -25,7 +38,7 @@ namespace CQRSMagic.Specifications.UnitTests
         {
             if (!RegisteredServices)
             {
-                NinjectConfig.RegisterServices(new StandardKernel(), new InMemoryRepositories());
+                NinjectConfig.RegisterServices(new StandardKernel(), CreateRepositoryFactory);
                 RegisteredServices = true;
             }
 

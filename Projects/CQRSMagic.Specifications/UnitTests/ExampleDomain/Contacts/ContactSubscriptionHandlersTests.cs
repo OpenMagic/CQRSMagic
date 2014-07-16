@@ -1,16 +1,37 @@
 ﻿using System;
+using System.Linq;
+using AzureMagic;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Events;
 using ExampleDomain.Contacts.Queries.Repositories;
+using ExampleDomain.Repositories.Azure;
 using FakeItEasy;
+using FluentAssertions;
 using Xunit;
 
 namespace CQRSMagic.Specifications.UnitTests.ExampleDomain.Contacts
 {
     public class ContactSubscriptionHandlersTests : UnitTestsTestBase
     {
-        // ReSharper disable once InconsistentNaming
-        public class Handle_DeletedContact_Event : ContactSubscriptionHandlersTests
+        public class HandleAddedContactEvent : ContactSubscriptionHandlersTests
+        {
+            [Fact]
+            public void ShouldAddContactToRepository()
+            {
+                // Given
+                var contactRepository = new AzureContactRepository(AzureStorage.DevelopmentConnectionString, ContactsTableName);
+                var handlers = new ContactSubscriptionHandlers(contactRepository);
+                var addedContact = new AddedContact();
+
+                // When
+                handlers.HandleEventAsync(addedContact).Wait();
+
+                // Then
+                contactRepository.FindAllContactsAsync().Result.Count().Should().Be(1);
+            }
+        }
+
+        public class HandleDeletedContactEvent : ContactSubscriptionHandlersTests
         {
             [Fact]
             public void ShouldDeleteContactFromRepository()

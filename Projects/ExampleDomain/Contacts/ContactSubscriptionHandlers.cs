@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
+using Anotar.CommonLogging;
 using AutoMapper;
+using Common.Logging;
 using CQRSMagic.Events.Publishing;
 using ExampleDomain.Contacts.Events;
 using ExampleDomain.Contacts.Queries.Models;
 using ExampleDomain.Contacts.Queries.Repositories;
-using OpenMagic.Exceptions;
 
 namespace ExampleDomain.Contacts
 {
@@ -26,16 +27,16 @@ namespace ExampleDomain.Contacts
             Repository = repository;
         }
 
-        public async Task HandleEventAsync(AddedContact @event)
+        public Task HandleEventAsync(AddedContact @event)
         {
             var readModel = Mapper.Map<ContactReadModel>(@event);
 
-            await Repository.AddContactAsync(readModel);
+            return Repository.AddContactAsync(readModel);
         }
 
-        public async Task HandleEventAsync(DeletedContact @event)
+        public Task HandleEventAsync(DeletedContact @event)
         {
-            await Repository.DeleteContactByIdAsync(@event.AggregateId);
+            return Repository.DeleteContactByIdAsync(@event.AggregateId);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace CQRSMagic.Events.Publishing
             }
         }
 
-        private async Task PublishEventAsync(IEvent @event)
+        public async Task PublishEventAsync(IEvent @event)
         {
             try
             {

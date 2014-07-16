@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Anotar.CommonLogging;
 using CQRSMagic;
 using ExampleDomain.Configuration.Commands;
@@ -12,9 +13,9 @@ namespace ExampleMVCApplication
         {
             try
             {
-                messageBus.SendCommandAsync(new ClearAll());
-                messageBus.SendCommandAsync(new AddContact { EmailAddress = "tim@example.com", Name = "Tim" });
-                messageBus.SendCommandAsync(new AddContact { EmailAddress = "nicole@example.com", Name = "Nicole" });
+                messageBus.SendCommandAsync(new ClearAll()).Wait();
+                messageBus.SendCommandAsync(new AddContact { EmailAddress = "tim@example.com", Name = "Tim" }).Wait();
+                messageBus.SendCommandAsync(new AddContact { EmailAddress = "nicole@example.com", Name = "Nicole" }).Wait();
             }
             catch (Exception exception)
             {

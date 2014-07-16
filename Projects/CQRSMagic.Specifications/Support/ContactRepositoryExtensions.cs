@@ -13,5 +13,15 @@ namespace CQRSMagic.Specifications.Support
                 repository.AddContactAsync(contact).Wait();
             }
         }
+
+        public static void DeleteAllContacts(this IContactRepository repository)
+        {
+            var contacts = repository.FindAllContactsAsync().Result;
+
+            foreach (var contact in contacts)
+            {
+                repository.DeleteContactByIdAsync(contact.Id);
+            }
+        }
     }
 }

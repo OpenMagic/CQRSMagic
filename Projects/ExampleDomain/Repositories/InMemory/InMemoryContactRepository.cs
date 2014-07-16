@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using ExampleDomain.Contacts.Queries.Models;
 using ExampleDomain.Contacts.Queries.Repositories;
 using ExampleDomain.Exceptions;
-using OpenMagic.Exceptions;
 
 namespace ExampleDomain.Repositories.InMemory
 {
@@ -25,11 +24,21 @@ namespace ExampleDomain.Repositories.InMemory
             throw new ReadModelNotFoundException(string.Format("Cannot find contact by email address '{0}'.", emailAddress));
         }
 
+        public Task<ContactReadModel> GetContactById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task AddContactAsync(ContactReadModel contact)
         {
             Contacts.Add(contact);
 
             return Task.FromResult(0);
+        }
+
+        public Task DeleteContactByIdAsync(ContactReadModel contact)
+        {
+            throw new NotImplementedException();
         }
 
         public Task DeleteContactByIdAsync(Guid id)

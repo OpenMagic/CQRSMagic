@@ -46,6 +46,10 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="AzureMagic, Version=0.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\AzureMagic.0.3.6.0\lib\net40\AzureMagic.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging">
       <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
@@ -137,10 +141,10 @@
     <Compile Include="Support\ContactRepositoryExtensions.cs" />
     <Compile Include="Support\FakeCommands.cs" />
     <Compile Include="Support\MessageBusExtensions.cs" />
+    <Compile Include="Support\SyncEventPublisher.cs" />
     <Compile Include="UnitTests\Azure\AzureEventSerializerTests.cs" />
     <Compile Include="UnitTests\Azure\AzureEventStoreRepositoryTests.cs" />
     <Compile Include="UnitTests\Azure\Support\EventWithAllAzureSupportedTypes.cs" />
-    <Compile Include="UnitTests\Azure\Support\AzureTableRepositoryTests.cs" />
     <Compile Include="UnitTests\Events\Publishing\SubscriptionHandlersTests.cs" />
     <Compile Include="UnitTests\Commands\CommandHandlersTests.cs" />
     <Compile Include="UnitTests\ExampleDomain\Configuration\ConfigurationCommandHandlersTests.cs" />
@@ -148,6 +152,8 @@
     <Compile Include="UnitTests\ExampleDomain\Contacts\ContactSubscriptionHandlersTests.cs" />
     <Compile Include="UnitTests\ExampleDomain\ExampleDomainTestBase.cs" />
     <Compile Include="Support\TestBase.cs" />
+    <Compile Include="UnitTests\ExampleDomain\Repositories\Azure\AzureContactRepositoryTests.cs" />
+    <Compile Include="UnitTests\ExampleDomain\Repositories\ContactRepositoryTestBase.cs" />
     <Compile Include="UnitTests\ExampleMVCApplication\ExampleMvcApplicationTestBase.cs" />
     <Compile Include="UnitTests\UnitTestsTestBase.cs" />
     <Compile Include="UnitTests\ExampleMVCApplication\App_Start\DatabaseConfigTests.cs" />

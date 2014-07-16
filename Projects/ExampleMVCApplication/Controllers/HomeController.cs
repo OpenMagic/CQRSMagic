@@ -34,6 +34,8 @@ namespace ExampleMVCApplication.Controllers
                 Contacts = GetContacts()
             };
 
+            viewModel.SetAddContactDefaults();
+
             return View(viewModel);
         }
 

@@ -58,6 +58,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="AzureMagic, Version=0.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\AzureMagic.0.3.6.0\lib\net40\AzureMagic.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging">
       <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
@@ -97,6 +101,10 @@
     <Reference Include="NullGuard">
       <HintPath>..\..\packages\NullGuard.Fody.1.2.0.0\Lib\portable-net4+sl4+wp7+win8+MonoAndroid16+MonoTouch40\NullGuard.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="OpenMagic, Version=0.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\OpenMagic.0.3.6.0\lib\net45\OpenMagic.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -166,6 +174,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="App_Start\RepositoryFactories.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="App_Start\DatabaseConfig.cs" />
@@ -223,8 +232,12 @@
     <Content Include="Views\Home\IndexListContacts.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CQRSMagic.Azure\CQRSMagic.Azure.csproj">
+      <Project>{8621ea99-ba91-4692-bb23-35df06fecb2f}</Project>
+      <Name>CQRSMagic.Azure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CQRSMagic\CQRSMagic.csproj">
-      <Project>{B507050C-F8DD-44BF-81D7-3BABDCA8E8A4}</Project>
+      <Project>{b507050c-f8dd-44bf-81d7-3babdca8e8a4}</Project>
       <Name>CQRSMagic</Name>
     </ProjectReference>
     <ProjectReference Include="..\ExampleDomain\ExampleDomain.csproj">

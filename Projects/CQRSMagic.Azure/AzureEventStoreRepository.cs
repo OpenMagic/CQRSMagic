@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CQRSMagic.Azure.Support;
+using AzureMagic;
 using CQRSMagic.Domain;
 using CQRSMagic.Events.Messaging;
 using CQRSMagic.Events.Sourcing.Repositories;
@@ -29,8 +29,14 @@ namespace CQRSMagic.Azure
 
         public async Task<IEnumerable<IEvent>> GetEventsAsync<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
         {
-            var entities = await Repository.FindEntitiesByPartitionKeyAsync(aggregateId.ToPartitionKey());
-            var events = entities.Select(Serializer.Deserialize);
+            var partitionKey = aggregateId.ToPartitionKey();
+            var tableEntities = await (
+                from entity in Repository.Query()
+                where entity.PartitionKey == partitionKey
+                select entity
+                ).ExecuteAsync();
+
+            var events = tableEntities.Select(Serializer.Deserialize);
 
             return events;
         }
@@ -39,7 +45,7 @@ namespace CQRSMagic.Azure
         {
             // todo: unit tests
             var entities = events.Select(Serializer.Serialize);
-            var tasks = entities.Select(Repository.AddAsync);
+            var tasks = entities.Select(Repository.AddEntity);
 
             await Task.WhenAll(tasks.ToArray());
         }

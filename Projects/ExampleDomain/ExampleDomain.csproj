@@ -45,6 +45,10 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="AzureMagic, Version=0.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\AzureMagic.0.3.6.0\lib\net40\AzureMagic.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
@@ -101,6 +105,7 @@
     <Compile Include="Exceptions\ReadModelNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Azure\AzureContactRepository.cs" />
+    <Compile Include="Repositories\Azure\AzureRepositories.cs" />
     <Compile Include="Repositories\Azure\TableEntities\ContactTableEntity.cs" />
     <Compile Include="Repositories\InMemory\InMemoryContactRepository.cs" />
     <Compile Include="Repositories\InMemory\InMemoryRepositories.cs" />

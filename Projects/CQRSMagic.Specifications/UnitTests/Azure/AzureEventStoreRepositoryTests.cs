@@ -1,6 +1,6 @@
 ﻿using System;
+using AzureMagic;
 using CQRSMagic.Azure;
-using CQRSMagic.Azure.Support;
 using CQRSMagic.Specifications.Support;
 using FakeItEasy;
 using FluentAssertions;

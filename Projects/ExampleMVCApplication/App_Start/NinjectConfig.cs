@@ -17,7 +17,7 @@ namespace ExampleMVCApplication
         /// <summary>
         ///     Registers services for this web application.
         /// </summary>
-        public static void RegisterServices(IKernel kernel, IRepositoryFactory repositoryFactory)
+        public static void RegisterServices(IKernel kernel, Func<IKernel, IRepositoryFactory> createRepositoryFactory)
         {
             ServiceLocator.SetLocatorProvider(() => new NinjectServiceLocator(kernel));
 
@@ -31,7 +31,7 @@ namespace ExampleMVCApplication
             kernel.Bind<IEventStore>().To<EventStore>();
             kernel.Bind<ISubscriptionHandlers>().ToConstant(new SubscriptionHandlers(domainAssemblies));
 
-            BindRepositories(kernel, repositoryFactory);
+            BindRepositories(kernel, createRepositoryFactory(kernel));
         }
 
         private static void BindRepositories(IKernel kernel, IRepositoryFactory repositoryFactory)

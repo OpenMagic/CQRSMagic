@@ -2,14 +2,15 @@
 
 using System;
 using System.Linq;
+using AzureMagic;
 using CommonServiceLocator.NinjectAdapter.Unofficial;
 using CQRSMagic.Azure;
-using CQRSMagic.Azure.Support;
 using CQRSMagic.Commands;
 using CQRSMagic.Events.Messaging;
 using CQRSMagic.Events.Publishing;
 using CQRSMagic.Events.Sourcing;
 using CQRSMagic.Events.Sourcing.Repositories;
+using CQRSMagic.Specifications.Support;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
@@ -62,7 +63,6 @@ namespace CQRSMagic.Specifications.Steps
             EventStore = new EventStore(EventStoreRepository);
 
             var domainAssemblies = new[] {typeof(AddContact).Assembly};
-            var contactRepository = kernel.Get<IContactRepository>();
 
             var commandHandlers = new CommandHandlers(domainAssemblies);
             var commandBus = new CommandBus(commandHandlers);
@@ -70,7 +70,7 @@ namespace CQRSMagic.Specifications.Steps
             var eventBus = new EventBus(EventStore);
 
             var subscriptionHandlers = new SubscriptionHandlers(domainAssemblies);
-            var eventPublisher = new EventPublisher(subscriptionHandlers);
+            var eventPublisher = new SyncEventPublisher(subscriptionHandlers);
 
             MessageBus = new MessageBus(commandBus, eventBus, eventPublisher);
             ContactRepository = ServiceLocator.Current.GetInstance<IContactRepository>();
