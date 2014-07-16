@@ -31,7 +31,7 @@ namespace CQRSMagic.Domain
 
                 try
                 {
-                    eventHandler.Invoke(this, new object[] { @event });
+                    eventHandler.Invoke(this, new object[] {@event});
                 }
                 catch (Exception exception)
                 {

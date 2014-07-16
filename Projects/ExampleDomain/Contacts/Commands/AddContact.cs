@@ -1,5 +1,4 @@
-﻿using System;
-using CQRSMagic.Command;
+﻿using CQRSMagic.Command;
 
 namespace ExampleDomain.Contacts.Commands
 {

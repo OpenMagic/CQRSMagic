@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CQRSMagic.Command;
 
 namespace CQRSMagic.Event
 {
@@ -33,7 +32,7 @@ namespace CQRSMagic.Event
             var key = typeof(TEvent);
             var eventHandlers = Handlers.GetOrAdd(key, new List<Func<IEvent, Task>>());
 
-            Func<IEvent, Task> value = @event => handler((TEvent)@event);
+            Func<IEvent, Task> value = @event => handler((TEvent) @event);
 
             eventHandlers.Add(value);
         }

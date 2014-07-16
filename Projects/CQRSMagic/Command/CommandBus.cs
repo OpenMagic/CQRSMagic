@@ -9,8 +9,8 @@ namespace CQRSMagic.Command
 {
     public class CommandBus : ICommandBus
     {
-        private readonly IEventStore EventStore;
         private readonly IEventBus EventBus;
+        private readonly IEventStore EventStore;
         private readonly Dictionary<Type, Func<ICommand, Task<IEnumerable<IEvent>>>> Handlers;
 
         public CommandBus(IEventStore eventStore, IEventBus eventBus)
@@ -38,7 +38,7 @@ namespace CQRSMagic.Command
                 throw new DuplicateCommandHandlerException(key);
             }
 
-            Func<ICommand, Task<IEnumerable<IEvent>>> value = command => handler((TCommand)command);
+            Func<ICommand, Task<IEnumerable<IEvent>>> value = command => handler((TCommand) command);
 
             Handlers.Add(key, value);
         }

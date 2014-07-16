@@ -8,8 +8,8 @@ namespace CQRSMagic.EventStorage
 {
     public class EventStore : IEventStore
     {
-        private readonly IEventStoreRepository Repository;
         private readonly IAggregateFactory AggregateFactory;
+        private readonly IEventStoreRepository Repository;
 
         public EventStore(IEventStoreRepository repository, IAggregateFactory aggregateFactory)
         {

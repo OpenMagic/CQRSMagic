@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using CQRSMagic.Command;
 using CQRSMagic.Domain;
 using CQRSMagic.Event;
@@ -10,7 +9,6 @@ using ExampleDomain;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
-using ExampleDomain.Repositories.InMemory;
 using FluentAssertions;
 using Ninject;
 using TechTalk.SpecFlow;
@@ -40,7 +38,7 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
             kernel.Bind<IEventStore>().ToConstant(EventStore);
 
             ContactRepository = kernel.Get<IContactRepository>();
-            
+
             CommandBus.RegisterHandler<AddContact>(command => Task.FromResult((IEnumerable<IEvent>) new IEvent[] {new ContactAdded(command)}));
             eventBus.RegisterHandler<ContactAdded>(@event => ContactRepository.HandleEvent(@event));
         }

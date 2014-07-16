@@ -31,10 +31,9 @@ namespace CQRSMagic.Domain
             var handlers =
                 from @interface in type.GetInterfaces()
                 where @interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(IApplyEvent<>)
-                select new { EventType = @interface.GetGenericArguments()[0], MethodInfo = @interface.GetMethods().Single() };
+                select new {EventType = @interface.GetGenericArguments()[0], MethodInfo = @interface.GetMethods().Single()};
 
             return handlers.ToDictionary(x => x.EventType, x => x.MethodInfo);
         }
-
     }
 }

@@ -9,8 +9,8 @@ namespace ExampleDomain.Repositories.InMemory
 {
     public class InMemoryContactRepository : IContactRepository
     {
-        private readonly IEventStore EventStore;
         private readonly ConcurrentDictionary<Guid, ContactReadModel> Contacts;
+        private readonly IEventStore EventStore;
 
         public InMemoryContactRepository(IEventStore eventStore)
         {
@@ -33,7 +33,7 @@ namespace ExampleDomain.Repositories.InMemory
                 //return Task.FromResult(true);
                 return;
             }
-            
+
             throw new Exception(string.Format("Cannot add Contacts/{0}. Probably a duplicate.", readModel.Id));
         }
     }
