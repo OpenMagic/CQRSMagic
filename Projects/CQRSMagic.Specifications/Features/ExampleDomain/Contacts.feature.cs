@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace CQRSMagic.Specifications.Features.Example
+namespace CQRSMagic.Specifications.Features.ExampleDomain
 {
     using TechTalk.SpecFlow;
     

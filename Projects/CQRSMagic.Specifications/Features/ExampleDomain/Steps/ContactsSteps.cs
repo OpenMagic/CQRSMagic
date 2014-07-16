@@ -1,32 +1,42 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using CQRSMagic.Command;
+using CQRSMagic.Domain;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
+using ExampleDomain;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
 using FluentAssertions;
+using Ninject;
 using TechTalk.SpecFlow;
 
-namespace CQRSMagic.Specifications.Features.Example.Steps
+namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
 {
     [Binding]
     public class ContactsSteps
     {
-        private readonly Guid ContactId;
         private readonly ICommandBus CommandBus;
-        private readonly IEventStore EventStore;
+        private readonly Guid ContactId;
         private readonly IContactRepository ContactRepository;
+        private readonly IEventStore EventStore;
 
         private string EmailAddress;
         private string Name;
 
         public ContactsSteps()
         {
+            var kernel = IoC.RegisterServices(new StandardKernel());
+
             ContactId = Guid.NewGuid();
-            CommandBus = new CommandBus();
-            EventStore = new EventStore();
+            EventStore = new EventStore(kernel.Get<IEventStoreRepository>(), kernel.Get<IAggregateFactory>());
+            CommandBus = new CommandBus(EventStore);
             ContactRepository = new ContactRepository();
+
+            CommandBus.RegisterHandler<AddContact>(command => Task.FromResult((IEnumerable<IEvent>) new IEvent[] {new ContactAdded(command)}));
         }
 
         [Given(@"name is (.*)")]
@@ -44,7 +54,7 @@ namespace CQRSMagic.Specifications.Features.Example.Steps
         [When(@"AddContact command is sent")]
         public void WhenAddContactCommandIsSent()
         {
-            var addContact = new AddContact { Id = Guid.NewGuid(), Name = Name, EmailAddress = EmailAddress };
+            var addContact = new AddContact {Id = ContactId, Name = Name, EmailAddress = EmailAddress};
             CommandBus.SendCommandAsync(addContact).Wait();
         }
 
@@ -52,7 +62,7 @@ namespace CQRSMagic.Specifications.Features.Example.Steps
         public void ThenContactAddedEventIsAddedToTheEventStore()
         {
             var actualEvents = EventStore.FindEventsAsync(ContactId).Result;
-            var expectedEvents = new IEvent[] { new ContactAdded { Id = ContactId, Name = Name, EmailAddress = EmailAddress } };
+            var expectedEvents = new IEvent[] {new ContactAdded(ContactId, Name, EmailAddress)};
 
             expectedEvents.ShouldAllBeEquivalentTo(actualEvents);
         }

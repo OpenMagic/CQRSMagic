@@ -1,20 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CQRSMagic.Domain;
 using CQRSMagic.Event;
 
 namespace CQRSMagic.EventStorage
 {
     public class EventStore : IEventStore
     {
-        public Task<IEnumerable<IEvent>> FindEventsAsync(Guid aggregateId)
+        private readonly IEventStoreRepository Repository;
+        private readonly IAggregateFactory AggregateFactory;
+
+        public EventStore(IEventStoreRepository repository, IAggregateFactory aggregateFactory)
         {
-            throw new NotImplementedException();
+            Repository = repository;
+            AggregateFactory = aggregateFactory;
         }
 
-        public Task<TAggregate> GetAggregateAsync<TAggregate>(Guid aggregateId)
+        public async Task<IEnumerable<IEvent>> FindEventsAsync(Guid aggregateId)
         {
-            throw new NotImplementedException();
+            return await Repository.FindEventsAsync(aggregateId);
+        }
+
+        public async Task<TAggregate> GetAggregateAsync<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
+        {
+            var events = await Repository.FindEventsAsync(aggregateId);
+            var aggregate = AggregateFactory.CreateInstance<TAggregate>();
+
+            aggregate.ApplyEvents(events);
+
+            return aggregate;
+        }
+
+        public Task SaveEventsAsync(IEnumerable<IEvent> events)
+        {
+            return Repository.SaveEventsAsync(events);
         }
     }
 }

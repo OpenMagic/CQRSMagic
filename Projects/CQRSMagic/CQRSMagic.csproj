@@ -63,11 +63,21 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Domain\AggregateBase.cs" />
+    <Compile Include="Domain\AggregateEventHandlers.cs" />
+    <Compile Include="Domain\AggregateFactory.cs" />
     <Compile Include="Command\CommandBase.cs" />
     <Compile Include="Command\CommandBus.cs" />
+    <Compile Include="Command\CommandHandlerNotFoundException.cs" />
+    <Compile Include="Command\DuplicateCommandHandlerException.cs" />
     <Compile Include="Command\ICommand.cs" />
     <Compile Include="Command\ICommandBus.cs" />
+    <Compile Include="Event\EventException.cs" />
+    <Compile Include="Event\IApplyEvent.cs" />
     <Compile Include="EventStorage\EventStore.cs" />
+    <Compile Include="Domain\IAggregate.cs" />
+    <Compile Include="Domain\IAggregateFactory.cs" />
+    <Compile Include="EventStorage\IEventStoreRepository.cs" />
     <Compile Include="Event\EventBase.cs" />
     <Compile Include="Event\IEvent.cs" />
     <Compile Include="EventStorage\IEventStore.cs" />

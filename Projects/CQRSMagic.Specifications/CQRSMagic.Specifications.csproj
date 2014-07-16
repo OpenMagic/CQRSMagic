@@ -126,17 +126,17 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Features\Example\Contacts.feature.cs">
+    <Compile Include="Features\ExampleDomain\Contacts.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Contacts.feature</DependentUpon>
     </Compile>
-    <Compile Include="Features\Example\Steps\ContactsSteps.cs" />
+    <Compile Include="Features\ExampleDomain\Steps\ContactsSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Features\Example\Contacts.feature">
+    <None Include="Features\ExampleDomain\Contacts.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Contacts.feature.cs</LastGenOutput>
     </None>
@@ -145,7 +145,9 @@
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Support\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CQRSMagic.Azure\CQRSMagic.Azure.csproj">
       <Project>{8621ea99-ba91-4692-bb23-35df06fecb2f}</Project>

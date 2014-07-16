@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using OpenMagic.Exceptions;
 
 namespace ExampleDomain.Contacts
 {
@@ -7,7 +8,7 @@ namespace ExampleDomain.Contacts
     {
         public Task<ContactReadModel> GetContactAsync(Guid contactId)
         {
-            throw new NotImplementedException();
+            throw new ToDoException();
         }
     }
 }
