@@ -10,6 +10,7 @@ using ExampleDomain;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
+using ExampleDomain.Repositories.InMemory;
 using FluentAssertions;
 using Ninject;
 using TechTalk.SpecFlow;
@@ -30,13 +31,18 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
         public ContactsSteps()
         {
             var kernel = IoC.RegisterServices(new StandardKernel());
+            var eventBus = new EventBus();
 
             ContactId = Guid.NewGuid();
             EventStore = new EventStore(kernel.Get<IEventStoreRepository>(), kernel.Get<IAggregateFactory>());
-            CommandBus = new CommandBus(EventStore);
-            ContactRepository = new ContactRepository();
+            CommandBus = new CommandBus(EventStore, eventBus);
 
+            kernel.Bind<IEventStore>().ToConstant(EventStore);
+
+            ContactRepository = kernel.Get<IContactRepository>();
+            
             CommandBus.RegisterHandler<AddContact>(command => Task.FromResult((IEnumerable<IEvent>) new IEvent[] {new ContactAdded(command)}));
+            eventBus.RegisterHandler<ContactAdded>(@event => ContactRepository.HandleEvent(@event));
         }
 
         [Given(@"name is (.*)")]

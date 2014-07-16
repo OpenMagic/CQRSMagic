@@ -63,6 +63,8 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Event\EventBus.cs" />
+    <Compile Include="Event\IEventBus.cs" />
     <Compile Include="Domain\AggregateBase.cs" />
     <Compile Include="Domain\AggregateEventHandlers.cs" />
     <Compile Include="Domain\AggregateFactory.cs" />

@@ -1,5 +1,6 @@
 ﻿using CQRSMagic.Domain;
 using CQRSMagic.EventStorage;
+using ExampleDomain.Contacts;
 using ExampleDomain.Repositories.InMemory;
 using Ninject;
 
@@ -9,10 +10,17 @@ namespace ExampleDomain
     {
         public static IKernel RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IEventStoreRepository>().To<InMemoryEventStoreRepository>();
             kernel.Bind<IAggregateFactory>().To<AggregateFactory>();
 
+            RegisterInMemoryRepositories(kernel);
+
             return kernel;
+        }
+
+        private static void RegisterInMemoryRepositories(IKernel kernel)
+        {
+            kernel.Bind<IContactRepository>().To<InMemoryContactRepository>();
+            kernel.Bind<IEventStoreRepository>().To<InMemoryEventStoreRepository>();
         }
     }
 }

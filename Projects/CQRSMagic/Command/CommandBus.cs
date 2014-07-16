@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
@@ -9,19 +10,23 @@ namespace CQRSMagic.Command
     public class CommandBus : ICommandBus
     {
         private readonly IEventStore EventStore;
+        private readonly IEventBus EventBus;
         private readonly Dictionary<Type, Func<ICommand, Task<IEnumerable<IEvent>>>> Handlers;
 
-        public CommandBus(IEventStore eventStore)
+        public CommandBus(IEventStore eventStore, IEventBus eventBus)
         {
             EventStore = eventStore;
+            EventBus = eventBus;
             Handlers = new Dictionary<Type, Func<ICommand, Task<IEnumerable<IEvent>>>>();
         }
 
         public async Task SendCommandAsync(ICommand command)
         {
-            var events = await GetEvents(command);
+            var tasks = new List<Task>();
+            var events = (await GetEvents(command)).ToArray();
 
-            await EventStore.SaveEventsAsync(events);
+            tasks.Add(EventStore.SaveEventsAsync(events));
+            tasks.Add(EventBus.SendEventsAsync(events));
         }
 
         public void RegisterHandler<TCommand>(Func<TCommand, Task<IEnumerable<IEvent>>> handler) where TCommand : ICommand
