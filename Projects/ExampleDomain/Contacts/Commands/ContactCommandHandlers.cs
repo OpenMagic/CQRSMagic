@@ -9,7 +9,7 @@ namespace ExampleDomain.Contacts.Commands
     public class ContactCommandHandlers :
         IHandleCommand<CreateContact>
     {
-        public Task<IEnumerable<IEvent>> HandleCommand(CreateContact command)
+        public Task<IEnumerable<IEvent>> HandleCommandAsync(CreateContact command)
         {
             return Task.FromResult((IEnumerable<IEvent>) new IEvent[] {new CreatedContact(command)});
         }
