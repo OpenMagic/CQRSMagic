@@ -19,7 +19,7 @@ namespace ExampleDomain.Contacts.Events
         }
 
         public CreatedContact(CreateContact contact)
-            : this(contact.Id, contact.Name, contact.EmailAddress)
+            : this(contact.AggregateId, contact.Name, contact.EmailAddress)
         {
         }
 
