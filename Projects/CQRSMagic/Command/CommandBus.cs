@@ -14,8 +14,8 @@ namespace CQRSMagic.Command
         private readonly IEventBus EventBus;
         private readonly IEventStore EventStore;
 
-        public CommandBus(IEventStore eventStore, IEventBus eventBus)
-            : this(eventStore, eventBus, new CommandHandlers())
+        public CommandBus(IEventStore eventStore, IEventBus eventBus, IDependencyResolver dependencyResolver)
+            : this(eventStore, eventBus, new CommandHandlers(dependencyResolver))
         {
         }
 

@@ -1,16 +1,16 @@
-﻿using CQRSMagic.Domain;
+﻿using CQRSMagic;
 using CQRSMagic.EventStorage;
 using ExampleDomain.Contacts;
 using ExampleDomain.Repositories.InMemory;
 using Ninject;
 
-namespace ExampleDomain
+namespace ExampleDomain.Support
 {
     public class IoC
     {
         public static IKernel RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IAggregateFactory>().To<AggregateFactory>();
+            kernel.Bind<IDependencyResolver>().ToConstant(new DependencyResolver(kernel));
 
             RegisterInMemoryRepositories(kernel);
 

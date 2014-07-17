@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CQRSMagic.Domain;
 using CQRSMagic.Event;
+using CQRSMagic.Support;
 
 namespace CQRSMagic.EventStorage
 {
     public class EventStore : IEventStore
     {
-        private readonly IAggregateFactory AggregateFactory;
         private readonly IEventStoreRepository Repository;
+        private readonly IDependencyResolver DependencyResolver;
 
-        public EventStore(IEventStoreRepository repository, IAggregateFactory aggregateFactory)
+        public EventStore(IEventStoreRepository repository, IDependencyResolver dependencyResolver)
         {
             Repository = repository;
-            AggregateFactory = aggregateFactory;
+            DependencyResolver = dependencyResolver;
         }
 
         public async Task<IEnumerable<IEvent>> FindEventsAsync(Guid aggregateId)
@@ -25,7 +26,7 @@ namespace CQRSMagic.EventStorage
         public async Task<TAggregate> GetAggregateAsync<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
         {
             var events = await Repository.FindEventsAsync(aggregateId);
-            var aggregate = AggregateFactory.CreateInstance<TAggregate>();
+            var aggregate = DependencyResolver.GetService<TAggregate>();
 
             aggregate.ApplyEvents(events);
 

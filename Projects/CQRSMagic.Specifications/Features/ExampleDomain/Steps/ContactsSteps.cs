@@ -9,6 +9,7 @@ using ExampleDomain;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
+using ExampleDomain.Support;
 using FluentAssertions;
 using Ninject;
 using TechTalk.SpecFlow;
@@ -32,15 +33,14 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
             var eventBus = new EventBus();
 
             ContactId = Guid.NewGuid();
-            EventStore = new EventStore(kernel.Get<IEventStoreRepository>(), kernel.Get<IAggregateFactory>());
-            CommandBus = new CommandBus(EventStore, eventBus);
+            EventStore = new EventStore(kernel.Get<IEventStoreRepository>(), kernel.Get<IDependencyResolver>());
+            CommandBus = new CommandBus(EventStore, eventBus, kernel.Get<IDependencyResolver>());
 
             kernel.Bind<IEventStore>().ToConstant(EventStore);
 
             ContactRepository = kernel.Get<IContactRepository>();
 
-            CommandBus.RegisterHandler<AddContact>(command => Task.FromResult((IEnumerable<IEvent>)new IEvent[] { new ContactAdded(command) }));
-            //CommandBus.RegisterHandlers(typeof(AddContact).Assembly);
+            CommandBus.RegisterHandlers(typeof(AddContact).Assembly);
 
             eventBus.RegisterHandler<ContactAdded>(@event => ContactRepository.HandleEvent(@event));
         }
