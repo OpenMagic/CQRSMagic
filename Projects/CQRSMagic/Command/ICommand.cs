@@ -4,6 +4,6 @@ namespace CQRSMagic.Command
 {
     public interface ICommand
     {
-        Guid Id { get; }
+        Guid AggregateId { get; }
     }
 }

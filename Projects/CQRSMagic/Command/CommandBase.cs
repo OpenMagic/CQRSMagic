@@ -4,6 +4,6 @@ namespace CQRSMagic.Command
 {
     public class CommandBase : ICommand
     {
-        public Guid Id { get; set; }
+        public Guid AggregateId { get; set; }
     }
 }

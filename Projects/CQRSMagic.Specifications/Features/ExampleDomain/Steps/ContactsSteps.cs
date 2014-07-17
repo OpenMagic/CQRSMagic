@@ -96,7 +96,7 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
         [When(@"AddContact command is sent")]
         public void WhenAddContactCommandIsSent()
         {
-            var addContact = new CreateContact {Id = ContactId, Name = Name, EmailAddress = EmailAddress};
+            var addContact = new CreateContact {AggregateId = ContactId, Name = Name, EmailAddress = EmailAddress};
             var tasks = CommandBus.SendCommandAsync(addContact).Result;
 
             Task.WaitAll(tasks.ToArray());
