@@ -6,12 +6,12 @@ using ExampleDomain.Contacts.Events;
 namespace ExampleDomain.Contacts
 {
     public class ContactAggregate : AggregateBase,
-        IApplyEvent<ContactAdded>
+        IApplyEvent<CreatedContact>
     {
         public string Name { get; private set; }
         public string EmailAddress { get; private set; }
 
-        public Task ApplyEventAsync(ContactAdded @event)
+        public Task ApplyEventAsync(CreatedContact @event)
         {
             Id = @event.AggregateId;
             Name = @event.Name;

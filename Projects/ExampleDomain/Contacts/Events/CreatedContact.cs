@@ -4,16 +4,21 @@ using ExampleDomain.Contacts.Commands;
 
 namespace ExampleDomain.Contacts.Events
 {
-    public class ContactAdded : EventBase
+    public class CreatedContact : EventBase
     {
-        public ContactAdded(Guid contactId, string name, string emailAddress)
+        protected CreatedContact()
         {
-            AggregateId = contactId;
+            // AzureEventSerializer requires a parameterless constructor.
+        }
+
+        public CreatedContact(Guid contactId, string name, string emailAddress)
+            : base(contactId)
+        {
             Name = name;
             EmailAddress = emailAddress;
         }
 
-        public ContactAdded(AddContact contact)
+        public CreatedContact(CreateContact contact)
             : this(contact.Id, contact.Name, contact.EmailAddress)
         {
         }

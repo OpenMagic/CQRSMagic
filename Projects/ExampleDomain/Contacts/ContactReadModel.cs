@@ -1,4 +1,5 @@
 ﻿using System;
+using ExampleDomain.Repositories.Azure.TableEntities;
 
 namespace ExampleDomain.Contacts
 {
@@ -9,6 +10,13 @@ namespace ExampleDomain.Contacts
             Id = id;
             Name = name;
             EmailAddress = emailAddress;
+        }
+
+        public ContactReadModel(ContactTableEntity tableEntity)
+        {
+            Id = new Guid(tableEntity.PartitionKey);
+            Name = tableEntity.Name;
+            EmailAddress = tableEntity.EmailAddress;
         }
 
         public Guid Id { get; private set; }

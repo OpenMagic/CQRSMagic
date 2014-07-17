@@ -23,7 +23,7 @@ namespace ExampleDomain.Repositories.InMemory
             return Task.FromResult(Contacts[contactId]);
         }
 
-        public async Task AddContactAsync(ContactAdded @event)
+        public async Task AddContactAsync(CreatedContact @event)
         {
             var aggregate = await EventStore.GetAggregateAsync<ContactAggregate>(@event.AggregateId);
             var readModel = new ContactReadModel(aggregate.Id, aggregate.Name, aggregate.EmailAddress);

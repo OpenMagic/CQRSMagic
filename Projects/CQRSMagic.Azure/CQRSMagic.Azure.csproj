@@ -39,6 +39,10 @@
       <HintPath>..\..\packages\Anotar.CommonLogging.Fody.2.10.2\Lib\portable-net4+sl5+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\Anotar.CommonLogging.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="AzureMagic, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\AzureMagic.0.4.0.0\lib\net40\AzureMagic.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging.Core">
       <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
@@ -93,6 +97,10 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AzureEventStoreRepository.cs" />
+    <Compile Include="AzureEventSerializer.cs" />
+    <Compile Include="EventTableEntity.cs" />
+    <Compile Include="IAzureEventSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +115,9 @@
       <Project>{b507050c-f8dd-44bf-81d7-3babdca8e8a4}</Project>
       <Name>CQRSMagic</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ToDoMoveToAzureMagic\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\Fody.1.24.0\build\Fody.targets" Condition="Exists('..\..\packages\Fody.1.24.0\build\Fody.targets')" />

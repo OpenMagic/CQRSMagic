@@ -8,7 +8,7 @@ namespace CQRSMagic.Command
 {
     public interface ICommandBus
     {
-        Task SendCommandAsync(ICommand command);
+        Task<IEnumerable<Task>> SendCommandAsync(ICommand command);
         void RegisterHandler<TCommand>(Func<TCommand, Task<IEnumerable<IEvent>>> handler) where TCommand : ICommand;
         void RegisterHandlers(Assembly searchAssembly);
     }

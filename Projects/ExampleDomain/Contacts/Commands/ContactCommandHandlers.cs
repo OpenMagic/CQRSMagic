@@ -7,11 +7,11 @@ using ExampleDomain.Contacts.Events;
 namespace ExampleDomain.Contacts.Commands
 {
     public class ContactCommandHandlers :
-        IHandleCommand<AddContact>
+        IHandleCommand<CreateContact>
     {
-        public Task<IEnumerable<IEvent>> HandleCommand(AddContact command)
+        public Task<IEnumerable<IEvent>> HandleCommand(CreateContact command)
         {
-            return Task.FromResult((IEnumerable<IEvent>) new IEvent[] {new ContactAdded(command)});
+            return Task.FromResult((IEnumerable<IEvent>) new IEvent[] {new CreatedContact(command)});
         }
     }
 }

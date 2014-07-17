@@ -2,7 +2,7 @@
 
 namespace ExampleDomain.Contacts.Commands
 {
-    public class AddContact : CommandBase
+    public class CreateContact : CommandBase
     {
         public string Name { get; set; }
         public string EmailAddress { get; set; }

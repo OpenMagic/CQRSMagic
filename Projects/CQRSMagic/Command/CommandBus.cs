@@ -26,13 +26,15 @@ namespace CQRSMagic.Command
             CommandHandlers = commandHandlers;
         }
 
-        public async Task SendCommandAsync(ICommand command)
+        public async Task<IEnumerable<Task>> SendCommandAsync(ICommand command)
         {
             var tasks = new List<Task>();
             var events = (await GetEvents(command)).ToArray();
 
             tasks.Add(EventStore.SaveEventsAsync(events));
             tasks.Add(EventBus.SendEventsAsync(events));
+
+            return tasks.AsEnumerable();
         }
 
         public void RegisterHandler<TCommand>(Func<TCommand, Task<IEnumerable<IEvent>>> handler) where TCommand : ICommand

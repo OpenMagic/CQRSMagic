@@ -4,7 +4,7 @@ using CQRSMagic.Event;
 namespace ExampleDomain.Contacts.Events
 {
     public class ContactEventSubscriptions :
-        ISubscribeTo<ContactAdded>
+        ISubscribeTo<CreatedContact>
     {
         private readonly IContactRepository Repository;
 
@@ -13,7 +13,7 @@ namespace ExampleDomain.Contacts.Events
             Repository = repository;
         }
 
-        public Task HandleEvent(ContactAdded @event)
+        public Task HandleEvent(CreatedContact @event)
         {
             return Repository.AddContactAsync(@event);
         }
