@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -33,14 +32,14 @@ namespace CQRSMagic.Event
             return Task.FromResult(tasks.AsEnumerable());
         }
 
-        public void RegisterHandler<TEvent>(Func<TEvent, Task> handler) where TEvent : IEvent
-        {
-            EventHandlers.RegisterHandler(handler);
-        }
-
         public void RegisterHandlers(Assembly searchAssembly)
         {
             EventHandlers.RegisterHandlers(searchAssembly);
+        }
+
+        public void RegisterHandler<TEvent>(Func<TEvent, Task> handler) where TEvent : IEvent
+        {
+            EventHandlers.RegisterHandler(handler);
         }
 
         private IEnumerable<Task> SendEventAsync(IEvent @event)

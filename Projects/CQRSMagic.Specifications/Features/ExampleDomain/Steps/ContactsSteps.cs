@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using CQRSMagic.Command;
-using CQRSMagic.Domain;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
-using ExampleDomain;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;

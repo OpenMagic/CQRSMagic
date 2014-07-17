@@ -9,8 +9,8 @@ namespace CQRSMagic.EventStorage
 {
     public class EventStore : IEventStore
     {
-        private readonly IEventStoreRepository Repository;
         private readonly IDependencyResolver DependencyResolver;
+        private readonly IEventStoreRepository Repository;
 
         public EventStore(IEventStoreRepository repository, IDependencyResolver dependencyResolver)
         {

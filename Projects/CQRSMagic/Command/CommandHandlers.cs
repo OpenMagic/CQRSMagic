@@ -33,7 +33,7 @@ namespace CQRSMagic.Command
         public void RegisterHandler<TCommand>(Func<TCommand, Task<IEnumerable<IEvent>>> handler) where TCommand : ICommand
         {
             var key = typeof(TCommand);
-            Func<ICommand, Task<IEnumerable<IEvent>>> value = command => handler((TCommand)command);
+            Func<ICommand, Task<IEnumerable<IEvent>>> value = command => handler((TCommand) command);
 
             RegisterHandler(key, value);
         }
@@ -45,7 +45,7 @@ namespace CQRSMagic.Command
                 from @interface in type.GetInterfaces()
                 where @interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(IHandleCommand<>)
                 let commandType = @interface.GetGenericArguments()[0]
-                select new { commandType, handler = CreateCommandHandler(type, @interface.GetMethods().Single()) };
+                select new {commandType, handler = CreateCommandHandler(type, @interface.GetMethods().Single())};
 
             foreach (var item in commandHandlers)
             {
@@ -73,8 +73,8 @@ namespace CQRSMagic.Command
         private Task<IEnumerable<IEvent>> HandleCommand(ICommand command, Type commandHandlerType, MethodInfo commandHandlerMethod)
         {
             var commandHandler = DependencyResolver.GetService(commandHandlerType);
-            var result = commandHandlerMethod.Invoke(commandHandler, new object[] { command });
-            var task = (Task<IEnumerable<IEvent>>)result;
+            var result = commandHandlerMethod.Invoke(commandHandler, new object[] {command});
+            var task = (Task<IEnumerable<IEvent>>) result;
 
             return task;
         }
