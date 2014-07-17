@@ -30,19 +30,20 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
         public ContactsSteps()
         {
             var kernel = IoC.RegisterServices(new StandardKernel());
-            var eventBus = new EventBus();
+            var dependencyResolver = kernel.Get<IDependencyResolver>();
+
+            IEventBus eventBus = new EventBus(dependencyResolver);
 
             ContactId = Guid.NewGuid();
-            EventStore = new EventStore(kernel.Get<IEventStoreRepository>(), kernel.Get<IDependencyResolver>());
-            CommandBus = new CommandBus(EventStore, eventBus, kernel.Get<IDependencyResolver>());
+            EventStore = new EventStore(kernel.Get<IEventStoreRepository>(), dependencyResolver);
+            CommandBus = new CommandBus(EventStore, eventBus, dependencyResolver);
 
             kernel.Bind<IEventStore>().ToConstant(EventStore);
 
             ContactRepository = kernel.Get<IContactRepository>();
 
             CommandBus.RegisterHandlers(typeof(AddContact).Assembly);
-
-            eventBus.RegisterHandler<ContactAdded>(@event => ContactRepository.HandleEvent(@event));
+            eventBus.RegisterHandlers(typeof(ContactAdded).Assembly);
         }
 
         [Given(@"name is (.*)")]

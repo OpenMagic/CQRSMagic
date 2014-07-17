@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CQRSMagic.Event
@@ -10,7 +11,8 @@ namespace CQRSMagic.Event
     {
         private readonly IEventHandlers EventHandlers;
 
-        public EventBus() : this(new EventHandlers())
+        public EventBus(IDependencyResolver dependencyResolver)
+            : this(new EventHandlers(dependencyResolver))
         {
         }
 
@@ -34,6 +36,11 @@ namespace CQRSMagic.Event
         public void RegisterHandler<TEvent>(Func<TEvent, Task> handler) where TEvent : IEvent
         {
             EventHandlers.RegisterHandler(handler);
+        }
+
+        public void RegisterHandlers(Assembly searchAssembly)
+        {
+            EventHandlers.RegisterHandlers(searchAssembly);
         }
 
         private IEnumerable<Task> SendEventAsync(IEvent @event)

@@ -19,8 +19,8 @@ namespace ExampleDomain.Support
 
         private static void RegisterInMemoryRepositories(IKernel kernel)
         {
-            kernel.Bind<IContactRepository>().To<InMemoryContactRepository>();
-            kernel.Bind<IEventStoreRepository>().To<InMemoryEventStoreRepository>();
+            kernel.Bind<IContactRepository>().To<InMemoryContactRepository>().InSingletonScope();
+            kernel.Bind<IEventStoreRepository>().To<InMemoryEventStoreRepository>().InSingletonScope();
         }
     }
 }

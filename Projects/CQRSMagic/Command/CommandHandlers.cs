@@ -72,11 +72,11 @@ namespace CQRSMagic.Command
 
         private Task<IEnumerable<IEvent>> HandleCommand(ICommand command, Type commandHandlerType, MethodInfo commandHandlerMethod)
         {
-                var commandHandler = DependencyResolver.GetService(commandHandlerType);
-                var result = commandHandlerMethod.Invoke(commandHandler, new object[] { command });
-                var task = (Task<IEnumerable<IEvent>>)result;
+            var commandHandler = DependencyResolver.GetService(commandHandlerType);
+            var result = commandHandlerMethod.Invoke(commandHandler, new object[] { command });
+            var task = (Task<IEnumerable<IEvent>>)result;
 
-                return task;
+            return task;
         }
     }
 }

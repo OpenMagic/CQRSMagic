@@ -83,6 +83,7 @@
     <Compile Include="Event\IEvent.cs" />
     <Compile Include="EventStorage\IEventStore.cs" />
     <Compile Include="Event\IEventHandlers.cs" />
+    <Compile Include="Event\ISubscribeTo.cs" />
     <Compile Include="Support\DependencyResolverExtensions.cs" />
     <Compile Include="Support\IDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

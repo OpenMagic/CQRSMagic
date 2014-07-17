@@ -65,8 +65,9 @@
     </Compile>
     <Compile Include="Contacts\Commands\AddContact.cs" />
     <Compile Include="Contacts\ContactAggregate.cs" />
-    <Compile Include="Contacts\ContactCommandHandlers.cs" />
+    <Compile Include="Contacts\Commands\ContactCommandHandlers.cs" />
     <Compile Include="Contacts\ContactReadModel.cs" />
+    <Compile Include="Contacts\Events\ContactEventSubscriptions.cs" />
     <Compile Include="Support\DependencyResolver.cs" />
     <Compile Include="Repositories\InMemory\InMemoryContactRepository.cs" />
     <Compile Include="Contacts\Events\ContactAdded.cs" />

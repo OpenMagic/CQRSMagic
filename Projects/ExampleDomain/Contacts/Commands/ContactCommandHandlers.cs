@@ -2,10 +2,9 @@
 using System.Threading.Tasks;
 using CQRSMagic.Command;
 using CQRSMagic.Event;
-using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
 
-namespace ExampleDomain.Contacts
+namespace ExampleDomain.Contacts.Commands
 {
     public class ContactCommandHandlers :
         IHandleCommand<AddContact>

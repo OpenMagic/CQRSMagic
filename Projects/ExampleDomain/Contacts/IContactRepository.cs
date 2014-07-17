@@ -7,6 +7,6 @@ namespace ExampleDomain.Contacts
     public interface IContactRepository
     {
         Task<ContactReadModel> GetContactAsync(Guid contactId);
-        Task HandleEvent(ContactAdded @event);
+        Task AddContactAsync(ContactAdded @event);
     }
 }
