@@ -46,9 +46,6 @@
       <HintPath>..\..\packages\EmptyStringGuard.Fody.1.0.6.0\Lib\portable-net4+sl4+wp7+win8+MonoAndroid16+MonoTouch40\EmptyStringGuard.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
     <Reference Include="NullGuard">
       <HintPath>..\..\packages\NullGuard.Fody.1.2.0.0\Lib\portable-net4+sl4+wp7+win8+MonoAndroid16+MonoTouch40\NullGuard.dll</HintPath>
       <Private>False</Private>
@@ -63,38 +60,32 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Commands\Support\CommandHandler.cs" />
-    <Compile Include="Domain\Aggregate.cs" />
-    <Compile Include="Commands\CommandHandlers.cs" />
-    <Compile Include="Domain\Support\EventHandlers.cs" />
+    <Compile Include="Command\CommandHandlers.cs" />
+    <Compile Include="Command\ICommandHandlers.cs" />
+    <Compile Include="Command\IHandleCommand.cs" />
+    <Compile Include="Event\EventBus.cs" />
+    <Compile Include="Event\EventHandlers.cs" />
+    <Compile Include="Event\IEventBus.cs" />
+    <Compile Include="Domain\AggregateBase.cs" />
+    <Compile Include="Domain\AggregateEventHandlers.cs" />
+    <Compile Include="Command\CommandBase.cs" />
+    <Compile Include="Command\CommandBus.cs" />
+    <Compile Include="Command\CommandHandlerNotFoundException.cs" />
+    <Compile Include="Command\DuplicateCommandHandlerException.cs" />
+    <Compile Include="Command\ICommand.cs" />
+    <Compile Include="Command\ICommandBus.cs" />
+    <Compile Include="Event\EventException.cs" />
+    <Compile Include="Event\IApplyEvent.cs" />
+    <Compile Include="EventStorage\EventStore.cs" />
     <Compile Include="Domain\IAggregate.cs" />
-    <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Commands\ICommandBus.cs" />
-    <Compile Include="Commands\ICommandHandlers.cs" />
-    <Compile Include="Commands\CommandBus.cs" />
-    <Compile Include="Events\Messaging\EventBus.cs" />
-    <Compile Include="Events\Publishing\SubscriptionHandlers.cs" />
-    <Compile Include="Events\Publishing\EventPublisher.cs" />
-    <Compile Include="Events\Publishing\ISubscriptionHandlers.cs" />
-    <Compile Include="Events\Publishing\ISubscribeTo.cs" />
-    <Compile Include="Events\Publishing\Support\SubscriptionHandler.cs" />
-    <Compile Include="Exceptions\AggregateNotFoundException.cs" />
-    <Compile Include="Events\Messaging\IApplyEvent.cs" />
-    <Compile Include="Events\Messaging\IEvent.cs" />
-    <Compile Include="Events\Sourcing\IEventStore.cs" />
-    <Compile Include="Commands\IHandleCommand.cs" />
-    <Compile Include="Events\Sourcing\Repositories\IEventStoreRepository.cs" />
-    <Compile Include="Events\Sourcing\Repositories\InMemoryEventStoreRepository.cs" />
-    <Compile Include="Events\Messaging\IEventBus.cs" />
-    <Compile Include="Events\Publishing\IEventPublisher.cs" />
-    <Compile Include="Exceptions\EventStoreException.cs" />
-    <Compile Include="Exceptions\EventException.cs" />
-    <Compile Include="Exceptions\SubscriptionException.cs" />
-    <Compile Include="Exceptions\CommandException.cs" />
-    <Compile Include="Exceptions\CQRSMagicException.cs" />
-    <Compile Include="IMessageBus.cs" />
-    <Compile Include="Events\Sourcing\EventStore.cs" />
-    <Compile Include="MessageBus.cs" />
+    <Compile Include="EventStorage\IEventStoreRepository.cs" />
+    <Compile Include="Event\EventBase.cs" />
+    <Compile Include="Event\IEvent.cs" />
+    <Compile Include="EventStorage\IEventStore.cs" />
+    <Compile Include="Event\IEventHandlers.cs" />
+    <Compile Include="Event\ISubscribeTo.cs" />
+    <Compile Include="Support\DependencyResolverExtensions.cs" />
+    <Compile Include="Support\IDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

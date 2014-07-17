@@ -1,4 +1,4 @@
-using CQRSMagic.Events.Messaging;
+﻿using CQRSMagic.Event;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CQRSMagic.Azure

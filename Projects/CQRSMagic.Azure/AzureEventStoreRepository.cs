@@ -1,47 +1,45 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CQRSMagic.Azure.Support;
-using CQRSMagic.Domain;
-using CQRSMagic.Events.Messaging;
-using CQRSMagic.Events.Sourcing.Repositories;
-using Microsoft.Practices.ServiceLocation;
+using System.Threading.Tasks;
+using AzureMagic;
+using CQRSMagic.Event;
+using CQRSMagic.EventStorage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CQRSMagic.Azure
 {
     public class AzureEventStoreRepository : IEventStoreRepository
     {
-        private readonly AzureTableRepository<DynamicTableEntity> Repository;
         private readonly IAzureEventSerializer Serializer;
+        private readonly AzureTableRepository<DynamicTableEntity> Repository;
 
-        public AzureEventStoreRepository(string connectionString, string tableName)
-            : this(connectionString, tableName, ServiceLocator.Current.GetInstance<IAzureEventSerializer>())
-        {
-        }
-
-        public AzureEventStoreRepository(string connectionString, string tableName, IAzureEventSerializer serializer)
+        public AzureEventStoreRepository(CloudTableClient tableClient, string tableName, IAzureEventSerializer serializer)
         {
             Serializer = serializer;
-            Repository = new AzureTableRepository<DynamicTableEntity>(connectionString, tableName);
+            Repository = new AzureTableRepository<DynamicTableEntity>(tableClient, tableName);
         }
 
-        public IEnumerable<IEvent> GetEvents<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
+        public async Task<IEnumerable<IEvent>> FindEventsAsync(Guid aggregateId)
         {
-            var entities = Repository.FindEntitiesByPartitionKeyAsync(aggregateId.ToPartitionKey()).Result;
-            var events = entities.Select(Serializer.Deserialize);
+            var partitionKey = aggregateId.ToPartitionKey();
+            var tableEntities = await (
+                from entity in Repository.Query()
+                where entity.PartitionKey == partitionKey
+                select entity
+                ).ExecuteAsync();
+
+            var events = tableEntities.Select(Serializer.Deserialize);
 
             return events;
         }
 
-        public void SaveEvents(IEnumerable<IEvent> events)
+        public Task SaveEventsAsync(IEnumerable<IEvent> events)
         {
-            var entities = events.Select(@event => Serializer.Serialize(@event));
+            var entities = events.Select(Serializer.Serialize);
+            var tasks = entities.Select(Repository.AddEntityAsync);
 
-            foreach (var entity in entities)
-            {
-                Repository.Add(entity);
-            }
+            return Task.WhenAll(tasks);
         }
     }
 }
