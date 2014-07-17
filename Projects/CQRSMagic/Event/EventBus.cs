@@ -8,11 +8,15 @@ namespace CQRSMagic.Event
 {
     public class EventBus : IEventBus
     {
-        private readonly ConcurrentDictionary<Type, List<Func<IEvent, Task>>> Handlers;
+        private readonly IEventHandlers EventHandlers;
 
-        public EventBus()
+        public EventBus() : this(new EventHandlers())
         {
-            Handlers = new ConcurrentDictionary<Type, List<Func<IEvent, Task>>>();
+        }
+
+        public EventBus(IEventHandlers eventHandlers)
+        {
+            EventHandlers = eventHandlers;
         }
 
         public Task SendEventsAsync(IEnumerable<IEvent> events)
@@ -29,23 +33,12 @@ namespace CQRSMagic.Event
 
         public void RegisterHandler<TEvent>(Func<TEvent, Task> handler) where TEvent : IEvent
         {
-            var key = typeof(TEvent);
-            var eventHandlers = Handlers.GetOrAdd(key, new List<Func<IEvent, Task>>());
-
-            Func<IEvent, Task> value = @event => handler((TEvent) @event);
-
-            eventHandlers.Add(value);
+            EventHandlers.RegisterHandler(handler);
         }
 
         private IEnumerable<Task> SendEventAsync(IEvent @event)
         {
-            List<Func<IEvent, Task>> eventHandlers;
-
-            if (!Handlers.TryGetValue(@event.GetType(), out eventHandlers))
-            {
-                return Enumerable.Empty<Task>();
-            }
-
+            var eventHandlers = EventHandlers.GetEventHandlers(@event);
             var tasks = eventHandlers.Select(eventHandler => eventHandler(@event));
 
             return tasks;

@@ -64,6 +64,7 @@
     <Compile Include="Command\ICommandHandlers.cs" />
     <Compile Include="Command\IHandleCommand.cs" />
     <Compile Include="Event\EventBus.cs" />
+    <Compile Include="Event\EventHandlers.cs" />
     <Compile Include="Event\IEventBus.cs" />
     <Compile Include="Domain\AggregateBase.cs" />
     <Compile Include="Domain\AggregateEventHandlers.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Event\EventBase.cs" />
     <Compile Include="Event\IEvent.cs" />
     <Compile Include="EventStorage\IEventStore.cs" />
+    <Compile Include="Event\IEventHandlers.cs" />
     <Compile Include="Support\DependencyResolverExtensions.cs" />
     <Compile Include="Support\IDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
