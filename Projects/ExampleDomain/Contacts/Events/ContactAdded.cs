@@ -1,18 +1,22 @@
-using System;
-using CQRSMagic.Events.Messaging;
+﻿using System;
+using CQRSMagic.Event;
+using ExampleDomain.Contacts.Commands;
 
 namespace ExampleDomain.Contacts.Events
 {
-    public class ContactAdded : IEvent
+    public class ContactAdded : EventBase
     {
-        public ContactAdded()
+        public ContactAdded(Guid contactId, string name, string emailAddress)
         {
-            EventCreated = DateTime.UtcNow;
+            AggregateId = contactId;
+            Name = name;
+            EmailAddress = emailAddress;
         }
 
-        public Type AggregateType { get; private set; }
-        public Guid AggregateId { get; private set; }
-        public DateTimeOffset EventCreated { get; private set; }
+        public ContactAdded(AddContact contact)
+            : this(contact.Id, contact.Name, contact.EmailAddress)
+        {
+        }
 
         public string Name { get; private set; }
         public string EmailAddress { get; private set; }

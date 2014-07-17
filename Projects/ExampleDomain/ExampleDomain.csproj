@@ -49,6 +49,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="OpenMagic, Version=0.3.6.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\OpenMagic.0.3.6.0\lib\net45\OpenMagic.dll</HintPath>
@@ -62,11 +65,15 @@
     </Compile>
     <Compile Include="Contacts\Commands\AddContact.cs" />
     <Compile Include="Contacts\ContactAggregate.cs" />
+    <Compile Include="Contacts\Commands\ContactCommandHandlers.cs" />
+    <Compile Include="Contacts\ContactReadModel.cs" />
+    <Compile Include="Contacts\Events\ContactEventSubscriptions.cs" />
+    <Compile Include="Support\DependencyResolver.cs" />
+    <Compile Include="Repositories\InMemory\InMemoryContactRepository.cs" />
     <Compile Include="Contacts\Events\ContactAdded.cs" />
-    <Compile Include="Contacts\Queries\Repositories\IContactRepository.cs" />
-    <Compile Include="Contacts\Queries\Models\ContactReadModel.cs" />
-    <Compile Include="Contacts\Queries\ContactQuery.cs" />
-    <Compile Include="Exceptions\ReadModelNotFoundException.cs" />
+    <Compile Include="Contacts\IContactRepository.cs" />
+    <Compile Include="Repositories\InMemory\InMemoryEventStoreRepository.cs" />
+    <Compile Include="Support\IoC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

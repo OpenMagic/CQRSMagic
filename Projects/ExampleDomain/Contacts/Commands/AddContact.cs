@@ -1,17 +1,9 @@
-﻿using System;
-using CQRSMagic.Commands;
+﻿using CQRSMagic.Command;
 
 namespace ExampleDomain.Contacts.Commands
 {
-    // todo: validate properties
-    public class AddContact : ICommand
+    public class AddContact : CommandBase
     {
-        public AddContact()
-        {
-            AggregateId = Guid.NewGuid();
-        }
-
-        public Guid AggregateId { get; set; }
         public string Name { get; set; }
         public string EmailAddress { get; set; }
     }

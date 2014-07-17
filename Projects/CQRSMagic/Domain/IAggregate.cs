@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CQRSMagic.Events.Messaging;
+using CQRSMagic.Event;
 
 namespace CQRSMagic.Domain
 {
