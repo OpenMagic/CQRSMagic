@@ -6,6 +6,6 @@ namespace CQRSMagic.Command
 {
     public interface IHandleCommand<in TCommand> where TCommand : ICommand
     {
-        Task<IEnumerable<IEvent>> HandleCommand(TCommand command);
+        Task<IEnumerable<IEvent>> HandleCommandAsync(TCommand command);
     }
 }

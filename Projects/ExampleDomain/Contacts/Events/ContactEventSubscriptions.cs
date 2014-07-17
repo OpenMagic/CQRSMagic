@@ -13,7 +13,7 @@ namespace ExampleDomain.Contacts.Events
             Repository = repository;
         }
 
-        public Task HandleEvent(CreatedContact @event)
+        public Task HandleEventAsync(CreatedContact @event)
         {
             return Repository.AddContactAsync(@event);
         }
