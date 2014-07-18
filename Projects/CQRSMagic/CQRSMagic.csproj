@@ -84,8 +84,9 @@
     <Compile Include="EventStorage\IEventStore.cs" />
     <Compile Include="Event\IEventHandlers.cs" />
     <Compile Include="Event\ISubscribeTo.cs" />
-    <Compile Include="Support\DependencyResolverExtensions.cs" />
-    <Compile Include="Support\IDependencyResolver.cs" />
+    <Compile Include="IoC\BasicIoC.cs" />
+    <Compile Include="IoC\DependencyResolverExtensions.cs" />
+    <Compile Include="IoC\IDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

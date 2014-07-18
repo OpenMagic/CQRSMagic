@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using CQRSMagic.IoC;
 
 namespace CQRSMagic.Event
 {
@@ -57,7 +58,7 @@ namespace CQRSMagic.Event
 
         private Task HandleEvent(IEvent @event, Type eventHandlerType, MethodInfo eventHandlerMethod)
         {
-            var eventHandler = DependencyResolver.GetService(eventHandlerType);
+            var eventHandler = DependencyResolver.Get(eventHandlerType);
             var result = eventHandlerMethod.Invoke(eventHandler, new object[] {@event});
             var task = (Task) result;
 

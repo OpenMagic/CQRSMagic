@@ -1,5 +1,6 @@
 ﻿using System;
 using CQRSMagic;
+using CQRSMagic.IoC;
 using Ninject;
 
 namespace ExampleDomain.Support
@@ -13,9 +14,9 @@ namespace ExampleDomain.Support
             Kernel = kernel;
         }
 
-        public object GetService(Type serviceType)
+        public object Get(Type type)
         {
-            return Kernel.GetService(serviceType);
+            return Kernel.GetService(type);
         }
     }
 }

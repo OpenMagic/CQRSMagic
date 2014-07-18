@@ -5,7 +5,6 @@ using AzureMagic;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Events;
 using ExampleDomain.Repositories.Azure.TableEntities;
-using Microsoft.WindowsAzure.Storage.Table;
 
 namespace ExampleDomain.Repositories.Azure
 {
@@ -13,9 +12,9 @@ namespace ExampleDomain.Repositories.Azure
     {
         private readonly AzureTableRepository<ContactTableEntity> Repository;
 
-        public AzureContactRepository(CloudTableClient tableClient, string tableName)
+        public AzureContactRepository(string connectionString, string tableName)
         {
-            Repository = new AzureTableRepository<ContactTableEntity>(tableClient, tableName);
+            Repository = new AzureTableRepository<ContactTableEntity>(connectionString, tableName);
         }
 
         public async Task<ContactReadModel> GetContactAsync(Guid contactId)

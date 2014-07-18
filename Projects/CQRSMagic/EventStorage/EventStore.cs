@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CQRSMagic.Domain;
 using CQRSMagic.Event;
-using CQRSMagic.Support;
+using CQRSMagic.IoC;
 
 namespace CQRSMagic.EventStorage
 {
@@ -26,7 +26,7 @@ namespace CQRSMagic.EventStorage
         public async Task<TAggregate> GetAggregateAsync<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
         {
             var events = await Repository.FindEventsAsync(aggregateId);
-            var aggregate = DependencyResolver.GetService<TAggregate>();
+            var aggregate = DependencyResolver.Get<TAggregate>();
 
             aggregate.ApplyEvents(events);
 

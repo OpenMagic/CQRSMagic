@@ -2,12 +2,16 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AzureMagic;
+using AzureMagic.Tools;
+using CQRSMagic.Azure;
 using CQRSMagic.Command;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
+using CQRSMagic.Specifications.Support;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
+using ExampleDomain.Repositories.Azure;
 using ExampleDomain.Support;
 using FluentAssertions;
 using FluentAssertions.Equivalency;
@@ -23,7 +27,6 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
         private readonly Guid ContactId;
         private readonly IContactRepository ContactRepository;
         private readonly IEventStore EventStore;
-        private readonly TableNameFormatter TableNameFormatter;
 
         private string EmailAddress;
         private string Name;
@@ -31,25 +34,13 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
 
         public ContactsSteps()
         {
-            var tableClient = AzureStorage.GetTableClient(AzureStorage.DevelopmentConnectionString);
-            TableNameFormatter = new TableNameFormatter(tableClient, GetType().Name);
-            var kernel = IoC.RegisterServices(new StandardKernel(), tableClient, TableNameFormatter);
-            var dependencyResolver = kernel.Get<IDependencyResolver>();
-
-            IEventBus eventBus = new EventBus(dependencyResolver);
+            var container = Configurations.Azure(GetType().Name);
 
             ContactId = Guid.NewGuid();
-            EventStore = new EventStore(kernel.Get<IEventStoreRepository>(), dependencyResolver);
-            CommandBus = new CommandBus(EventStore, eventBus, dependencyResolver);
-
-            kernel.Bind<IEventStore>().ToConstant(EventStore);
-
-            ContactRepository = kernel.Get<IContactRepository>();
-
-            CommandBus.RegisterHandlers(typeof(CreateContact).Assembly);
-            eventBus.RegisterHandlers(typeof(CreatedContact).Assembly);
+            EventStore = container.Get<IEventStore>();
+            CommandBus = container.Get<ICommandBus>();
+            ContactRepository = container.Get<IContactRepository>();
         }
-
 
         public void Dispose()
         {
@@ -67,10 +58,9 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
             {
                 if (disposing)
                 {
-                    TableNameFormatter.Dispose();
+                    Configurations.DeleteAzureTables();
                 }
             }
-
             IsDisposed = true;
         }
 

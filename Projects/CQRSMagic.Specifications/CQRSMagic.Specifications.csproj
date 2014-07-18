@@ -137,6 +137,7 @@
     </Compile>
     <Compile Include="Features\ExampleDomain\Steps\ContactsSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Support\Configurations.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

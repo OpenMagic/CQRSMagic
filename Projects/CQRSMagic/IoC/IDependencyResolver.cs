@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace CQRSMagic
+namespace CQRSMagic.IoC
 {
     public interface IDependencyResolver
     {
-        object GetService(Type serviceType);
+        object Get(Type type);
     }
 }

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
+using CQRSMagic.IoC;
 
 namespace CQRSMagic.Command
 {
