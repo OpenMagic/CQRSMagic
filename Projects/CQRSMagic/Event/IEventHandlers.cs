@@ -9,6 +9,6 @@ namespace CQRSMagic.Event
     {
         void RegisterHandler<TEvent>(Func<TEvent, Task> handler);
         IEnumerable<Func<IEvent, Task>> GetEventHandlers(IEvent @event);
-        void RegisterHandlers(Assembly searchAssembly);
+        IEnumerable<KeyValuePair<Type, IEnumerable<Func<IEvent, Task>>>> RegisterHandlers(Assembly searchAssembly);
     }
 }

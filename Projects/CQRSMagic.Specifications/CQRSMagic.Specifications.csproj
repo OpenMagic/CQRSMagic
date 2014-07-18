@@ -130,6 +130,12 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Features\CQRSMagic\EventHandlers.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EventHandlers.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\CQRSMagic\Steps\EventHandlersSteps.cs" />
     <Compile Include="Features\ExampleDomain\Contacts.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -142,6 +148,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Features\CQRSMagic\EventHandlers.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>EventHandlers.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\ExampleDomain\Contacts.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Contacts.feature.cs</LastGenOutput>
