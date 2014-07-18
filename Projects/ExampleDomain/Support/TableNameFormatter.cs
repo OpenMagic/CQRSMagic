@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using Anotar.CommonLogging;
+using AzureMagic;
 using Microsoft.WindowsAzure.Storage.Table;
 using NullGuard;
 
 namespace ExampleDomain.Support
 {
-    public class TableNameFormatter : IDisposable
+    public class TableNameFormatter
     {
         private readonly CloudTableClient TableClient;
         private readonly string TableNameFormat;
         private readonly List<string> TableNames;
         private readonly bool UsingTemporaryTableNames;
 
-        private bool IsDisposed;
+        public TableNameFormatter(string connectionString, [AllowNull] string tableNamePrefix) : 
+            this(AzureStorage.GetTableClient(connectionString), tableNamePrefix)
+        {
+        }
 
         public TableNameFormatter(CloudTableClient tableClient, [AllowNull] string tableNamePrefix)
         {
@@ -23,13 +27,7 @@ namespace ExampleDomain.Support
             TableNames = new List<string>();
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public string FormatTableNam(string tableName)
+        public string FormatTableName(string tableName)
         {
             var formattedTableName = string.Format(TableNameFormat, tableName);
 
@@ -42,17 +40,7 @@ namespace ExampleDomain.Support
             return formattedTableName;
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!IsDisposed && disposing)
-            {
-                DeleteTables();
-            }
-
-            IsDisposed = true;
-        }
-
-        private void DeleteTables()
+        public void DeleteTables()
         {
             foreach (var tableName in TableNames)
             {
