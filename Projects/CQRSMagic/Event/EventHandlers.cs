@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Anotar.CommonLogging;
 using CQRSMagic.IoC;
+using OpenMagic;
 
 namespace CQRSMagic.Event
 {
@@ -34,8 +36,10 @@ namespace CQRSMagic.Event
             return Handlers.TryGetValue(@event.GetType(), out eventHandlers) ? eventHandlers : Enumerable.Empty<Func<IEvent, Task>>();
         }
 
-        public void RegisterHandlers(Assembly searchAssembly)
+        public IEnumerable<KeyValuePair<Type, IEnumerable<Func<IEvent, Task>>>> RegisterHandlers(Assembly searchAssembly)
         {
+            LogTo.Trace("RegisterHandlers(searchAssembly: {0})", searchAssembly.GetName());
+
             var eventSubscribers =
                 from type in searchAssembly.GetTypes()
                 from @interface in type.GetInterfaces()
@@ -47,6 +51,10 @@ namespace CQRSMagic.Event
             {
                 RegisterHandler(item.eventType, item.handler);
             }
+
+            var handlers = Handlers.Select(handler => new KeyValuePair<Type, IEnumerable<Func<IEvent, Task>>>(handler.Key, handler.Value));
+
+            return handlers;
         }
 
         private Func<IEvent, Task> CreateEventHandler(Type eventHandlerType, MethodInfo eventHandlerMethod)
@@ -67,6 +75,8 @@ namespace CQRSMagic.Event
 
         private void RegisterHandler(Type eventType, Func<IEvent, Task> handler)
         {
+            LogTo.Trace("RegisterHandler(eventType: {0}, handler)", eventType);
+
             var eventHandlers = Handlers.GetOrAdd(eventType, new List<Func<IEvent, Task>>());
 
             eventHandlers.Add(handler);
