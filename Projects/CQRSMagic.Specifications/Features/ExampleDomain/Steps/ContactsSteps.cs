@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AzureMagic;
-using AzureMagic.Tools;
-using CQRSMagic.Azure;
 using CQRSMagic.Command;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
-using CQRSMagic.Specifications.Support;
+using CQRSMagic.Specifications.Support.Configurations;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
-using ExampleDomain.Repositories.Azure;
-using ExampleDomain.Support;
 using FluentAssertions;
 using FluentAssertions.Equivalency;
-using Ninject;
 using TechTalk.SpecFlow;
 
 namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
@@ -24,22 +18,23 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
     public class ContactsSteps : IDisposable
     {
         private readonly ICommandBus CommandBus;
+        private readonly AzureConfiguration Configuration;
         private readonly Guid ContactId;
         private readonly IContactRepository ContactRepository;
         private readonly IEventStore EventStore;
 
         private string EmailAddress;
-        private string Name;
         private bool IsDisposed;
+        private string Name;
 
         public ContactsSteps()
         {
-            var container = Configurations.Azure(GetType().Name);
+            Configuration = new AzureConfiguration(GetType().Name);
 
             ContactId = Guid.NewGuid();
-            EventStore = container.Get<IEventStore>();
-            CommandBus = container.Get<ICommandBus>();
-            ContactRepository = container.Get<IContactRepository>();
+            EventStore = Configuration.Get<IEventStore>();
+            CommandBus = Configuration.Get<ICommandBus>();
+            ContactRepository = Configuration.Get<IContactRepository>();
         }
 
         public void Dispose()
@@ -49,16 +44,19 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
         }
 
         /// <summary>
-        /// Releases unmanaged and optionally managed resources.
+        ///     Releases unmanaged and optionally managed resources.
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             if (!IsDisposed)
             {
                 if (disposing)
                 {
-                    Configurations.DeleteAzureTables();
+                    Configuration.CleanUp();
                 }
             }
             IsDisposed = true;
@@ -66,7 +64,7 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
 
         private EquivalencyAssertionOptions<IEvent> EventEquivalencyOptions(EquivalencyAssertionOptions<IEvent> options)
         {
-            var excludedEntityProperties = new[] { "EventCreated"  };
+            var excludedEntityProperties = new[] {"EventCreated"};
 
             return options.Excluding(subjectInfo => excludedEntityProperties.Contains(subjectInfo.PropertyInfo.Name));
         }
