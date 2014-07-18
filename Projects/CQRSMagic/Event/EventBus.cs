@@ -30,7 +30,7 @@ namespace CQRSMagic.Event
                 tasks.AddRange(SendEventAsync(@event));
             }
 
-            return Task.FromResult(tasks.AsEnumerable());
+            return Task.WhenAll(tasks);
         }
 
         public void RegisterHandlers(Assembly searchAssembly)
