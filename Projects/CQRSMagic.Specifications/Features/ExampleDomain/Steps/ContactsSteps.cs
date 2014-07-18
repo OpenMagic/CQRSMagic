@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AzureMagic;
 using CQRSMagic.Command;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
+using CQRSMagic.Specifications.Support.Configurations;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
-using ExampleDomain.Support;
 using FluentAssertions;
 using FluentAssertions.Equivalency;
-using Ninject;
 using TechTalk.SpecFlow;
 
 namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
@@ -20,36 +18,24 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
     public class ContactsSteps : IDisposable
     {
         private readonly ICommandBus CommandBus;
+        private readonly AzureConfiguration Configuration;
         private readonly Guid ContactId;
         private readonly IContactRepository ContactRepository;
         private readonly IEventStore EventStore;
-        private readonly TableNameFormatter TableNameFormatter;
 
         private string EmailAddress;
-        private string Name;
         private bool IsDisposed;
+        private string Name;
 
         public ContactsSteps()
         {
-            var tableClient = AzureStorage.GetTableClient(AzureStorage.DevelopmentConnectionString);
-            TableNameFormatter = new TableNameFormatter(tableClient, GetType().Name);
-            var kernel = IoC.RegisterServices(new StandardKernel(), tableClient, TableNameFormatter);
-            var dependencyResolver = kernel.Get<IDependencyResolver>();
-
-            IEventBus eventBus = new EventBus(dependencyResolver);
+            Configuration = new AzureConfiguration(GetType().Name);
 
             ContactId = Guid.NewGuid();
-            EventStore = new EventStore(kernel.Get<IEventStoreRepository>(), dependencyResolver);
-            CommandBus = new CommandBus(EventStore, eventBus, dependencyResolver);
-
-            kernel.Bind<IEventStore>().ToConstant(EventStore);
-
-            ContactRepository = kernel.Get<IContactRepository>();
-
-            CommandBus.RegisterHandlers(typeof(CreateContact).Assembly);
-            eventBus.RegisterHandlers(typeof(CreatedContact).Assembly);
+            EventStore = Configuration.Get<IEventStore>();
+            CommandBus = Configuration.Get<ICommandBus>();
+            ContactRepository = Configuration.Get<IContactRepository>();
         }
-
 
         public void Dispose()
         {
@@ -58,25 +44,27 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
         }
 
         /// <summary>
-        /// Releases unmanaged and optionally managed resources.
+        ///     Releases unmanaged and optionally managed resources.
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             if (!IsDisposed)
             {
                 if (disposing)
                 {
-                    TableNameFormatter.Dispose();
+                    Configuration.CleanUp();
                 }
             }
-
             IsDisposed = true;
         }
 
         private EquivalencyAssertionOptions<IEvent> EventEquivalencyOptions(EquivalencyAssertionOptions<IEvent> options)
         {
-            var excludedEntityProperties = new[] { "EventCreated"  };
+            var excludedEntityProperties = new[] {"EventCreated"};
 
             return options.Excluding(subjectInfo => excludedEntityProperties.Contains(subjectInfo.PropertyInfo.Name));
         }

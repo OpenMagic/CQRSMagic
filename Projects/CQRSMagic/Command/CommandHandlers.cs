@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CQRSMagic.Event;
+using CQRSMagic.IoC;
 
 namespace CQRSMagic.Command
 {
@@ -72,7 +73,7 @@ namespace CQRSMagic.Command
 
         private Task<IEnumerable<IEvent>> HandleCommand(ICommand command, Type commandHandlerType, MethodInfo commandHandlerMethod)
         {
-            var commandHandler = DependencyResolver.GetService(commandHandlerType);
+            var commandHandler = DependencyResolver.Get(commandHandlerType);
             var result = commandHandlerMethod.Invoke(commandHandler, new object[] {command});
             var task = (Task<IEnumerable<IEvent>>) result;
 

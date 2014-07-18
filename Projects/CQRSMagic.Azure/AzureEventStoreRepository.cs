@@ -14,6 +14,11 @@ namespace CQRSMagic.Azure
         private readonly IAzureEventSerializer Serializer;
         private readonly AzureTableRepository<DynamicTableEntity> Repository;
 
+        public AzureEventStoreRepository(string connectionString, string tableName, IAzureEventSerializer serializer) :
+            this(AzureStorage.GetTableClient(connectionString), tableName, serializer)
+        {
+        }
+
         public AzureEventStoreRepository(CloudTableClient tableClient, string tableName, IAzureEventSerializer serializer)
         {
             Serializer = serializer;
