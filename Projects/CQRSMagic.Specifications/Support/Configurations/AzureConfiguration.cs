@@ -1,8 +1,6 @@
-﻿using System;
-using AzureMagic;
+﻿using AzureMagic;
 using AzureMagic.Tools;
 using CommonServiceLocator.NinjectAdapter.Unofficial;
-using CQRSMagic.Azure;
 using CQRSMagic.Command;
 using CQRSMagic.EventStorage;
 using ExampleDomain.Contacts;
@@ -26,10 +24,7 @@ namespace CQRSMagic.Specifications.Support.Configurations
 
             TableNameFormatter = new TableNameFormatter(ConnectionString, tableNamePrefix);
 
-            Azure.Settings.Initialize(
-                domainAssemblies: new[] {typeof(CreateContact).Assembly},
-                connectionString: ConnectionString,
-                eventsTableName: TableNameFormatter.FormatTableName("Events"));
+            Azure.Settings.Initialize(new[] {typeof(CreateContact).Assembly}, ConnectionString, TableNameFormatter.FormatTableName("Events"));
 
             Kernel = new StandardKernel();
 

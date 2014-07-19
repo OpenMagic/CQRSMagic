@@ -14,7 +14,7 @@ namespace ExampleDomain.Support
         private readonly List<string> TableNames;
         private readonly bool UsingTemporaryTableNames;
 
-        public TableNameFormatter(string connectionString, [AllowNull] string tableNamePrefix) : 
+        public TableNameFormatter(string connectionString, [AllowNull] string tableNamePrefix) :
             this(AzureStorage.GetTableClient(connectionString), tableNamePrefix)
         {
         }

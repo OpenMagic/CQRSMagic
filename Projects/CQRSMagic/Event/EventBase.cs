@@ -21,18 +21,18 @@ namespace CQRSMagic.Event
         }
 
         /// <summary>
-        /// Gets or sets the aggregate Id.
+        ///     Gets or sets the aggregate Id.
         /// </summary>
         /// <remarks>
-        /// AzureEventSerializer requires a set method to be protected.
+        ///     AzureEventSerializer requires a set method to be protected.
         /// </remarks>
         public Guid AggregateId { get; protected set; }
 
         /// <summary>
-        /// Gets or sets when the event created.
+        ///     Gets or sets when the event created.
         /// </summary>
         /// <remarks>
-        /// AzureEventSerializer requires a set method to be protected.
+        ///     AzureEventSerializer requires a set method to be protected.
         /// </remarks>
         public DateTimeOffset EventCreated { get; protected set; }
     }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CQRSMagic.Support;
-using Microsoft.Practices.ServiceLocation;
 
 namespace CQRSMagic.Event
 {

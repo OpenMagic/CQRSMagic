@@ -5,16 +5,14 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Anotar.CommonLogging;
-using CQRSMagic.Support;
 using Microsoft.Practices.ServiceLocation;
-using OpenMagic;
 
 namespace CQRSMagic.Event
 {
     public class EventHandlers : IEventHandlers
     {
-        private readonly IServiceLocator Services;
         private readonly ConcurrentDictionary<Type, List<Func<IEvent, Task>>> Handlers;
+        private readonly IServiceLocator Services;
 
         public EventHandlers(IServiceLocator services)
         {

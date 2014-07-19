@@ -28,7 +28,7 @@ namespace CQRSMagic.Azure.Support
 
         private static TService FindService<TService>()
         {
-            return (TService)FindService(typeof(TService));
+            return (TService) FindService(typeof(TService));
         }
 
         private static object FindService(Type serviceType)

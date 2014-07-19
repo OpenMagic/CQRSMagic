@@ -6,4 +6,3 @@
         string EventsTableName { get; }
     }
 }
-

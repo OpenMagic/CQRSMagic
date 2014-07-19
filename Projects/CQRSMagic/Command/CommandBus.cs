@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
 using CQRSMagic.Support;
-using Microsoft.Practices.ServiceLocation;
 
 namespace CQRSMagic.Command
 {
