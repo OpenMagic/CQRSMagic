@@ -5,19 +5,20 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Anotar.CommonLogging;
-using CQRSMagic.IoC;
+using CQRSMagic.Support;
+using Microsoft.Practices.ServiceLocation;
 using OpenMagic;
 
 namespace CQRSMagic.Event
 {
     public class EventHandlers : IEventHandlers
     {
-        private readonly IDependencyResolver DependencyResolver;
+        private readonly IServiceLocator Services;
         private readonly ConcurrentDictionary<Type, List<Func<IEvent, Task>>> Handlers;
 
-        public EventHandlers(IDependencyResolver dependencyResolver)
+        public EventHandlers(IServiceLocator services)
         {
-            DependencyResolver = dependencyResolver;
+            Services = services;
             Handlers = new ConcurrentDictionary<Type, List<Func<IEvent, Task>>>();
         }
 
@@ -66,7 +67,7 @@ namespace CQRSMagic.Event
 
         private Task HandleEvent(IEvent @event, Type eventHandlerType, MethodInfo eventHandlerMethod)
         {
-            var eventHandler = DependencyResolver.Get(eventHandlerType);
+            var eventHandler = Services.GetService(eventHandlerType);
             var result = eventHandlerMethod.Invoke(eventHandler, new object[] {@event});
             var task = (Task) result;
 

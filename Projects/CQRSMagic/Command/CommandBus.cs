@@ -5,7 +5,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
-using CQRSMagic.IoC;
+using CQRSMagic.Support;
+using Microsoft.Practices.ServiceLocation;
 
 namespace CQRSMagic.Command
 {
@@ -15,8 +16,8 @@ namespace CQRSMagic.Command
         private readonly IEventBus EventBus;
         private readonly IEventStore EventStore;
 
-        public CommandBus(IEventStore eventStore, IEventBus eventBus, IDependencyResolver dependencyResolver)
-            : this(eventStore, eventBus, new CommandHandlers(dependencyResolver))
+        public CommandBus()
+            : this(IoC.Get<IEventStore>(), IoC.Get<IEventBus>(), IoC.Get<ICommandHandlers>())
         {
         }
 

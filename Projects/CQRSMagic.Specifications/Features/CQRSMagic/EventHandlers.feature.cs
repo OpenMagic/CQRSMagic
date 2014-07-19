@@ -67,7 +67,7 @@ namespace CQRSMagic.Specifications.Features.CQRSMagic
         {
 #line 3
 #line 4
- testRunner.Given("DependencyResolver", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("ServiceLocator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 5
  testRunner.And("EventHandlers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

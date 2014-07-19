@@ -4,11 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CQRSMagic.Event;
-using CQRSMagic.IoC;
 using ExampleDomain.Contacts.Commands;
 using ExampleDomain.Contacts.Events;
 using FakeItEasy;
 using FluentAssertions;
+using Microsoft.Practices.ServiceLocation;
 using TechTalk.SpecFlow;
 
 namespace CQRSMagic.Specifications.Features.CQRSMagic.Steps
@@ -16,21 +16,21 @@ namespace CQRSMagic.Specifications.Features.CQRSMagic.Steps
     [Binding]
     public class EventHandlersSteps
     {
-        private IDependencyResolver DependencyResolver;
         private EventHandlers EventHandlers;
-        private Assembly SearchAssembly;
         private KeyValuePair<Type, IEnumerable<Func<IEvent, Task>>>[] Handlers;
+        private Assembly SearchAssembly;
+        private IServiceLocator ServiceLocator;
 
-        [Given(@"DependencyResolver")]
-        public void GivenDependencyResolver()
+        [Given(@"ServiceLocator")]
+        public void GivenServiceLocator()
         {
-            DependencyResolver = A.Fake<IDependencyResolver>();
+            ServiceLocator = A.Fake<IServiceLocator>();
         }
 
         [Given(@"EventHandlers")]
         public void GivenEventHandlers()
         {
-            EventHandlers = new EventHandlers(DependencyResolver);
+            EventHandlers = new EventHandlers(ServiceLocator);
         }
 
         [Given(@"an assembly with ISubscribeTo handlers")]
@@ -48,7 +48,7 @@ namespace CQRSMagic.Specifications.Features.CQRSMagic.Steps
         [Then(@"one handler is created for each ISubscribeTo handler")]
         public void ThenOneHandlerIsCreatedForEachISubscribeToHandler()
         {
-            Handlers.Select(x => x.Key).ShouldBeEquivalentTo(new[] { typeof(CreatedContact) });
+            Handlers.Select(x => x.Key).ShouldBeEquivalentTo(new[] {typeof(CreatedContact)});
 
             var createdContactHandlers = Handlers.Single(x => x.Key == typeof(CreatedContact)).Value.ToArray();
 

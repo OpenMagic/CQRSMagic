@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using CQRSMagic.IoC;
+using CQRSMagic.Support;
+using Microsoft.Practices.ServiceLocation;
 
 namespace CQRSMagic.Event
 {
@@ -11,8 +12,8 @@ namespace CQRSMagic.Event
     {
         private readonly IEventHandlers EventHandlers;
 
-        public EventBus(IDependencyResolver dependencyResolver)
-            : this(new EventHandlers(dependencyResolver))
+        public EventBus()
+            : this(IoC.Get<IEventHandlers>())
         {
         }
 
