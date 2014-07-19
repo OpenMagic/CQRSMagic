@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureMagic;
+using CQRSMagic.Azure.Support;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -11,18 +12,28 @@ namespace CQRSMagic.Azure
 {
     public class AzureEventStoreRepository : IEventStoreRepository
     {
-        private readonly IAzureEventSerializer Serializer;
         private readonly AzureTableRepository<DynamicTableEntity> Repository;
+        private readonly IAzureEventSerializer Serializer;
 
-        public AzureEventStoreRepository(string connectionString, string tableName, IAzureEventSerializer serializer) :
-            this(AzureStorage.GetTableClient(connectionString), tableName, serializer)
+        public AzureEventStoreRepository()
+            : this(IoC.Get<ISettings>())
         {
         }
 
-        public AzureEventStoreRepository(CloudTableClient tableClient, string tableName, IAzureEventSerializer serializer)
+        public AzureEventStoreRepository(ISettings settings)
+            : this(settings.ConnectionString, settings.EventsTableName)
+        {
+        }
+
+        public AzureEventStoreRepository(string connectionString, string eventsTableName)
+            : this(connectionString, eventsTableName, IoC.Get<IAzureEventSerializer>())
+        {
+        }
+
+        public AzureEventStoreRepository(string connectionString, string tableName, IAzureEventSerializer serializer)
         {
             Serializer = serializer;
-            Repository = new AzureTableRepository<DynamicTableEntity>(tableClient, tableName);
+            Repository = new AzureTableRepository<DynamicTableEntity>(connectionString, tableName);
         }
 
         public async Task<IEnumerable<IEvent>> FindEventsAsync(Guid aggregateId)

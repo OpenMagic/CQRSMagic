@@ -4,6 +4,5 @@ namespace CQRSMagic.Azure
 {
     internal class EventTableEntity : TableEntity
     {
-
     }
 }

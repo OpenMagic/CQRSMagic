@@ -4,18 +4,24 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CQRSMagic.Event;
-using CQRSMagic.IoC;
+using CQRSMagic.Support;
+using Microsoft.Practices.ServiceLocation;
 
 namespace CQRSMagic.Command
 {
     public class CommandHandlers : ICommandHandlers
     {
-        private readonly IDependencyResolver DependencyResolver;
         private readonly Dictionary<Type, Func<ICommand, Task<IEnumerable<IEvent>>>> Handlers;
+        private readonly IServiceLocator Services;
 
-        public CommandHandlers(IDependencyResolver dependencyResolver)
+        public CommandHandlers()
+            : this(IoC.Get<IServiceLocator>())
         {
-            DependencyResolver = dependencyResolver;
+        }
+
+        public CommandHandlers(IServiceLocator serviceLocator)
+        {
+            Services = serviceLocator;
             Handlers = new Dictionary<Type, Func<ICommand, Task<IEnumerable<IEvent>>>>();
         }
 
@@ -73,7 +79,7 @@ namespace CQRSMagic.Command
 
         private Task<IEnumerable<IEvent>> HandleCommand(ICommand command, Type commandHandlerType, MethodInfo commandHandlerMethod)
         {
-            var commandHandler = DependencyResolver.Get(commandHandlerType);
+            var commandHandler = Services.GetService(commandHandlerType);
             var result = commandHandlerMethod.Invoke(commandHandler, new object[] {command});
             var task = (Task<IEnumerable<IEvent>>) result;
 
