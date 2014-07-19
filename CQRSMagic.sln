@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic.Azure", "Projects
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2FAE5529-20A6-423D-8CF8-EA90CE43FAAF}"
 	ProjectSection(SolutionItems) = preProject
+		.nuget\CQRSMagic.Azure.nuspec = .nuget\CQRSMagic.Azure.nuspec
+		.nuget\CQRSMagic.nuspec = .nuget\CQRSMagic.nuspec
 		Scripts\PublishAndPause.bat = Scripts\PublishAndPause.bat
 	EndProjectSection
 EndProject

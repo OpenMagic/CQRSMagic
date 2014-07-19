@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <package >
+
     <metadata>
+        
         <id>CQRSMagic.Azure</id>
         <version>$version$</version>
         <title>CQRSMagic.Azure</title>
@@ -11,8 +13,27 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple CQRS implementation with Azure Table Storage EventStore.</description>
         <copyright>Copyright (c) 2013-2014 Tim Murphy</copyright>
+        
+        <dependencies>
+
+            <dependency id="AzureMagic" version="0.4.0.0"/>
+            <dependency id="Common.Logging.Core" version="2.2.0"/>
+            <dependency id="CommonServiceLocator" version="1.3"/>
+            <dependency id="Microsoft.Data.Edm" version="5.6.1"/>
+            <dependency id="Microsoft.Data.OData" version="5.6.1"/>
+            <dependency id="Microsoft.Data.Services.Client" version="5.6.1"/>
+            <dependency id="Microsoft.WindowsAzure.ConfigurationManager" version="2.0.3"/>
+            <dependency id="Newtonsoft.Json" version="6.0.3"/>
+            <dependency id="OpenMagic" version="0.3.6.0"/>
+            <dependency id="System.Spatial" version="5.6.1"/>
+            <dependency id="WindowsAzure.Storage" version="4.1.0"/>
+
+        </dependencies>
+
     </metadata>
+
     <files>
         <file src="..\Projects\CQRSMagic.Azure\bin\Release\CQRSMagic.Azure.*" target="lib/net45"/>
     </files>
+    
 </package>
