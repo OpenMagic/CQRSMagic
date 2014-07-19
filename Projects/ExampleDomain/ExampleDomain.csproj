@@ -110,7 +110,6 @@
     <Compile Include="Contacts\Events\ContactEventSubscriptions.cs" />
     <Compile Include="Repositories\Azure\AzureContactRepository.cs" />
     <Compile Include="Repositories\Azure\TableEntities\ContactTableEntity.cs" />
-    <Compile Include="Support\DependencyResolver.cs" />
     <Compile Include="Repositories\InMemory\InMemoryContactRepository.cs" />
     <Compile Include="Contacts\Events\CreatedContact.cs" />
     <Compile Include="Contacts\IContactRepository.cs" />

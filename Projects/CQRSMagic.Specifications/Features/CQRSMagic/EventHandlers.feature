@@ -1,7 +1,7 @@
 ﻿Feature: EventHandlers
 
 Background: 
-	Given DependencyResolver
+	Given ServiceLocator
 	And EventHandlers
 
 Scenario: RegisterEventHandlers(Assembly searchAssembly)

@@ -101,13 +101,16 @@
     <Compile Include="AzureEventSerializer.cs" />
     <Compile Include="EventTableEntity.cs" />
     <Compile Include="IAzureEventSerializer.cs" />
+    <Compile Include="ISettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DependencyContainerExtensions.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Support\IoC.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Packages.config" />
   </ItemGroup>
   <ItemGroup>

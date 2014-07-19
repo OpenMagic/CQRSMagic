@@ -23,7 +23,7 @@ namespace CQRSMagic.Azure
                 from entityProperty in entity.Properties
                 let propertyInfo = eventProperties.SingleOrDefault(p => p.Name == entityProperty.Key)
                 where propertyInfo != null
-                select new { entityProperty, propertyInfo };
+                select new {entityProperty, propertyInfo};
 
             foreach (var item in query)
             {
@@ -42,26 +42,15 @@ namespace CQRSMagic.Azure
             return @event;
         }
 
-        private IEvent CreateEvent(Type eventType, DynamicTableEntity entity, PropertyInfo[] eventProperties)
-        {
-            const BindingFlags bindingFlags = BindingFlags.CreateInstance | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
-            var @event = (IEvent)Activator.CreateInstance(eventType, bindingFlags, null, null, null);
-
-            eventProperties.Single(p => p.Name == "AggregateId").SetValue(@event, Guid.Parse(entity.PartitionKey));
-            eventProperties.Single(p => p.Name == "EventCreated").SetValue(@event, DateTimeOffset.Parse(entity.RowKey));
-
-            return @event;
-        }
-
         public DynamicTableEntity Serialize(IEvent @event)
         {
             // todo: caching?
             // todo: compiled lambda?
 
             var eventProperties = @event.GetType().GetProperties().Where(p => p.Name != "AggregateId" && p.Name != "EventCreated");
-            var entityProperties = eventProperties.Select(p => new { p.Name, Property = CreateEntityProperty(@event, p) }).ToList();
+            var entityProperties = eventProperties.Select(p => new {p.Name, Property = CreateEntityProperty(@event, p)}).ToList();
 
-            entityProperties.Insert(1, new { Name = "EventType", Property = new EntityProperty(@event.GetType().AssemblyQualifiedName) });
+            entityProperties.Insert(1, new {Name = "EventType", Property = new EntityProperty(@event.GetType().AssemblyQualifiedName)});
 
             var entity = new DynamicTableEntity
             {
@@ -71,6 +60,17 @@ namespace CQRSMagic.Azure
             };
 
             return entity;
+        }
+
+        private IEvent CreateEvent(Type eventType, DynamicTableEntity entity, PropertyInfo[] eventProperties)
+        {
+            const BindingFlags bindingFlags = BindingFlags.CreateInstance | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+            var @event = (IEvent) Activator.CreateInstance(eventType, bindingFlags, null, null, null);
+
+            eventProperties.Single(p => p.Name == "AggregateId").SetValue(@event, Guid.Parse(entity.PartitionKey));
+            eventProperties.Single(p => p.Name == "EventCreated").SetValue(@event, DateTimeOffset.Parse(entity.RowKey));
+
+            return @event;
         }
 
         private object GetValueFromEntityProperty(EntityProperty entityProperty)
@@ -114,7 +114,7 @@ namespace CQRSMagic.Azure
 
                 if (propertyInfo.PropertyType == typeof(Type))
                 {
-                    value = ((Type)value).AssemblyQualifiedName;
+                    value = ((Type) value).AssemblyQualifiedName;
                 }
 
                 var property = EntityProperty.CreateEntityPropertyFromObject(value);
