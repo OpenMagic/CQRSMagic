@@ -19,6 +19,7 @@
             <dependency id="AzureMagic" version="0.4.0.0"/>
             <dependency id="Common.Logging.Core" version="2.2.0"/>
             <dependency id="CommonServiceLocator" version="1.3"/>
+            <dependency id="CQRSMagic" version="0.6.0.0"/>
             <dependency id="Microsoft.Data.Edm" version="5.6.1"/>
             <dependency id="Microsoft.Data.OData" version="5.6.1"/>
             <dependency id="Microsoft.Data.Services.Client" version="5.6.1"/>
