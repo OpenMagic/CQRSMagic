@@ -1,4 +1,4 @@
-﻿using AzureMagic;
+﻿using AzureMagic.Tables;
 using ExampleDomain.Contacts.Events;
 using Microsoft.WindowsAzure.Storage.Table;
 

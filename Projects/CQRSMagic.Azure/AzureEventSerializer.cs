@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Anotar.CommonLogging;
-using AzureMagic;
+using AzureMagic.Tables;
 using CQRSMagic.Event;
 using Microsoft.WindowsAzure.Storage.Table;
 

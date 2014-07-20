@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AzureMagic;
+using AzureMagic.Tables;
 using CQRSMagic.Azure.Support;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
