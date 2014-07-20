@@ -6,6 +6,15 @@ namespace CQRSMagic.Azure.Support
 {
     internal static class IoC
     {
+        static IoC()
+        {
+            Initialize();
+        }
+
+        internal static void Initialize()
+        {
+        }
+
         internal static TService Get<TService>()
         {
             try

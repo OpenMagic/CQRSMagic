@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using CQRSMagic.Support;
 
 namespace CQRSMagic
 {
@@ -25,6 +26,7 @@ namespace CQRSMagic
         protected static void Initialize(ISettings settings)
         {
             Current = settings;
+            IoC.Initialize();
         }
     }
 }
