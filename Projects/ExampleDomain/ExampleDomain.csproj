@@ -45,9 +45,9 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="AzureMagic, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="AzureMagic, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\AzureMagic.0.4.0.0\lib\net40\AzureMagic.dll</HintPath>
+      <HintPath>..\..\packages\AzureMagic.0.5.0.0\lib\net40\AzureMagic.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

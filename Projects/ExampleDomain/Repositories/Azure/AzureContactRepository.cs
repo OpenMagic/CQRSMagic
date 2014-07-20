@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AzureMagic;
+using AzureMagic.Tables;
 using ExampleDomain.Contacts;
 using ExampleDomain.Contacts.Events;
 using ExampleDomain.Repositories.Azure.TableEntities;

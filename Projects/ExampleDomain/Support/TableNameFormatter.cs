@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Anotar.CommonLogging;
-using AzureMagic;
+using AzureMagic.Tables;
 using Microsoft.WindowsAzure.Storage.Table;
 using NullGuard;
 
@@ -15,7 +15,7 @@ namespace ExampleDomain.Support
         private readonly bool UsingTemporaryTableNames;
 
         public TableNameFormatter(string connectionString, [AllowNull] string tableNamePrefix) :
-            this(AzureStorage.GetTableClient(connectionString), tableNamePrefix)
+            this(AzureTableStorage.GetTableClient(connectionString), tableNamePrefix)
         {
         }
 
@@ -33,6 +33,8 @@ namespace ExampleDomain.Support
 
             if (!TableNames.Contains(formattedTableName) && UsingTemporaryTableNames)
             {
+                formattedTableName.ValidateTableName();
+
                 LogTo.Trace("New temporary Azure table {0}...", formattedTableName);
                 TableNames.Add(formattedTableName);
             }

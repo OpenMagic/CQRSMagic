@@ -1,4 +1,4 @@
-﻿using AzureMagic;
+﻿using AzureMagic.Tables;
 using AzureMagic.Tools;
 using CommonServiceLocator.NinjectAdapter.Unofficial;
 using CQRSMagic.Command;
@@ -14,7 +14,7 @@ namespace CQRSMagic.Specifications.Support.Configurations
 {
     public class AzureConfiguration
     {
-        private const string ConnectionString = AzureStorage.DevelopmentConnectionString;
+        private const string ConnectionString = AzureTableStorage.DevelopmentConnectionString;
         private readonly IKernel Kernel;
         private readonly TableNameFormatter TableNameFormatter;
 
