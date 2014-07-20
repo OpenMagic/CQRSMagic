@@ -8,8 +8,19 @@ namespace CQRSMagic.Support
 {
     internal static class IoC
     {
-        private static readonly Lazy<ICommandHandlers> CommandHandlers = new Lazy<ICommandHandlers>(CreateCommandHandlers);
-        private static readonly Lazy<IEventHandlers> EventHandlers = new Lazy<IEventHandlers>(CreateEventHandlers);
+        private static Lazy<ICommandHandlers> CommandHandlers;
+        private static Lazy<IEventHandlers> EventHandlers;
+
+        static IoC()
+        {
+            Initialize();
+        }
+
+        internal static void Initialize()
+        {
+            CommandHandlers = new Lazy<ICommandHandlers>(CreateCommandHandlers);
+            EventHandlers = new Lazy<IEventHandlers>(CreateEventHandlers);
+        }
 
         internal static TService Get<TService>()
         {
@@ -33,7 +44,7 @@ namespace CQRSMagic.Support
 
         private static TService FindService<TService>()
         {
-            return (TService) FindService(typeof(TService));
+            return (TService)FindService(typeof(TService));
         }
 
         private static object FindService(Type serviceType)

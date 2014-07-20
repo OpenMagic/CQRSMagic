@@ -39,9 +39,9 @@
       <HintPath>..\..\packages\Anotar.CommonLogging.Fody.2.10.2\Lib\portable-net4+sl5+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\Anotar.CommonLogging.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AzureMagic, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="AzureMagic, Version=0.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\AzureMagic.0.5.0.0\lib\net40\AzureMagic.dll</HintPath>
+      <HintPath>..\..\packages\AzureMagic.0.5.1.0\lib\net40\AzureMagic.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging.Core">
       <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
@@ -110,7 +110,7 @@
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="Packages.config" />
   </ItemGroup>
   <ItemGroup>
