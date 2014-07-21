@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Anotar.CommonLogging;
 using CQRSMagic.Event;
 using CQRSMagic.EventStorage;
 using CQRSMagic.Support;
@@ -29,13 +30,23 @@ namespace CQRSMagic.Command
 
         public async Task<IEnumerable<Task>> SendCommandAsync(ICommand command)
         {
-            var tasks = new List<Task>();
             var events = (await GetEvents(command)).ToArray();
 
-            tasks.Add(EventStore.SaveEventsAsync(events));
-            tasks.Add(EventBus.SendEventsAsync(events));
+            // EventBus subscriptions often use IEventStore.GetAggregate. Therefore IEventStore.SaveEventsAsync must complete first.
+            var saveEventsTask = EventStore.SaveEventsAsync(events);
+            var sendEventsTask = saveEventsTask.ContinueWith(continuation =>
+            {
+                if (continuation.Status == TaskStatus.RanToCompletion)
+                {
+                    EventBus.SendEventsAsync(events);
+                }
+                else
+                {
+                    LogTo.Warn("EventBus.SendEventsAsync(events) was not called because EventStore.SaveEventsAsync(events) status is {0}.", continuation.Status);
+                }
+            });
 
-            return tasks.AsEnumerable();
+            return new[] {saveEventsTask, sendEventsTask};
         }
 
         public void RegisterHandler<TCommand>(Func<TCommand, Task<IEnumerable<IEvent>>> handler) where TCommand : ICommand
