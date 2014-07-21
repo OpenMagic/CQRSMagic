@@ -30,10 +30,15 @@ namespace CQRSMagic.Azure
         {
         }
 
-        public AzureEventStoreRepository(string connectionString, string tableName, IAzureEventSerializer serializer)
+        public AzureEventStoreRepository(string connectionString, string eventsTableName, IAzureEventSerializer serializer)
+            : this(connectionString, eventsTableName, serializer, IoC.Get<IAzureTableRepositoryLogger>())
+        {
+        }
+
+        public AzureEventStoreRepository(string connectionString, string eventsTableName, IAzureEventSerializer serializer, IAzureTableRepositoryLogger logger)
         {
             Serializer = serializer;
-            Repository = new AzureTableRepository<DynamicTableEntity>(connectionString, tableName);
+            Repository = new AzureTableRepository<DynamicTableEntity>(connectionString, eventsTableName, logger);
         }
 
         public async Task<IEnumerable<IEvent>> FindEventsAsync(Guid aggregateId)

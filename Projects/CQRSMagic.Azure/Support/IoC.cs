@@ -1,4 +1,5 @@
 ﻿using System;
+using AzureMagic.Tables;
 using CQRSMagic.Support;
 using Microsoft.Practices.ServiceLocation;
 
@@ -50,6 +51,11 @@ namespace CQRSMagic.Azure.Support
             if (serviceType == typeof(ISettings))
             {
                 return Settings.Current;
+            }
+
+            if (serviceType == typeof(IAzureTableRepositoryLogger))
+            {
+                return new NullAzureTableRepositoryLogger();
             }
 
             return null;
