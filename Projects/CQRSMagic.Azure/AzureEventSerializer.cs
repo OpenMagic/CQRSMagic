@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Anotar.CommonLogging;
@@ -10,6 +11,21 @@ namespace CQRSMagic.Azure
 {
     public class AzureEventSerializer : IAzureEventSerializer
     {
+        private static readonly string TransactionIndexFormat;
+        private const int MaxEventsPerTransaction = 999;
+
+        static  AzureEventSerializer()
+        {
+            TransactionIndexFormat = "D" + MaxEventsPerTransaction.ToString(CultureInfo.InvariantCulture).Length;
+        }
+
+        public AzureEventSerializer()
+        {
+            MaximumEventsPerTransaction = MaxEventsPerTransaction;
+        }
+
+        public int MaximumEventsPerTransaction { get; private set; }
+
         public IEvent Deserialize(DynamicTableEntity entity)
         {
             // todo: caching?
@@ -42,7 +58,7 @@ namespace CQRSMagic.Azure
             return @event;
         }
 
-        public DynamicTableEntity Serialize(IEvent @event)
+        public DynamicTableEntity Serialize(IEvent @event, int transactionIndex)
         {
             // todo: caching?
             // todo: compiled lambda?
@@ -55,7 +71,7 @@ namespace CQRSMagic.Azure
             var entity = new DynamicTableEntity
             {
                 PartitionKey = @event.AggregateId.ToPartitionKey(),
-                RowKey = @event.EventCreated.ToRowKey(),
+                RowKey = string.Format("{0}-{1}", @event.EventCreated.ToRowKey(), transactionIndex.ToString(TransactionIndexFormat)),
                 Properties = entityProperties.ToDictionary(p => p.Name, p => p.Property)
             };
 
@@ -68,9 +84,17 @@ namespace CQRSMagic.Azure
             var @event = (IEvent) Activator.CreateInstance(eventType, bindingFlags, null, null, null);
 
             eventProperties.Single(p => p.Name == "AggregateId").SetValue(@event, Guid.Parse(entity.PartitionKey));
-            eventProperties.Single(p => p.Name == "EventCreated").SetValue(@event, DateTimeOffset.Parse(entity.RowKey));
+            eventProperties.Single(p => p.Name == "EventCreated").SetValue(@event, DateTimeOffset.Parse(RemoveTransactionIndexFromRowKey(entity.RowKey)));
 
             return @event;
+        }
+
+        private string RemoveTransactionIndexFromRowKey(string rowKey)
+        {
+            var index = rowKey.LastIndexOf('-');
+            var value = rowKey.Substring(0, index);
+
+            return value;
         }
 
         private object GetValueFromEntityProperty(EntityProperty entityProperty)

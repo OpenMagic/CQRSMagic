@@ -57,7 +57,17 @@ namespace CQRSMagic.Azure
 
         public Task SaveEventsAsync(IEnumerable<IEvent> events)
         {
-            var entities = events.Select(Serializer.Serialize);
+            return SaveEventsAsync(events.ToArray());
+        }
+
+        private Task SaveEventsAsync(IEvent[] events)
+        {
+            if (events.Length > Serializer.MaximumEventsPerTransaction)
+            {
+                throw new ArgumentException(string.Format("Cannot save more than {0:N0} events in one transaction.", Serializer.MaximumEventsPerTransaction));
+            }
+
+            var entities = events.Select((@event, index) => Serializer.Serialize(@event, index));
             var tasks = entities.Select(Repository.AddEntityAsync);
 
             return Task.WhenAll(tasks);

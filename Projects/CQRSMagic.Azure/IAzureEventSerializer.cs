@@ -5,7 +5,9 @@ namespace CQRSMagic.Azure
 {
     public interface IAzureEventSerializer
     {
+        int MaximumEventsPerTransaction { get;  }
+
         IEvent Deserialize(DynamicTableEntity entity);
-        DynamicTableEntity Serialize(IEvent @event);
+        DynamicTableEntity Serialize(IEvent @event, int transactionIndex);
     }
 }
