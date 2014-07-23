@@ -85,9 +85,8 @@ namespace CQRSMagic.Specifications.Features.ExampleDomain.Steps
         public void WhenAddContactCommandIsSent()
         {
             var addContact = new CreateContact {AggregateId = ContactId, Name = Name, EmailAddress = EmailAddress};
-            var tasks = CommandBus.SendCommandAsync(addContact).Result;
-
-            Task.WaitAll(tasks.ToArray());
+            
+            CommandBus.SendCommandAsync(addContact).Wait();
         }
 
         [Then(@"ContactAdded event is added to the event store")]
