@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CQRSMagic.Event;
@@ -24,14 +23,11 @@ namespace CQRSMagic.Command
             CommandHandlers = commandHandlers;
         }
 
-        /// <remarks>
-        /// MVC 5 websites seem to require this is an async method.
-        /// </remarks>
-        public async Task SendCommandAsync(ICommand command)
+        public async Task<Task> SendCommandAsync(ICommand command)
         {
             var events = await GetEvents(command);
 
-            await EventBus.SendEventsAsync(events);
+            return EventBus.SendEventsAsync(events);
         }
 
         public void RegisterHandler<TCommand>(Func<TCommand, Task<IEnumerable<IEvent>>> handler) where TCommand : ICommand
