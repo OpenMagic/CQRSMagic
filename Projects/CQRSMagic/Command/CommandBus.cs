@@ -24,11 +24,14 @@ namespace CQRSMagic.Command
             CommandHandlers = commandHandlers;
         }
 
-        public Task SendCommandAsync(ICommand command)
+        /// <remarks>
+        /// MVC 5 websites seem to require this is an async method.
+        /// </remarks>
+        public async Task SendCommandAsync(ICommand command)
         {
-            var events = GetEvents(command).Result.ToArray();
+            var events = await GetEvents(command);
 
-            return EventBus.SendEventsAsync(events);
+            await EventBus.SendEventsAsync(events);
         }
 
         public void RegisterHandler<TCommand>(Func<TCommand, Task<IEnumerable<IEvent>>> handler) where TCommand : ICommand
