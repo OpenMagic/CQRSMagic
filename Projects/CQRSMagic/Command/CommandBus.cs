@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Anotar.CommonLogging;
 using CQRSMagic.Event;
-using CQRSMagic.EventStorage;
 using CQRSMagic.Support;
 
 namespace CQRSMagic.Command
@@ -26,11 +24,11 @@ namespace CQRSMagic.Command
             CommandHandlers = commandHandlers;
         }
 
-        public async Task SendCommandAsync(ICommand command)
+        public Task SendCommandAsync(ICommand command)
         {
-            var events = (await GetEvents(command)).ToArray();
+            var events = GetEvents(command).Result.ToArray();
 
-            await EventBus.SendEventsAsync(events);
+            return EventBus.SendEventsAsync(events);
         }
 
         public void RegisterHandler<TCommand>(Func<TCommand, Task<IEnumerable<IEvent>>> handler) where TCommand : ICommand
