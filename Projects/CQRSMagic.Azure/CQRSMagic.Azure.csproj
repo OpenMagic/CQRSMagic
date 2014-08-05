@@ -100,6 +100,7 @@
     <Compile Include="AzureEventStoreRepository.cs" />
     <Compile Include="AzureEventSerializer.cs" />
     <Compile Include="EventTableEntity.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="IAzureEventSerializer.cs" />
     <Compile Include="ISettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
