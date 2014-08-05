@@ -78,23 +78,15 @@ namespace CQRSMagic.Azure
             return entity;
         }
 
-        private IEvent CreateEvent(Type eventType, DynamicTableEntity entity, PropertyInfo[] eventProperties)
+        public static IEvent CreateEvent(Type eventType, DynamicTableEntity entity, PropertyInfo[] eventProperties)
         {
             const BindingFlags bindingFlags = BindingFlags.CreateInstance | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
             var @event = (IEvent) Activator.CreateInstance(eventType, bindingFlags, null, null, null);
 
-            eventProperties.Single(p => p.Name == "AggregateId").SetValue(@event, Guid.Parse(entity.PartitionKey));
-            eventProperties.Single(p => p.Name == "EventCreated").SetValue(@event, DateTimeOffset.Parse(RemoveTransactionIndexFromRowKey(entity.RowKey)));
+            eventProperties.Single(p => p.Name == "AggregateId").SetValue(@event, entity.PartitionKey.ToAggregateId());
+            eventProperties.Single(p => p.Name == "EventCreated").SetValue(@event, entity.RowKey.ToEventCreated());
 
             return @event;
-        }
-
-        private string RemoveTransactionIndexFromRowKey(string rowKey)
-        {
-            var index = rowKey.LastIndexOf('-');
-            var value = rowKey.Substring(0, index);
-
-            return value;
         }
 
         private object GetValueFromEntityProperty(EntityProperty entityProperty)
