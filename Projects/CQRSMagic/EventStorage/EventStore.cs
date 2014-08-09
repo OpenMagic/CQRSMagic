@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CQRSMagic.Domain;
 using CQRSMagic.Event;
@@ -29,19 +30,28 @@ namespace CQRSMagic.EventStorage
             Services = serviceLocator;
         }
 
-        public async Task<IEnumerable<IEvent>> FindEventsAsync(Guid aggregateId)
+        public Task<IEnumerable<IEvent>> FindAllEventsAsync()
         {
-            return await Repository.FindEventsAsync(aggregateId);
+            return Repository.FindAllEventsAsync();
         }
 
-        public async Task<TAggregate> GetAggregateAsync<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
+        public Task<IEnumerable<IEvent>> FindEventsAsync(Guid aggregateId)
         {
-            var events = await Repository.FindEventsAsync(aggregateId);
+            return Repository.FindEventsAsync(aggregateId);
+        }
+
+        public TAggregate GetAggregate<TAggregate>(IEnumerable<IEvent> events) where TAggregate : IAggregate
+        {
             var aggregate = Services.Get<TAggregate>();
 
             aggregate.ApplyEvents(events);
 
             return aggregate;
+        }
+
+        public async Task<TAggregate> GetAggregateAsync<TAggregate>(Guid aggregateId) where TAggregate : IAggregate
+        {
+            return GetAggregate<TAggregate>(await Repository.FindEventsAsync(aggregateId));
         }
 
         public Task SaveEventsAsync(IEnumerable<IEvent> events)

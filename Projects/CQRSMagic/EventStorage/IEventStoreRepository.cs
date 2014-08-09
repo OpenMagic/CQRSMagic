@@ -7,7 +7,9 @@ namespace CQRSMagic.EventStorage
 {
     public interface IEventStoreRepository
     {
+        Task<IEnumerable<IEvent>> FindAllEventsAsync();
         Task<IEnumerable<IEvent>> FindEventsAsync(Guid aggregateId);
+
         Task SaveEventsAsync(IEnumerable<IEvent> events);
     }
 }

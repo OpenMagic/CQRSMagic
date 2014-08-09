@@ -17,6 +17,14 @@ namespace ExampleDomain.Repositories.InMemory
             Events = new ConcurrentDictionary<Guid, IEnumerable<IEvent>>();
         }
 
+        public Task<IEnumerable<IEvent>> FindAllEventsAsync()
+        {
+            return Task.FromResult(
+                from aggregateEvents in Events
+                from events in aggregateEvents.Value
+                select events);
+        }
+
         public Task<IEnumerable<IEvent>> FindEventsAsync(Guid aggregateId)
         {
             return Task.FromResult(Events[aggregateId]);
