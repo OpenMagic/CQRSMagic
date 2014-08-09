@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CQRSMagic.Event;
 
 namespace CQRSMagic.Domain
@@ -12,7 +13,7 @@ namespace CQRSMagic.Domain
 
         public void ApplyEvents(IEnumerable<IEvent> events)
         {
-            foreach (var @event in events)
+            foreach (var @event in events.OrderBy(e => e.EventCreated))
             {
                 ApplyEvent(@event);
             }
