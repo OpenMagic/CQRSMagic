@@ -31,31 +31,60 @@ namespace CQRSMagic.Azure
             // todo: caching?
             // todo: compiled lambda?
 
-            var eventType = Type.GetType(entity["EventType"].StringValue);
-            var eventProperties = eventType.GetProperties();
-            var @event = CreateEvent(eventType, entity, eventProperties);
-
-            var query =
-                from entityProperty in entity.Properties
-                let propertyInfo = eventProperties.SingleOrDefault(p => p.Name == entityProperty.Key)
-                where propertyInfo != null
-                select new {entityProperty, propertyInfo};
-
-            foreach (var item in query)
+            try
             {
-                LogTo.Debug("Updating {0}.{1} from {2}.", eventType.Name, item.propertyInfo.Name, item.entityProperty.Key);
+                var eventType = Type.GetType(entity["EventType"].StringValue);
+                var eventProperties = eventType.GetProperties();
+                var @event = CreateEvent(eventType, entity, eventProperties);
 
-                var entityValue = GetValueFromEntityProperty(item.entityProperty.Value);
+                var query =
+                    from entityProperty in entity.Properties
+                    let propertyInfo = eventProperties.SingleOrDefault(p => p.Name == entityProperty.Key)
+                    where propertyInfo != null
+                    select new { entityProperty, propertyInfo };
 
-                if (item.propertyInfo.PropertyType.Name == "Type")
+                foreach (var item in query)
                 {
-                    entityValue = Type.GetType(entityValue.ToString());
+                    LogTo.Debug("Updating {0}.{1} from {2}.", eventType.Name, item.propertyInfo.Name, item.entityProperty.Key);
+
+                    var entityValue = GetValueFromEntityProperty(item.entityProperty.Value);
+
+                    if (item.propertyInfo.PropertyType.Name == "Type")
+                    {
+                        entityValue = Type.GetType(entityValue.ToString());
+                    }
+
+                    item.propertyInfo.SetValue(@event, entityValue);
                 }
 
-                item.propertyInfo.SetValue(@event, entityValue);
+                return @event;
             }
+            catch (Exception exception)
+            {
+                var message = string.Format("Could not deserialize DynamicTableEntity.\r\n\r\n{0}", FormatDynamicTableEntityForExceptionMessage(entity));
 
-            return @event;
+                throw new Exception(message, exception);
+            }
+        }
+
+        private static string FormatDynamicTableEntityForExceptionMessage(DynamicTableEntity entity)
+        {
+            try
+            {
+                var keys = new[]
+                {
+                    string.Format("PartitionKey:\t{0}", entity.PartitionKey),
+                    string.Format("RowKey:\t{0}", entity.RowKey)
+                };
+
+                var properties = entity.Properties.Select(p => string.Format("{0}:\t{1}", p.Key, GetValueFromEntityProperty(p.Value)));
+
+                return string.Join(Environment.NewLine, keys.Concat(properties));
+            }
+            catch (Exception exception)
+            {
+                return "Error in FormatDynamicTableEntityForExceptionMessage : " + exception.Message;
+            }
         }
 
         public DynamicTableEntity Serialize(IEvent @event, int transactionIndex)
@@ -89,7 +118,7 @@ namespace CQRSMagic.Azure
             return @event;
         }
 
-        private object GetValueFromEntityProperty(EntityProperty entityProperty)
+        private static object GetValueFromEntityProperty(EntityProperty entityProperty)
         {
             switch (entityProperty.PropertyType)
             {
