@@ -41,6 +41,14 @@ namespace CQRSMagic.Azure
             Repository = new AzureTableRepository<DynamicTableEntity>(connectionString, eventsTableName, logger);
         }
 
+        public async Task<IEnumerable<IEvent>> FindAllEventsAsync()
+        {
+            var tableEntities = await Repository.Query().ExecuteAsync();
+            var events = tableEntities.Select(Serializer.Deserialize);
+
+            return events;
+        }
+
         public async Task<IEnumerable<IEvent>> FindEventsAsync(Guid aggregateId)
         {
             var partitionKey = aggregateId.ToPartitionKey();
