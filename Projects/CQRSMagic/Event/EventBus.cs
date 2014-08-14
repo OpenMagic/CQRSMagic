@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -61,6 +62,8 @@ namespace CQRSMagic.Event
         private IEnumerable<Task> SendEventAsync(IEvent @event)
         {
             LogTo.Trace("Sending {0} event.", @event.GetType());
+
+            Debugger.Break();
 
             var eventHandlers = EventHandlers.GetEventHandlers(@event);
             var tasks = eventHandlers.Select(eventHandler =>
