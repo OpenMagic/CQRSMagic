@@ -23,16 +23,20 @@ namespace CQRSMagic.Event
         public void RegisterHandler<TEvent>(Func<TEvent, Task> handler)
         {
             var key = typeof(TEvent);
-            Func<IEvent, Task> value = @event => handler((TEvent) @event);
+            Func<IEvent, Task> value = @event => handler((TEvent)@event);
 
             RegisterHandler(key, value);
         }
 
         public IEnumerable<Func<IEvent, Task>> GetEventHandlers(IEvent @event)
         {
-            List<Func<IEvent, Task>> eventHandlers;
+            LogTo.Trace("Getting event handlers for {0} event.", @event.GetType());
 
-            return Handlers.TryGetValue(@event.GetType(), out eventHandlers) ? eventHandlers : Enumerable.Empty<Func<IEvent, Task>>();
+            var eventHandlers = Handlers.GetOrAdd(@event.GetType(), Enumerable.Empty<Func<IEvent, Task>>().ToList());
+
+            LogTo.Trace("Got {0:N0} event handlers for {1} event.", eventHandlers.Count, @event.GetType());
+
+            return eventHandlers;
         }
 
         public IEnumerable<KeyValuePair<Type, IEnumerable<Func<IEvent, Task>>>> RegisterHandlers(Assembly searchAssembly)
@@ -44,7 +48,7 @@ namespace CQRSMagic.Event
                 from @interface in type.GetInterfaces()
                 where @interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(ISubscribeTo<>)
                 let eventType = @interface.GetGenericArguments()[0]
-                select new {eventType, handler = CreateEventHandler(type, @interface.GetMethods().Single())};
+                select new { eventType, handler = CreateEventHandler(type, @interface.GetMethods().Single()) };
 
             foreach (var item in eventSubscribers)
             {
@@ -66,8 +70,8 @@ namespace CQRSMagic.Event
         private Task HandleEvent(IEvent @event, Type eventHandlerType, MethodInfo eventHandlerMethod)
         {
             var eventHandler = Services.GetService(eventHandlerType);
-            var result = eventHandlerMethod.Invoke(eventHandler, new object[] {@event});
-            var task = (Task) result;
+            var result = eventHandlerMethod.Invoke(eventHandler, new object[] { @event });
+            var task = (Task)result;
 
             return task;
         }
