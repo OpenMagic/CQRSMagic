@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using Anotar.CommonLogging;
 using CQRSMagic.Event;
 using CQRSMagic.Support;
 
@@ -25,9 +26,14 @@ namespace CQRSMagic.Command
 
         public async Task<Task> SendCommandAsync(ICommand command)
         {
-            var events = await GetEvents(command);
+            LogTo.Trace("Sending {0} command.", command.GetType());
 
-            return EventBus.SendEventsAsync(events);
+            var events = await GetEvents(command);
+            var sendEvents = EventBus.SendEventsAsync(events);
+
+            await sendEvents.ContinueWith(c => LogTo.Trace("Sent {0} command.", command.GetType()));
+
+            return sendEvents;
         }
 
         public void RegisterHandler<TCommand>(Func<TCommand, Task<IEnumerable<IEvent>>> handler) where TCommand : ICommand
