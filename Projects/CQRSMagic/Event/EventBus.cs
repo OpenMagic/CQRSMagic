@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -31,27 +30,19 @@ namespace CQRSMagic.Event
             await SendEventsAsync(events.ToArray());
         }
 
-        private async Task SendEventsAsync(IEvent[] events)
-        {
-            LogTo.Trace("Sending {0:N0} events.", events.Length);
-
-            await EventStore.SaveEventsAsync(events);
-
-            var tasks = new List<Task>();
-
-            foreach (var @event in events)
-            {
-                tasks.AddRange(SendEventAsync(@event));
-            }
-
-            await Task
-                .WhenAll(tasks)
-                .ContinueWith(c => LogTo.Trace("Sent {0:N0} events.", events.Length));
-        }
-
         public void RegisterHandlers(Assembly searchAssembly)
         {
             EventHandlers.RegisterHandlers(searchAssembly);
+        }
+
+        private async Task SendEventsAsync(ICollection<IEvent> events)
+        {
+            LogTo.Trace("Sending {0:N0} events.", events.Count);
+
+            await EventStore.SaveEventsAsync(events);
+            await Task.WhenAll(events.Select(SendEventAsync));
+
+            LogTo.Trace("Sent {0:N0} events.", events.Count);
         }
 
         public void RegisterHandler<TEvent>(Func<TEvent, Task> handler) where TEvent : IEvent
@@ -59,24 +50,27 @@ namespace CQRSMagic.Event
             EventHandlers.RegisterHandler(handler);
         }
 
-        private IEnumerable<Task> SendEventAsync(IEvent @event)
+        private async Task SendEventAsync(IEvent @event)
         {
             LogTo.Trace("Sending {0} event.", @event.GetType());
 
-            Debugger.Break();
+            var eventHandlers = EventHandlers.GetEventHandlers(@event).ToArray();
 
-            var eventHandlers = EventHandlers.GetEventHandlers(@event);
-            var tasks = eventHandlers.Select(eventHandler =>
-            {
-                LogTo.Trace("Sending {0} event to event handler.", @event.GetType());
+            LogTo.Trace("Sending {0} event to {1} event handlers.", @event.GetType(), eventHandlers.Length);
 
-                return eventHandler(@event)
-                    .ContinueWith(c => LogTo.Trace("Sent {0} event to event handler.", @event.GetType()));
-            });
+            await Task.WhenAll(eventHandlers.Select(eventHandler => SendEventToEventHandler(@event, eventHandler)));
 
+            LogTo.Trace("Sent {0} event to {1} event handlers.", @event.GetType(), eventHandlers.Length);
             LogTo.Trace("Sent {0} event.", @event.GetType());
+        }
 
-            return tasks;
+        private static async Task SendEventToEventHandler(IEvent @event, Func<IEvent, Task> eventHandler)
+        {
+            LogTo.Trace("Sending {0} event to event handler.", @event.GetType());
+
+            await eventHandler(@event);
+
+            LogTo.Trace("Sent {0} event to event handler.", @event.GetType());
         }
     }
 }

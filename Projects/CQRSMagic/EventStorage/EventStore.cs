@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Anotar.CommonLogging;
 using CQRSMagic.Domain;
 using CQRSMagic.Event;
 using CQRSMagic.Support;
@@ -56,7 +57,16 @@ namespace CQRSMagic.EventStorage
 
         public Task SaveEventsAsync(IEnumerable<IEvent> events)
         {
-            return Repository.SaveEventsAsync(events);
+            return SaveEventsAsync(events.ToArray());
+        }
+
+        public async Task SaveEventsAsync(IEvent[] events)
+        {
+            LogTo.Trace("Saving {0} events.", events.Length);
+
+            await Repository.SaveEventsAsync(events);
+
+            LogTo.Trace("Saved {0} events.", events.Length);
         }
     }
 }

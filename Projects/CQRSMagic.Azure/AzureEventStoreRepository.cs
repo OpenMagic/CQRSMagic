@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Anotar.CommonLogging;
 using AzureMagic.Tables;
 using CQRSMagic.Azure.Support;
 using CQRSMagic.Event;
@@ -68,9 +69,11 @@ namespace CQRSMagic.Azure
             return SaveEventsAsync(events.ToArray());
         }
 
-        private Task SaveEventsAsync(IEvent[] events)
+        private async Task SaveEventsAsync(ICollection<IEvent> events)
         {
-            if (events.Length > Serializer.MaximumEventsPerTransaction)
+            LogTo.Trace("Saving {0} events.", events.Count);
+
+            if (events.Count > Serializer.MaximumEventsPerTransaction)
             {
                 throw new ArgumentException(string.Format("Cannot save more than {0:N0} events in one transaction.", Serializer.MaximumEventsPerTransaction));
             }
@@ -78,7 +81,9 @@ namespace CQRSMagic.Azure
             var entities = events.Select((@event, index) => Serializer.Serialize(@event, index));
             var tasks = entities.Select(Repository.AddEntityAsync);
 
-            return Task.WhenAll(tasks);
+            await Task.WhenAll(tasks);
+
+            LogTo.Trace("Saved {0} events.", events.Count);
         }
     }
 }
