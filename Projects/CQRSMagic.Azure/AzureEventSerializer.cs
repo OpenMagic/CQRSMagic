@@ -14,7 +14,7 @@ namespace CQRSMagic.Azure
         private static readonly string TransactionIndexFormat;
         private const int MaxEventsPerTransaction = 999;
 
-        static  AzureEventSerializer()
+        static AzureEventSerializer()
         {
             TransactionIndexFormat = "D" + MaxEventsPerTransaction.ToString(CultureInfo.InvariantCulture).Length;
         }
@@ -93,9 +93,17 @@ namespace CQRSMagic.Azure
             // todo: compiled lambda?
 
             var eventProperties = @event.GetType().GetProperties().Where(p => p.Name != "AggregateId" && p.Name != "EventCreated");
-            var entityProperties = eventProperties.Select(p => new {p.Name, Property = CreateEntityProperty(@event, p)}).ToList();
+            var entityProperties = eventProperties.Select(p => new { p.Name, Property = CreateEntityProperty(@event, p) }).ToList();
+            var eventType = new { Name = "EventType", Property = new EntityProperty(@event.GetType().AssemblyQualifiedName) };
 
-            entityProperties.Insert(1, new {Name = "EventType", Property = new EntityProperty(@event.GetType().AssemblyQualifiedName)});
+            if (entityProperties.Any())
+            {
+                entityProperties.Insert(1, eventType);
+            }
+            else
+            {
+                entityProperties.Add(eventType);
+            }
 
             var entity = new DynamicTableEntity
             {
@@ -110,7 +118,7 @@ namespace CQRSMagic.Azure
         public static IEvent CreateEvent(Type eventType, DynamicTableEntity entity, PropertyInfo[] eventProperties)
         {
             const BindingFlags bindingFlags = BindingFlags.CreateInstance | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
-            var @event = (IEvent) Activator.CreateInstance(eventType, bindingFlags, null, null, null);
+            var @event = (IEvent)Activator.CreateInstance(eventType, bindingFlags, null, null, null);
 
             eventProperties.Single(p => p.Name == "AggregateId").SetValue(@event, entity.PartitionKey.ToAggregateId());
             eventProperties.Single(p => p.Name == "EventCreated").SetValue(@event, entity.RowKey.ToEventCreated());
@@ -159,7 +167,7 @@ namespace CQRSMagic.Azure
 
                 if (propertyInfo.PropertyType == typeof(Type))
                 {
-                    value = ((Type) value).AssemblyQualifiedName;
+                    value = ((Type)value).AssemblyQualifiedName;
                 }
 
                 var property = EntityProperty.CreateEntityPropertyFromObject(value);
