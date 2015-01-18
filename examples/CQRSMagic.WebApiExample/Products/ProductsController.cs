@@ -13,36 +13,39 @@ namespace CQRSMagic.WebApiExample.Products
     {
         private readonly IEventStore _eventStore;
         private readonly IEventPublisher _eventPublisher;
+        private readonly Dictionary<Guid, ProductReadModel> _productReadModels;
 
         public ProductsController()
-            : this(ServiceLocator.EventStore, ServiceLocator.EventPublisher)
+            : this(ServiceLocator.EventStore, ServiceLocator.EventPublisher, ServiceLocator.ProductReadModels)
         {
         }
 
-        public ProductsController(IEventStore eventStore, IEventPublisher eventPublisher)
+        public ProductsController(IEventStore eventStore, IEventPublisher eventPublisher, Dictionary<Guid, ProductReadModel> productReadModels)
         {
             _eventStore = eventStore;
             _eventPublisher = eventPublisher;
+            _productReadModels = productReadModels;
         }
 
         public IEnumerable<ProductReadModel> Get()
         {
-            return ServiceLocator.ProductReadModels.AsEnumerable();
+            return _productReadModels.Values.AsEnumerable();
         }
 
         public ProductReadModel Get(Guid id)
         {
-            var product = ServiceLocator.ProductReadModels.SingleOrDefault(p => p.Id == id);
+            var product = _productReadModels[id];
 
             return product;
         }
 
-        public HttpResponseMessage Post(JObject value)
+        public HttpResponseMessage Post(JObject json)
         {
-            var name = value.Value<string>("name");
-            var unitPrice = value.Value<decimal>("unitPrice");
+            var name = json.Value<string>("name");
+            var unitPrice = json.Value<decimal>("unitPrice");
             var command = new AddProductCommand(name, unitPrice);
 
+            // todo: refactor
             var commandHandler = new AddProductCommandHandler();
             var events = commandHandler.Handle(command).ToArray();
 
@@ -57,9 +60,19 @@ namespace CQRSMagic.WebApiExample.Products
             return response;
         }
 
-        public void Put(Guid id, string name, decimal unitPrice)
+        public void Put(Guid id, JObject json)
         {
-            throw new NotImplementedException();
+            var name = json.Value<string>("name");
+            var unitPrice = json.Value<decimal>("unitPrice");
+            var entityVersion = json.Value<int>("entityVersion");
+            var command = new UpdateProductCommand(id, name, unitPrice);
+
+            // todo: refactor
+            var commandHandler = new UpdateProductCommandHandler();
+            var events = commandHandler.Handle(command).ToArray();
+
+            _eventStore.SaveEvents(command.Id, entityVersion, events);
+            _eventPublisher.PublishEvents(events);
         }
 
         public void Delete(Guid id)

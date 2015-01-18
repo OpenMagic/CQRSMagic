@@ -7,12 +7,21 @@ namespace CQRSMagic.WebApiExample.Products
         public string Name { get; private set; }
         public decimal UnitPrice { get; private set; }
 
-        // ReSharper disable once UnusedMember.Local
-        private void ApplyEvent(AddedProductEvent @event)
+        public void ApplyEvent(AddedProductEvent e)
         {
-            Id = @event.Id;
-            Name = @event.Name;
-            UnitPrice = @event.UnitPrice;
+            Id = e.Id;
+            Name = e.Name;
+            UnitPrice = e.UnitPrice;
+        }
+
+        public void ApplyEvent(NameChangedEvent e)
+        {
+            Name = e.Name;
+        }
+
+        public void ApplyEvent(UnitPriceChangedEvent e)
+        {
+            UnitPrice = e.UnitPrice;
         }
     }
 }
