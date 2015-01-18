@@ -1,0 +1,25 @@
+########################
+# Operating System
+########################
+
+*DS_Store
+thumbs.db
+
+########################
+# Visual Studio
+########################
+
+[Aa]rtifacts/
+[Bb]in/
+[Oo]bj/
+[Pp]ackages/
+
+*.cache
+*.feature.cs
+*.user
+*.suo
+
+########################
+# Solution
+########################
+
