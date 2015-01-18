@@ -13,14 +13,9 @@ namespace CQRSMagic.WebApiExample.Products
     {
         private readonly IEventStore _eventStore;
         private readonly IEventPublisher _eventPublisher;
-        private readonly Dictionary<Guid, ProductReadModel> _productReadModels;
+        private readonly IProductReadModelRepository _productReadModels;
 
-        public ProductsController()
-            : this(ServiceLocator.EventStore, ServiceLocator.EventPublisher, ServiceLocator.ProductReadModels)
-        {
-        }
-
-        public ProductsController(IEventStore eventStore, IEventPublisher eventPublisher, Dictionary<Guid, ProductReadModel> productReadModels)
+        public ProductsController(IEventStore eventStore, IEventPublisher eventPublisher, IProductReadModelRepository productReadModels)
         {
             _eventStore = eventStore;
             _eventPublisher = eventPublisher;
@@ -29,12 +24,12 @@ namespace CQRSMagic.WebApiExample.Products
 
         public IEnumerable<ProductReadModel> Get()
         {
-            return _productReadModels.Values.AsEnumerable();
+            return _productReadModels.GetAll();
         }
 
         public ProductReadModel Get(Guid id)
         {
-            var product = _productReadModels[id];
+            var product = _productReadModels.GetById(id);
 
             return product;
         }
@@ -68,7 +63,7 @@ namespace CQRSMagic.WebApiExample.Products
             var command = new UpdateProductCommand(id, name, unitPrice);
 
             // todo: refactor
-            var commandHandler = new UpdateProductCommandHandler();
+            var commandHandler = new UpdateProductCommandHandler(_eventStore);
             var events = commandHandler.Handle(command).ToArray();
 
             _eventStore.SaveEvents(command.Id, entityVersion, events);
@@ -80,7 +75,7 @@ namespace CQRSMagic.WebApiExample.Products
             var command = new DeleteProductCommand(id);
 
             // todo: refactor
-            var commandHandler = new DeleteProductCommandHandler();
+            var commandHandler = new DeleteProductCommandHandler(_eventStore);
             var events = commandHandler.Handle(command).ToArray();
 
             _eventStore.SaveEvents(command.Id, entityVersion, events);

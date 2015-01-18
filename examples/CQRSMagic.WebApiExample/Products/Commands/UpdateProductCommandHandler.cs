@@ -7,10 +7,6 @@ namespace CQRSMagic.WebApiExample.Products.Commands
     {
         private readonly IEventStore _eventStore;
 
-        public UpdateProductCommandHandler() : this(ServiceLocator.EventStore)
-        {
-        }
-
         public UpdateProductCommandHandler(IEventStore eventStore)
         {
             _eventStore = eventStore;

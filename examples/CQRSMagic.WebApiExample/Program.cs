@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using CQRSMagic.WebApiExample.Infrastructure;
 using CQRSMagic.WebApiExample.Products;
 using CQRSMagic.WebApiExample.Products.Events;
 using CQRSMagic.WebApiExample.Products.Subscribers;
 using Microsoft.Owin.Hosting;
+using Ninject;
 
 namespace CQRSMagic.WebApiExample
 {
@@ -20,13 +22,15 @@ namespace CQRSMagic.WebApiExample
                 // Start OWIN host 
                 using (WebApp.Start<Startup>(url: BaseAddress))
                 {
-                    var eventPublisher = ServiceLocator.EventPublisher;
+                    var kernel = IoC.Kernel;
+                    var eventPublisher = kernel.Get<IEventPublisher>();
+                    var readModelEventHandler = kernel.Get<ReadModelEventHandler>();
 
                     // todo: refactor
-                    eventPublisher.SubscribeTo<AddedProductEvent>(e => new ReadModelEventHandler().Handle(e));
-                    eventPublisher.SubscribeTo<ProductNameChangedEvent>(e => new ReadModelEventHandler().Handle(e));
-                    eventPublisher.SubscribeTo<ProductUnitPriceChangedEvent>(e => new ReadModelEventHandler().Handle(e));
-                    eventPublisher.SubscribeTo<DeletedProductEvent>(e => new ReadModelEventHandler().Handle(e));
+                    eventPublisher.SubscribeTo<AddedProductEvent>(e => readModelEventHandler.Handle(e));
+                    eventPublisher.SubscribeTo<ProductNameChangedEvent>(e => readModelEventHandler.Handle(e));
+                    eventPublisher.SubscribeTo<ProductUnitPriceChangedEvent>(e => readModelEventHandler.Handle(e));
+                    eventPublisher.SubscribeTo<DeletedProductEvent>(e => readModelEventHandler.Handle(e));
 
                     AddProduct("Product 1", (decimal)1.23);
                     AddProduct("Product 2", 1024);

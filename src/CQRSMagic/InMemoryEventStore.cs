@@ -6,11 +6,11 @@ namespace CQRSMagic
 {
     public class InMemoryEventStore : IEventStore
     {
-        private readonly ConcurrentDictionary<Guid, IList<IEvent>> _entities = new ConcurrentDictionary<Guid, IList<IEvent>>();
+        private static readonly ConcurrentDictionary<Guid, IList<IEvent>> Entities = new ConcurrentDictionary<Guid, IList<IEvent>>();
 
         public void SaveEvents(Guid id, int version, IEvent[] newEvents)
         {
-            var currentEvents = _entities.GetOrAdd(id, key => new List<IEvent>());
+            var currentEvents = Entities.GetOrAdd(id, key => new List<IEvent>());
 
             if (version != currentEvents.Count)
             {
@@ -27,7 +27,7 @@ namespace CQRSMagic
         {
             IList<IEvent> events;
 
-            if (!_entities.TryGetValue(id, out events))
+            if (!Entities.TryGetValue(id, out events))
             {
                 throw new EntityNotFoundException<TEntity>(id);
             }

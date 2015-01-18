@@ -1,19 +1,14 @@
 using System;
-using System.Collections.Generic;
 using CQRSMagic.WebApiExample.Products.Events;
 
 namespace CQRSMagic.WebApiExample.Products.Subscribers
 {
     public class ReadModelEventHandler
     {
-        private readonly Dictionary<Guid, ProductReadModel> _products;
+        private readonly IProductReadModelRepository _products;
         private readonly IEventStore _eventStore;
 
-        public ReadModelEventHandler() : this(ServiceLocator.ProductReadModels, ServiceLocator.EventStore)
-        {
-        }
-
-        public ReadModelEventHandler(Dictionary<Guid, ProductReadModel> products, IEventStore eventStore)
+        public ReadModelEventHandler(IProductReadModelRepository products, IEventStore eventStore)
         {
             _products = products;
             _eventStore = eventStore;
@@ -38,14 +33,14 @@ namespace CQRSMagic.WebApiExample.Products.Subscribers
 
         public void Handle(DeletedProductEvent deletedProductEvent)
         {
-            _products.Remove(deletedProductEvent.Id);
+            _products.Delete(deletedProductEvent.Id);
         }
 
         private void UpdateReadModel(Guid id)
         {
             var readModel = GetReadModel(id);
 
-            _products[id] = readModel;
+            _products.Update(readModel);
         }
 
         private ProductReadModel GetReadModel(Guid productId)

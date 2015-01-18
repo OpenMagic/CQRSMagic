@@ -1,4 +1,7 @@
 ﻿using System.Web.Http;
+using CQRSMagic.WebApiExample.Infrastructure;
+using Ninject.Web.Common.OwinHost;
+using Ninject.Web.WebApi.OwinHost;
 using Owin;
 
 namespace CQRSMagic.WebApiExample
@@ -17,7 +20,9 @@ namespace CQRSMagic.WebApiExample
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            appBuilder.UseWebApi(config);
+            appBuilder
+                .UseNinjectMiddleware(() => IoC.Kernel)
+                .UseNinjectWebApi(config);
         }
     }
 }
