@@ -4,19 +4,21 @@ namespace CQRSMagic.WebApiExample.Products
 {
     public class ProductReadModel
     {
-        private readonly Guid _id;
-        private readonly string _name;
-        private readonly decimal _unitPrice;
-
-        public ProductReadModel(Guid id, string name, decimal unitPrice)
+        // HttpContent.ReadAsAsync<T>() requires a public parameterless constructor.
+        public ProductReadModel()
         {
-            _id = id;
-            _name = name;
-            _unitPrice = unitPrice;
         }
 
-        public Guid Id { get { return _id; } }
-        public string Name { get { return _name; } }
-        public decimal UnitPrice { get { return _unitPrice; } }
+        public ProductReadModel(ProductEntity entity)
+        {
+            Id = entity.Id;
+            Name = entity.Name;
+            UnitPrice = entity.UnitPrice;
+        }
+
+        // todo: Change to private setters. Current public because HttpContent.ReadAsAsync<T>() requires public setters.
+        public Guid Id { get; set;  }
+        public string Name { get; set; }
+        public decimal UnitPrice { get; set; }
     }
 }

@@ -1,9 +1,18 @@
-﻿using System;
+﻿using CQRSMagic.WebApiExample.Products.Events;
 
 namespace CQRSMagic.WebApiExample.Products
 {
-    internal class ProductEntity
+    public class ProductEntity : Entity
     {
-        public Guid Id { get { throw new NotImplementedException(); } }
+        public string Name { get; private set; }
+        public decimal UnitPrice { get; private set; }
+
+        // ReSharper disable once UnusedMember.Local
+        private void ApplyEvent(AddedProductEvent @event)
+        {
+            Id = @event.Id;
+            Name = @event.Name;
+            UnitPrice = @event.UnitPrice;
+        }
     }
 }

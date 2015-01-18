@@ -5,6 +5,7 @@ using System.Net.Http;
 using CQRSMagic.WebApiExample.Products;
 using CQRSMagic.WebApiExample.Products.Events;
 using Microsoft.Owin.Hosting;
+using Newtonsoft.Json;
 
 namespace CQRSMagic.WebApiExample
 {
@@ -80,13 +81,13 @@ namespace CQRSMagic.WebApiExample
             var client = new HttpClient();
 
             var response = client.GetAsync(uri).Result;
-
-            Console.WriteLine(response);
-            Console.WriteLine(response.Content.ReadAsStringAsync().Result);
-            Console.WriteLine();
-
+            var content = response.Content.ReadAsStringAsync().Result;
             var products = response.Content.ReadAsAsync<IEnumerable<ProductReadModel>>().Result;
 
+            Console.WriteLine(response);
+            Console.WriteLine(content);
+            Console.WriteLine();
+            
             return products;
         }
 

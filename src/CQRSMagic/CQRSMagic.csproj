@@ -37,9 +37,13 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ApplyEventException.cs" />
     <Compile Include="ConcurrencyException.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="EntityNotFoundException.cs" />
     <Compile Include="EventPublisher.cs" />
     <Compile Include="ICommand.cs" />
+    <Compile Include="IEntity.cs" />
     <Compile Include="IEvent.cs" />
     <Compile Include="IEventPublisher.cs" />
     <Compile Include="IEventStore.cs" />

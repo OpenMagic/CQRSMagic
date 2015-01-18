@@ -22,5 +22,21 @@ namespace CQRSMagic
                 currentEvents.Add(newEvent);
             }
         }
+
+        public TEntity GetEntity<TEntity>(Guid id) where TEntity : class, IEntity, new()
+        {
+            IList<IEvent> events;
+
+            if (!_entities.TryGetValue(id, out events))
+            {
+                throw new EntityNotFoundException<TEntity>(id);
+            }
+
+            var entity = Activator.CreateInstance<TEntity>();
+
+            entity.ApplyEvents(events);
+
+            return entity;
+        }
     }
 }
