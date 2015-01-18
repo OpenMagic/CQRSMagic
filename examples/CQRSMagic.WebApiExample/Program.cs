@@ -83,6 +83,7 @@ namespace CQRSMagic.WebApiExample
 
             Console.WriteLine(response);
             Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+            Console.WriteLine();
 
             var products = response.Content.ReadAsAsync<IEnumerable<ProductReadModel>>().Result;
 

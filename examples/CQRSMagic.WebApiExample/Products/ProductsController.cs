@@ -27,7 +27,7 @@ namespace CQRSMagic.WebApiExample.Products
 
         public IEnumerable<ProductReadModel> Get()
         {
-            throw new NotImplementedException();
+            return ServiceLocator.ProductReadModels.AsEnumerable();
         }
 
         public ProductReadModel Get(Guid id)
