@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using CQRSMagic.WebApiExample.Products.Events;
 
 namespace CQRSMagic.WebApiExample.Products.Subscribers
@@ -27,14 +26,19 @@ namespace CQRSMagic.WebApiExample.Products.Subscribers
             _products.Add(readModel.Id, readModel);
         }
 
-        public void Handle(NameChangedEvent nameChangedEvent)
+        public void Handle(ProductNameChangedEvent productNameChangedEvent)
         {
-            UpdateReadModel(nameChangedEvent.Id);
+            UpdateReadModel(productNameChangedEvent.Id);
         }
 
-        public void Handle(UnitPriceChangedEvent unitPriceChangedEvent)
+        public void Handle(ProductUnitPriceChangedEvent productUnitPriceChangedEvent)
         {
-            UpdateReadModel(unitPriceChangedEvent.Id);
+            UpdateReadModel(productUnitPriceChangedEvent.Id);
+        }
+
+        public void Handle(DeletedProductEvent deletedProductEvent)
+        {
+            _products.Remove(deletedProductEvent.Id);
         }
 
         private void UpdateReadModel(Guid id)

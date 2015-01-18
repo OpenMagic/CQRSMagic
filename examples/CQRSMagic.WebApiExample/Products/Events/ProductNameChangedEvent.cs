@@ -2,12 +2,12 @@ using System;
 
 namespace CQRSMagic.WebApiExample.Products.Events
 {
-    public class NameChangedEvent : IEvent
+    public class ProductNameChangedEvent : IEvent
     {
         private readonly Guid _id;
         private readonly string _name;
 
-        public NameChangedEvent(Guid id, string name)
+        public ProductNameChangedEvent(Guid id, string name)
         {
             _id = id;
             _name = name;

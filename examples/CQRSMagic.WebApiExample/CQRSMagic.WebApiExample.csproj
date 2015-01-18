@@ -81,8 +81,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Products\Events\UnitPriceChangedEvent.cs" />
-    <Compile Include="Products\Events\NameChangedEvent.cs" />
+    <Compile Include="Products\Events\DeletedProductEvent.cs" />
+    <Compile Include="Products\Commands\DeleteProductCommand.cs" />
+    <Compile Include="Products\Commands\DeleteProductCommandHandler.cs" />
+    <Compile Include="Products\Events\ProductUnitPriceChangedEvent.cs" />
+    <Compile Include="Products\Events\ProductNameChangedEvent.cs" />
     <Compile Include="Products\Commands\UpdateProductCommandHandler.cs" />
     <Compile Include="Products\Commands\UpdateProductCommand.cs" />
     <Compile Include="Products\Subscribers\ReadModelEventHandler.cs" />

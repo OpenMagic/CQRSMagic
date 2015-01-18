@@ -2,20 +2,18 @@
 
 namespace CQRSMagic.WebApiExample.Products.Commands
 {
-    public class AddProductCommand : ICommand
+    public class AddProductCommand : Command
     {
-        private readonly Guid _id;
         private readonly string _name;
         private readonly decimal _unitPrice;
 
         public AddProductCommand(string name, decimal unitPrice)
+            : base(Guid.NewGuid())
         {
-            _id = Guid.NewGuid();
             _name = name;
             _unitPrice = unitPrice;
         }
 
-        public Guid Id { get { return _id; } }
         public string Name { get { return _name; } }
         public decimal UnitPrice { get { return _unitPrice; } }
     }

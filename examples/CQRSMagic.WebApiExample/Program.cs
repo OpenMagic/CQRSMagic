@@ -6,7 +6,6 @@ using CQRSMagic.WebApiExample.Products;
 using CQRSMagic.WebApiExample.Products.Events;
 using CQRSMagic.WebApiExample.Products.Subscribers;
 using Microsoft.Owin.Hosting;
-using Newtonsoft.Json;
 
 namespace CQRSMagic.WebApiExample
 {
@@ -25,8 +24,9 @@ namespace CQRSMagic.WebApiExample
 
                     // todo: refactor
                     eventPublisher.SubscribeTo<AddedProductEvent>(e => new ReadModelEventHandler().Handle(e));
-                    eventPublisher.SubscribeTo<NameChangedEvent>(e => new ReadModelEventHandler().Handle(e));
-                    eventPublisher.SubscribeTo<UnitPriceChangedEvent>(e => new ReadModelEventHandler().Handle(e));
+                    eventPublisher.SubscribeTo<ProductNameChangedEvent>(e => new ReadModelEventHandler().Handle(e));
+                    eventPublisher.SubscribeTo<ProductUnitPriceChangedEvent>(e => new ReadModelEventHandler().Handle(e));
+                    eventPublisher.SubscribeTo<DeletedProductEvent>(e => new ReadModelEventHandler().Handle(e));
 
                     AddProduct("Product 1", (decimal)1.23);
                     AddProduct("Product 2", 1024);
@@ -35,9 +35,10 @@ namespace CQRSMagic.WebApiExample
                     var product = products.First();
 
                     ShowProduct(product.Id);
-                    UpdateProduct(product.Id, "Product 1 updated", 23, 1);
+                    UpdateProduct(product.Id, "Product 1 updated", 23, entityVersion: 1);
                     ShowProduct(product.Id);
-                    DeleteProduct(product.Id, 2);
+                    DeleteProduct(product.Id, entityVersion: 3); // entityVersion jumps from 1 to 3 because UpdateProductCommand raises 2 events.
+                    ShowProducts();
                 }
 
             }
@@ -133,7 +134,21 @@ namespace CQRSMagic.WebApiExample
 
         private static void DeleteProduct(Guid productId, int entityVersion)
         {
-            throw new NotImplementedException();
+            var uri = string.Format("{0}api/products/{1}?entityVersion={2}", BaseAddress, productId, entityVersion);
+
+            WriteHeading("[DELETE] {0}", uri);
+
+            var client = new HttpClient();
+            var response = client.DeleteAsync(uri).Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(string.Format("DELETE product failed: {0}", response.StatusCode));
+            }
+
+            Console.WriteLine(response);
+            Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+            Console.WriteLine();
         }
 
         private static void WriteHeading(string format, params object[] args)

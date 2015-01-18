@@ -75,9 +75,16 @@ namespace CQRSMagic.WebApiExample.Products
             _eventPublisher.PublishEvents(events);
         }
 
-        public void Delete(Guid id)
+        public void Delete(Guid id, int entityVersion)
         {
-            throw new NotImplementedException();
+            var command = new DeleteProductCommand(id);
+
+            // todo: refactor
+            var commandHandler = new DeleteProductCommandHandler();
+            var events = commandHandler.Handle(command).ToArray();
+
+            _eventStore.SaveEvents(command.Id, entityVersion, events);
+            _eventPublisher.PublishEvents(events);
         }
     }
 }

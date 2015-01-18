@@ -6,6 +6,7 @@ namespace CQRSMagic.WebApiExample.Products
     {
         public string Name { get; private set; }
         public decimal UnitPrice { get; private set; }
+        public bool IsDeleted { get; private set; }
 
         public void ApplyEvent(AddedProductEvent e)
         {
@@ -14,14 +15,19 @@ namespace CQRSMagic.WebApiExample.Products
             UnitPrice = e.UnitPrice;
         }
 
-        public void ApplyEvent(NameChangedEvent e)
+        public void ApplyEvent(ProductNameChangedEvent e)
         {
             Name = e.Name;
         }
 
-        public void ApplyEvent(UnitPriceChangedEvent e)
+        public void ApplyEvent(ProductUnitPriceChangedEvent e)
         {
             UnitPrice = e.UnitPrice;
+        }
+
+        public void ApplyEvent(DeletedProductEvent e)
+        {
+            IsDeleted = true;
         }
     }
 }

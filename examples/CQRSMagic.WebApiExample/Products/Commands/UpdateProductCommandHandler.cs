@@ -27,12 +27,12 @@ namespace CQRSMagic.WebApiExample.Products.Commands
 
             if (entity.Name != command.Name)
             {
-                yield return new NameChangedEvent(command.Id, command.Name);
+                yield return new ProductNameChangedEvent(command.Id, command.Name);
             }
 
             if (entity.UnitPrice != command.UnitPrice)
             {
-                yield return new UnitPriceChangedEvent(command.Id, command.UnitPrice);
+                yield return new ProductUnitPriceChangedEvent(command.Id, command.UnitPrice);
             }
         }
     }

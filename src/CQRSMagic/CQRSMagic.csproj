@@ -38,6 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ApplyEventException.cs" />
+    <Compile Include="Command.cs" />
     <Compile Include="ConcurrencyException.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityNotFoundException.cs" />
