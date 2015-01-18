@@ -1,14 +1,14 @@
-using System;
+﻿using System;
 
-namespace CQRSMagic.WebApiExample.Products
+namespace CQRSMagic.WebApiExample.Products.Events
 {
-    public class ProductReadModel
+    public class AddedProductEvent : IEvent
     {
         private readonly Guid _id;
         private readonly string _name;
         private readonly decimal _unitPrice;
 
-        public ProductReadModel(Guid id, string name, decimal unitPrice)
+        public AddedProductEvent(Guid id, string name, decimal unitPrice)
         {
             _id = id;
             _name = name;

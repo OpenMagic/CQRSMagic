@@ -72,7 +72,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Products\Events\AddedProductEventHandler.cs" />
+    <Compile Include="Products\Events\AddedProductEvent.cs" />
+    <Compile Include="Products\Commands\AddProductCommand.cs" />
+    <Compile Include="Products\Commands\AddProductCommandHandler.cs" />
     <Compile Include="Products\ProductReadModel.cs" />
+    <Compile Include="ServiceLocator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -82,6 +87,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CQRSMagic\CQRSMagic.csproj">
+      <Project>{0553bb13-aae6-49f0-96bf-377292e5ec8c}</Project>
+      <Name>CQRSMagic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

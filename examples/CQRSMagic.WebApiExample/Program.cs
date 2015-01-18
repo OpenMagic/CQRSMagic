@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using CQRSMagic.WebApiExample.Products;
+using CQRSMagic.WebApiExample.Products.Events;
 using Microsoft.Owin.Hosting;
 
 namespace CQRSMagic.WebApiExample
@@ -18,6 +19,10 @@ namespace CQRSMagic.WebApiExample
                 // Start OWIN host 
                 using (WebApp.Start<Startup>(url: BaseAddress))
                 {
+                    var eventPublisher = ServiceLocator.EventPublisher;
+
+                    eventPublisher.SubscribeTo<AddedProductEvent>(e => new AddedProductEventHandler().Handle(e));
+
                     AddProduct("Product 1", (decimal)1.23);
                     AddProduct("Product 2", 1024);
 
@@ -47,7 +52,7 @@ namespace CQRSMagic.WebApiExample
 
         private static void AddProduct(string productName, decimal productUnitPrice)
         {
-            var uri = string.Format("{0}/api/products/", BaseAddress);
+            var uri = string.Format("{0}/api/products", BaseAddress);
 
             WriteHeading("[POST] {0} - Name: {1}, UnitPrice: {2}", uri, productName, productUnitPrice);
 
@@ -63,6 +68,7 @@ namespace CQRSMagic.WebApiExample
 
             Console.WriteLine(response);
             Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+            Console.WriteLine();
         }
 
         private static IEnumerable<ProductReadModel> ShowProducts()
@@ -113,8 +119,11 @@ namespace CQRSMagic.WebApiExample
         {
             var message = string.Format(format, args);
 
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(message);
             Console.WriteLine("-----------------------------".PadRight(message.Length, '-'));
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
     }

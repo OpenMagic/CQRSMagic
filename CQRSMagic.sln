@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{98
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic.WebApiExample", "examples\CQRSMagic.WebApiExample\CQRSMagic.WebApiExample.csproj", "{CE0E8D57-A35A-4A57-98C8-5EBB7B045080}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{86FC1CC8-76EC-4787-92B8-890A630CA323}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic", "src\CQRSMagic\CQRSMagic.csproj", "{0553BB13-AAE6-49F0-96BF-377292E5EC8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,11 +21,16 @@ Global
 		{CE0E8D57-A35A-4A57-98C8-5EBB7B045080}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE0E8D57-A35A-4A57-98C8-5EBB7B045080}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE0E8D57-A35A-4A57-98C8-5EBB7B045080}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0553BB13-AAE6-49F0-96BF-377292E5EC8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0553BB13-AAE6-49F0-96BF-377292E5EC8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0553BB13-AAE6-49F0-96BF-377292E5EC8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0553BB13-AAE6-49F0-96BF-377292E5EC8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CE0E8D57-A35A-4A57-98C8-5EBB7B045080} = {987BD21A-FB67-4D7A-8FCB-F089EF8C83B1}
+		{0553BB13-AAE6-49F0-96BF-377292E5EC8C} = {86FC1CC8-76EC-4787-92B8-890A630CA323}
 	EndGlobalSection
 EndGlobal

@@ -1,16 +1,16 @@
-using System;
+﻿using System;
 
-namespace CQRSMagic.WebApiExample.Products
+namespace CQRSMagic.WebApiExample.Products.Commands
 {
-    public class ProductReadModel
+    public class AddProductCommand : ICommand
     {
         private readonly Guid _id;
         private readonly string _name;
         private readonly decimal _unitPrice;
 
-        public ProductReadModel(Guid id, string name, decimal unitPrice)
+        public AddProductCommand(string name, decimal unitPrice)
         {
-            _id = id;
+            _id = Guid.NewGuid();
             _name = name;
             _unitPrice = unitPrice;
         }
