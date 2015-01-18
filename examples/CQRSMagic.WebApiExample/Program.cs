@@ -52,7 +52,7 @@ namespace CQRSMagic.WebApiExample
 
         private static void AddProduct(string productName, decimal productUnitPrice)
         {
-            var uri = string.Format("{0}/api/products", BaseAddress);
+            var uri = string.Format("{0}api/products", BaseAddress);
 
             WriteHeading("[POST] {0} - Name: {1}, UnitPrice: {2}", uri, productName, productUnitPrice);
 
@@ -73,7 +73,7 @@ namespace CQRSMagic.WebApiExample
 
         private static IEnumerable<ProductReadModel> ShowProducts()
         {
-            var uri = string.Format("{0}/api/products", BaseAddress);
+            var uri = string.Format("{0}api/products", BaseAddress);
 
             WriteHeading("[GET] {0}", uri);
 
@@ -92,7 +92,7 @@ namespace CQRSMagic.WebApiExample
 
         private static void ShowProduct(Guid productId)
         {
-            var uri = string.Format("{0}/api/product/{1}", BaseAddress, productId);
+            var uri = string.Format("{0}api/products/{1}", BaseAddress, productId);
 
             WriteHeading("[GET] {0}", uri);
 

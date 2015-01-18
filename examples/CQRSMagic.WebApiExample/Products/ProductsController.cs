@@ -32,7 +32,9 @@ namespace CQRSMagic.WebApiExample.Products
 
         public ProductReadModel Get(Guid id)
         {
-            throw new NotImplementedException();
+            var product = ServiceLocator.ProductReadModels.SingleOrDefault(p => p.Id == id);
+
+            return product;
         }
 
         public HttpResponseMessage Post(JObject value)
