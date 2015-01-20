@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using CQRSMagic.WebApiExample.Infrastructure;
 using CQRSMagic.WebApiExample.Products;
-using CQRSMagic.WebApiExample.Products.Events;
-using CQRSMagic.WebApiExample.Products.Subscribers;
 using Microsoft.Owin.Hosting;
 using Ninject;
 
 namespace CQRSMagic.WebApiExample
 {
-    public class Program
+    public static class Program
     {
         private const string BaseAddress = "http://localhost:9000/";
 
@@ -24,13 +23,8 @@ namespace CQRSMagic.WebApiExample
                 {
                     var kernel = IoC.Kernel;
                     var eventPublisher = kernel.Get<IEventPublisher>();
-                    var readModelEventHandler = kernel.Get<ReadModelEventHandler>();
 
-                    // todo: refactor
-                    eventPublisher.SubscribeTo<AddedProductEvent>(e => readModelEventHandler.Handle(e));
-                    eventPublisher.SubscribeTo<ProductNameChangedEvent>(e => readModelEventHandler.Handle(e));
-                    eventPublisher.SubscribeTo<ProductUnitPriceChangedEvent>(e => readModelEventHandler.Handle(e));
-                    eventPublisher.SubscribeTo<DeletedProductEvent>(e => readModelEventHandler.Handle(e));
+                    eventPublisher.SubscribeEventHandlersIn(Assembly.GetExecutingAssembly());
 
                     AddProduct("Product 1", (decimal)1.23);
                     AddProduct("Product 2", 1024);

@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 namespace CQRSMagic
 {
@@ -6,5 +7,6 @@ namespace CQRSMagic
     {
         void PublishEvents(IEvent[] events);
         void SubscribeTo<TEvent>(Action<TEvent> action) where TEvent : class, IEvent;
+        void SubscribeEventHandlersIn(Assembly assembly);
     }
 }

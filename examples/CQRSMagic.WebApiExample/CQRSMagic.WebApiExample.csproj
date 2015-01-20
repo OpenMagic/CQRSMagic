@@ -108,6 +108,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\src\CQRSMagic\Properties\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Infrastructure\IoC.cs" />
     <Compile Include="Products\IProductReadModelRepository.cs" />
     <Compile Include="Products\ProductReadModelRepository.cs" />
