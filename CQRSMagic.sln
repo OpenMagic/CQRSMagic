@@ -1,44 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{987BD21A-FB67-4D7A-8FCB-F089EF8C83B1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic.WebApiExample", "examples\CQRSMagic.WebApiExample\CQRSMagic.WebApiExample.csproj", "{CE0E8D57-A35A-4A57-98C8-5EBB7B045080}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E8E4BF4-E438-4067-A167-AFB4386E7786}"
-	ProjectSection(SolutionItems) = preProject
-		.gitignore = .gitignore
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic", "source\CQRSMagic\CQRSMagic.csproj", "{0553BB13-AAE6-49F0-96BF-377292E5EC8C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRSMagic.Specifications", "specifications\CQRSMagic.Specifications\CQRSMagic.Specifications.csproj", "{DBE50CF2-BD02-47AB-92C1-C151F0C78283}"
-EndProject
 Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CE0E8D57-A35A-4A57-98C8-5EBB7B045080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE0E8D57-A35A-4A57-98C8-5EBB7B045080}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE0E8D57-A35A-4A57-98C8-5EBB7B045080}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE0E8D57-A35A-4A57-98C8-5EBB7B045080}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0553BB13-AAE6-49F0-96BF-377292E5EC8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0553BB13-AAE6-49F0-96BF-377292E5EC8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0553BB13-AAE6-49F0-96BF-377292E5EC8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0553BB13-AAE6-49F0-96BF-377292E5EC8C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBE50CF2-BD02-47AB-92C1-C151F0C78283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBE50CF2-BD02-47AB-92C1-C151F0C78283}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DBE50CF2-BD02-47AB-92C1-C151F0C78283}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DBE50CF2-BD02-47AB-92C1-C151F0C78283}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{CE0E8D57-A35A-4A57-98C8-5EBB7B045080} = {987BD21A-FB67-4D7A-8FCB-F089EF8C83B1}
 	EndGlobalSection
 EndGlobal

@@ -1,3 +1,3 @@
 # CQRS Magic
 
-A C# CQRS Implementation.
+A C# implementation of the CQRS Pattern.

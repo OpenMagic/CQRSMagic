@@ -14,9 +14,7 @@ thumbs.db
 [Oo]bj/
 [Pp]ackages/
 
-*.cache
 *.feature.cs
-*.user
 *.suo
 
 ########################
