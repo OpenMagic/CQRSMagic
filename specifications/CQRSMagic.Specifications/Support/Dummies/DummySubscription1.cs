@@ -3,25 +3,24 @@ using CQRSMagic.Logging;
 
 namespace CQRSMagic.Specifications.Support.Dummies
 {
-    // A collection of methods that subscribe to events.
-    public class Subscriptions :
-        ISubscribeTo<Event1>,
-        ISubscribeTo<Event2>,
-        ISubscribeTo<Event3>
+    public class DummySubscription1 :
+        ISubscribeTo<DummyEvent1>,
+        ISubscribeTo<DummyEvent2>,
+        ISubscribeTo<DummyEvent3>
     {
-        private static readonly ILog Log = LogManager.GetLogger<Subscriptions>();
+        private static readonly ILog Log = LogManager.GetLogger<DummySubscription1>();
 
-        public void SubscriptionHandler(Event1 e)
+        public void SubscriptionHandler(DummyEvent1 e)
         {
             LogSubscriptionHandler(e);
         }
 
-        public void SubscriptionHandler(Event2 e)
+        public void SubscriptionHandler(DummyEvent2 e)
         {
             LogSubscriptionHandler(e);
         }
 
-        public void SubscriptionHandler(Event3 e)
+        public void SubscriptionHandler(DummyEvent3 e)
         {
             LogSubscriptionHandler(e);
         }

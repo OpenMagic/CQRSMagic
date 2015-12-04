@@ -64,7 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CQRSMagic\Properties\CommonAssemblyInfo.cs">
+    <Compile Include="..\..\source\CQRSMagic\Properties\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Features\EventPublisher\SubscribeEventHandlersIn.feature.cs">
@@ -77,13 +77,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SubscribeEventHandlers.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\Infrastructure\AssemblyEventSubscriber\SubscribeEventHandlersSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>
       </SubType>
     </Compile>
     <Compile Include="Features\EventPublisher\SubscribeEventHandlersInSteps.cs" />
-    <Compile Include="Support\Dummies\Events.cs" />
-    <Compile Include="Support\Dummies\Subscriptions.cs" />
+    <Compile Include="Support\Common\CommonData.cs" />
+    <Compile Include="Support\Common\CommonSteps.cs" />
+    <Compile Include="Support\Dummies\DummySubscription2.cs" />
+    <Compile Include="Support\Dummies\DummyEvents.cs" />
+    <Compile Include="Support\Dummies\DummySubscription1.cs" />
+    <Compile Include="Support\Common\CommonExpectedResults.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -100,12 +105,14 @@
     <None Include="Packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CQRSMagic\CQRSMagic.csproj">
+    <ProjectReference Include="..\..\source\CQRSMagic\CQRSMagic.csproj">
       <Project>{0553bb13-aae6-49f0-96bf-377292e5ec8c}</Project>
       <Name>CQRSMagic</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Support\Expectations\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
